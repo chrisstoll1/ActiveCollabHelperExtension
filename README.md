@@ -1,7 +1,7 @@
 # Active Collab Helper Extension
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)]
+![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
 
-This is a Google Chrome extension built with React that aims to improve the accuracy and efficiency of project management in [![ActiveCollab](https://www.activecollab.com/)]
+This is a Google Chrome extension built with React that aims to improve the accuracy and efficiency of project management in ![ActiveCollab](https://www.activecollab.com/)
 ## Installation
 
 You can install the extension by visiting the releases page on GitHub and downloading the latest version.
