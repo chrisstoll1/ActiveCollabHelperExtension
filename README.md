@@ -4,7 +4,7 @@
 This is a Google Chrome extension built with React that aims to improve the accuracy and efficiency of project management in [ActiveCollab](https://www.activecollab.com/)
 ## Installation
 
-You can install the extension by visiting the releases page on GitHub and downloading the latest version.
+You can install the extension by visiting the [releases page](https://github.com/chrisstoll1/activecollab-helper-extension/releases) on GitHub and downloading the latest version.
 ## Features
 
 The Active Collab Helper Extension offers the following features:
