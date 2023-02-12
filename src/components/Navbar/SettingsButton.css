@@ -1,0 +1,10 @@
+.settings-disabled {
+    color: var(--gray);
+    cursor: default;
+}
+
+.settings-disabled:hover {
+    color: var(--gray);
+    cursor: default;
+    transform: scale(1);
+}

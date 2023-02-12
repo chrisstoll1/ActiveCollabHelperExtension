@@ -1,0 +1,29 @@
+@keyframes rotate {
+    from {transform: rotate(360deg)}
+    to {transform: rotate(0deg)}
+}
+
+.refresh-start {
+    animation-name: rotate;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-play-state: running;
+    color: var(--gray);
+}
+
+.refresh-start:hover {
+    color: var(--gray);
+    cursor: default;
+    transform: scale(1);
+}
+
+.refresh-disabled {
+    color: var(--gray);
+}
+
+.refresh-disabled:hover {
+    color: var(--gray);
+    cursor: default;
+    transform: scale(1);
+}

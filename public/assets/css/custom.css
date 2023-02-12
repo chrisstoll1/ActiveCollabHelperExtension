@@ -1,0 +1,202 @@
+body {
+    width: 780px;
+    height: 580px;
+    margin: 0px !important;
+    background: linear-gradient(217deg, #5d2bff, #2c2e38 70.71%), 
+    linear-gradient(127deg, #29146d, #29146d 70.71%),
+    linear-gradient(336deg, #5d2bff, #2c2e38 70.71%);
+	background-size: 400% 400%;
+	animation: gradient 45s ease infinite;
+    background-attachment: fixed;
+    scrollbar-width: none;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    color: var(--light);
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.page-header {
+    margin: 10px;
+}
+
+.card-list {
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+.card-header {
+    border-bottom: none;
+}
+
+.card {
+    background-color: rgba(0, 0, 0, 0.35);
+    border: none;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--dark);
+}
+
+.dropdown-divider {
+    border-top: 1px solid var(--gray);
+}
+
+.extension-controls i, filter {
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.extension-control-icons {
+    color: var(--light);
+    transition: all .1s ease-in-out;
+}
+
+.extension-control-icons:hover {
+    color: var(--purple);
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.breadcrumb-item {
+    color: var(--light);
+    transition: all .1s ease-in-out;
+}
+
+.breadcrumb-item:hover {
+    color: var(--purple);
+    cursor: pointer;
+}
+
+.form-control {
+    background-color: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(0, 0, 0, 0.35);
+    color: var(--light);
+}
+
+.form-control:focus {
+    background-color: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(0, 0, 0, 0.35);
+    color: var(--light);
+}
+
+.form-control::placeholder {
+    color: var(--light);
+}
+
+.input-group-text {
+    background-color: rgba(0, 0, 0, 0.35);
+    border: none;
+}
+
+.input-group-prepend .input-group-text .material-icons {
+    color: var(--light);
+}
+
+.input-group-prepend {
+    margin-right: 0px;
+}
+
+.main-body {
+    padding: 20px;
+    padding-top: 70px;
+}
+
+.main-header {
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+}
+    
+.filter-quip {
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.custom-checkbox-switch .custom-control-input:checked ~ .custom-control-label:before {
+    background: var(--purple); }
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    color: #fff;
+    border-color: var(--purple);
+    background-color: var(--purple); }
+
+.custom-control-label::before {
+    background-color: rgba(0, 0, 0, 0.35);
+    border: rgba(0, 0, 0, 0.35) solid 1px;
+}
+
+.list-group-item {
+    background-color: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(0, 0, 0, 0.35);
+    color: var(--light);
+    transition: all .1s ease-in-out;
+}
+
+.list-group-item i {
+    padding-right: 10px;
+}
+
+.list-group-item p {
+    display: block;
+}
+
+.list-group-item small {
+    padding-right: 10px;
+}
+
+.list-group-item:hover {
+    background-color: #6e42c156;
+    cursor: pointer;
+    transform: scale(1.01);
+}
+
+.alerted-icon {
+    color: #5d2bff;
+}
+
+.badge {
+    margin-left: 5px;
+}
+
+.badge-purple {
+    background-color: #5d2bff;
+}
+
+.project-link-icon {
+    color: var(--light);
+    z-index: 1;
+    transition: all .1s ease-in-out;
+}
+
+.project-link-icon:hover {
+    color: var(--purple);
+    cursor: pointer;
+    transform: scale(1.1);
+}

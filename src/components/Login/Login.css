@@ -1,0 +1,27 @@
+.login {
+    display: flex;
+    align-items: center;
+    height: 100vh;
+}
+
+.ac-button {
+    background-color: #5d2bff;
+    border-color: #5d2bff;
+    color: var(--light);
+}
+
+.ac-button:hover {
+    background-color: #29146d;
+    border-color: #29146d;
+}
+
+.ac-button:active {
+    background-color: #29146d;
+    border-color: #29146d;
+}
+
+.ac-button:focus {
+    background-color: #29146d;
+    border-color: #29146d;
+}
+

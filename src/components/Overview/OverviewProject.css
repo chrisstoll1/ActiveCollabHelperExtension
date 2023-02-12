@@ -1,0 +1,9 @@
+.card-project {
+    transition: all .1s ease-in-out;
+}
+
+.card-project:hover {
+    background-color: #6e42c156;
+    cursor: pointer;
+    transform: scale(1.01);
+}

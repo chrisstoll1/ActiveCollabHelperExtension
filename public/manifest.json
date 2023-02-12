@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "ActiveCollab Helper Extension",
+  "description": "Integrates with ActiveCollab to improve the accuracy and efficiency of project management by bringing attention to any neglected elements of projects.",
+  "author": "Chris Stoll",
+  "version": "0.1",
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": "assets/img/logo-color.png"
+  },
+  "background": {
+    "service_worker": "service_workers/background.js",
+    "type": "module"
+  },
+  "content_scripts": [{
+    "js": ["content_scripts/activecollab.js"],
+    "matches": ["https://app.activecollab.com/*"]
+  }],
+  "permissions": [
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://app.activecollab.com/"
+  ]
+}
