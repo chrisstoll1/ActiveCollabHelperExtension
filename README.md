@@ -30,4 +30,4 @@ If you would like to contribute to the project, please follow the steps below:
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the ![MIT License](https://github.com/chrisstoll1/activecollab-helper-extension/blob/main/LICENSE).
