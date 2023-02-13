@@ -106,7 +106,7 @@ body {
 }
 
 .form-control::placeholder {
-    color: var(--light);
+    color: var(--gray-dark);
 }
 
 .input-group-text {
@@ -177,16 +177,8 @@ body {
     transform: scale(1.01);
 }
 
-.alerted-icon {
-    color: #5d2bff;
-}
-
 .badge {
     margin-left: 5px;
-}
-
-.badge-purple {
-    background-color: #5d2bff;
 }
 
 .project-link-icon {

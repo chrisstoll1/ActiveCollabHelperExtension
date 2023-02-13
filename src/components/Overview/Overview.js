@@ -66,7 +66,7 @@ function Overview() {
             :
                 <div class="card-list">
                     <div class="card-list-head">
-                        <h6>Needs Attention</h6>
+                        <h6>Projects</h6>
                     </div>
                     <div class="card-list-body">
                         {(filteredProjects.length === 0) ? 

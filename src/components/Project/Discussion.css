@@ -1,3 +1,11 @@
 .discussion-name {
     margin-bottom: 0px;
 }
+
+.discussion-flagged-icon-purple {
+    color: #5d2bff;
+}
+
+.discussion-flagged-badge-purple {
+    background-color: #5d2bff;
+}

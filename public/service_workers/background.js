@@ -7,20 +7,25 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
     if (request.event === "refresh"){
-      await refreshActiveCollabData();   
+      refreshActiveCollabData();   
     }
     if (request.event === "activecollab_token"){
-      console.log(`Received token from content script: ${request.token}`);
       chrome.storage.sync.set({"PHPSESSID": request.token});
-      console.log(`Received instance from content script: ${request.instance}`)
       chrome.storage.sync.set({"activecollab_user_instances": request.instance});
+    }
+    if (request.event === "delete_token"){
+      await removeSyncStorageObject("PHPSESSID");
+      await removeSyncStorageObject("activecollab_user_instances");
+      await removeLocalStorageObject("ACProjects");
+      await removeLocalStorageObject("WorkingProject");
+      await removeLocalStorageObject("WorkingTaskList");
+      await removeLocalStorageObject("ExtState");
+      refreshActiveCollabData();
     }
 });
 
 async function refreshActiveCollabData() {
   await removeLocalStorageObject("ACProjects");
-
-  console.log("Is token valid?" + await isTokenValid());
 
   if (await isTokenValid()) {
     var activeCollabData = await buildActiveCollabDataObject();
@@ -85,8 +90,6 @@ async function buildActiveCollabDataObject() {
     return formatProject(project, projectTasks, projectDiscussions);
   });
 
-  console.log(projectsWithData);
-
   return projectsWithData;
 }
 
@@ -99,9 +102,6 @@ async function isTokenValid() {
     PHPSESSID = PHPSESSID.PHPSESSID.toString();
     accountNumber = accountNumber.activecollab_user_instances.toString();
     var sessionCookie = `PHPSESSID=${PHPSESSID}`;
-
-    console.log(accountNumber);
-    console.log(sessionCookie);
 
     var validTokenRequestResponse = await GetInitial(sessionCookie, accountNumber);
     if (!validTokenRequestResponse.ok){
@@ -128,6 +128,29 @@ async function removeLocalStorageObject(key) {
       console.log(`Local storage object with key '${key}' has been removed.`);
     } else {
       console.log(`No local storage object with key '${key}' exists.`);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function removeSyncStorageObject(key) {
+  try {
+    const items = await new Promise((resolve, reject) => {
+      chrome.storage.sync.get(key, function (items) {
+        resolve(items);
+      });
+    });
+
+    if (items.hasOwnProperty(key)) {
+      await new Promise((resolve, reject) => {
+        chrome.storage.sync.remove(key, function () {
+          resolve();
+        });
+      });
+      console.log(`Sync storage object with key '${key}' has been removed.`);
+    } else {
+      console.log(`No sync storage object with key '${key}' exists.`);
     }
   } catch (error) {
     console.error(error);

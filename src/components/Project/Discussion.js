@@ -18,11 +18,27 @@ function Discussion(props){
         }
     }
 
+    const discussionIconClass = () => {
+        if (props.discussion.flagged){
+            return "material-icons discussion-flagged-icon-purple"
+        }else{
+            return "material-icons"
+        }
+    }
+
+    const discussionBadgeClass = () => {
+        if (props.discussion.flagged){
+            return "badge discussion-flagged-badge-purple"
+        }else{
+            return "badge badge-secondary"
+        }
+    }
+
     return (
         <li class="list-group-item d-flex align-items-start justify-content-between" onClick={redirect}>
             <div className={discussionTitleWrapperClass()}>
                 <div>
-                    <span><i class="material-icons">chat</i> </span>
+                    <span><i className={discussionIconClass()}>chat</i> </span>
                 </div>
                 <div>
                     <p class="discussion-name">{props.discussion.name}</p>
@@ -39,7 +55,7 @@ function Discussion(props){
                     <div>{(props.discussion.comments_count === null) ?
                         <div></div>
                     :
-                        <span class="badge badge-secondary">
+                        <span className={discussionBadgeClass()}>
                             Comments {props.discussion.comments_count}
                         </span>
                     }
