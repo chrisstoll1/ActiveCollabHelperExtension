@@ -4,7 +4,7 @@ import BreadCrumb from "./BreadCrumb";
 import SettingsButton from "./SettingsButton";
 import Filter from "./Filter";
 import './Navbar.css';
-import { ExtState, SetExtState } from '../../ExtStateContext';
+import { ExtState, SetExtState } from '../../store/ExtStateContext';
 
 function Navbar() {
     const [scrolled, setScrolled] = useState(false);

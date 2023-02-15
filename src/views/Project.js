@@ -1,13 +1,10 @@
 /* global chrome */
 import { useEffect, useState, useContext } from "react"
-import { SetExtState } from "../../ExtStateContext";
-import { IsRefreshing } from "../../ExtStateContext";
-import { BodyFilter } from "../../ExtStateContext";
-import { SetBodyFilter } from "../../ExtStateContext";
-import Loading from "../Body/Loading";
-import Discussion from "./Discussion";
-import ProjectTaskList from "./ProjectTaskList";
-import { formatUnixTimestamp } from "../../helpers";
+import { SetExtState, IsRefreshing, BodyFilter, SetBodyFilter } from "../store/ExtStateContext";
+import Loading from "../components/Background/Loading";
+import Discussion from "../components/Cards/Discussion";
+import ProjectTaskList from "../components/Cards/ProjectTaskList";
+import { formatUnixTimestamp } from "../assets/js/helpers";
 
 function Project(){
     const bodyFilter = useContext(BodyFilter);

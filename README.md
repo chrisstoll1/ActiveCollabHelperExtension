@@ -23,10 +23,9 @@ If you would like to contribute to the project, please follow the steps below:
 2. Clone the repository to your local machine
 3. Install the dependencies by running `npm install`
 4. Run `npm run build` to build the extension
-5. Run `npm run watch` to watch for changes
-6. Load the extension into your browser
-7. Make your changes
-8. Submit a pull request
+5. Load the extension into your browser
+6. Make your changes
+7. Submit a pull request
 
 ## License
 

@@ -1,5 +1,5 @@
-import { GetInitial, GetProjectsDATA, GetProjectTasksDATA, GetProjectDiscussionsDATA } from './ActiveCollabAPI.js';
-import { formatProject } from './ActiveCollabDataFormat.js';
+import { GetInitial, GetProjectsDATA, GetProjectTasksDATA, GetProjectDiscussionsDATA } from './ActiveCollab/ActiveCollabAPI.js';
+import { formatProject } from './ActiveCollab/ActiveCollabDataFormat.js';
 
 chrome.runtime.onInstalled.addListener(() => {
     console.log("Installed!");

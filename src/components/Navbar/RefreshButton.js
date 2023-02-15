@@ -1,7 +1,7 @@
 /*global chrome*/
 import { useContext } from "react";
 import './RefreshButton.css';
-import { IsRefreshing, SetRefreshing, ExtState } from '../../ExtStateContext';
+import { IsRefreshing, SetRefreshing, ExtState } from '../../store/ExtStateContext';
 
 function RefreshButton() {
     const isRefreshing = useContext(IsRefreshing);

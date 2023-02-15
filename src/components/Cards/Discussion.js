@@ -1,5 +1,5 @@
 /* global chrome */
-import { formatUnixTimestamp } from "../../helpers"
+import { formatUnixTimestamp } from "../../assets/js/helpers"
 import "./Discussion.css"
 
 function Discussion(props){

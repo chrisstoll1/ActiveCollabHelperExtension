@@ -1,13 +1,13 @@
 /*global chrome*/
-import { useState, useContext } from 'react';
-import Overview from '../Overview/Overview';
-import Settings from '../Settings/Settings';
-import Project from '../Project/Project';
-import Login from '../Login/Login';
-import TaskList from '../TaskList/TaskList';
-import { ExtState } from '../../ExtStateContext';
+import { useContext } from 'react';
+import Overview from '../views/Overview';
+import Settings from '../views/Settings';
+import Project from '../views/Project';
+import Login from '../views/Login';
+import TaskList from '../views/TaskList';
+import { ExtState } from '../store/ExtStateContext';
 
-function Body() {
+function Routes() {
     const extState = useContext(ExtState);
 
     if (extState === "Overview"){
@@ -27,4 +27,4 @@ function Body() {
     }
 }
 
-export default Body;
+export default Routes;

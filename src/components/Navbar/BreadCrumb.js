@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ExtState, SetExtState } from '../../ExtStateContext';
+import { ExtState, SetExtState } from '../../store/ExtStateContext';
 
 function BreadCrumb(){
     const setExtState = useContext(SetExtState);

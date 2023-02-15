@@ -1,5 +1,5 @@
 /* global chrome */
-import { formatUnixTimestamp } from '../../helpers';
+import { formatUnixTimestamp } from '../../assets/js/helpers';
 
 function Task(props) {
     const taskURL = `https://app.activecollab.com/${props.accountNumber}/projects/${props.projectId}?modal=Task-${props.task.id}-${props.projectId}`;

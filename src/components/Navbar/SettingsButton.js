@@ -1,6 +1,6 @@
 /*global chrome*/
 import { useContext } from "react";
-import { ExtState, SetExtState } from '../../ExtStateContext';
+import { ExtState, SetExtState } from '../../store/ExtStateContext';
 import './SettingsButton.css';
 
 function SettingsButton() {

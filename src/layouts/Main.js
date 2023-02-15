@@ -1,10 +1,10 @@
 /*global chrome*/
 import { useState, useEffect } from 'react';
-import Navbar from './components/Navbar/Navbar';
-import Body from './components/Body/Body';
-import { ExtState, SetExtState, IsRefreshing, SetRefreshing, BodyFilter, SetBodyFilter } from './ExtStateContext';
+import Navbar from '../components/Navbar/Navbar';
+import Routes from './Routes';
+import { ExtState, SetExtState, IsRefreshing, SetRefreshing, BodyFilter, SetBodyFilter } from '../store/ExtStateContext';
 
-function MainContainer() {
+function Main() {
     const [extState, setExtState] = useState("Overview");
     const [isRefreshing, setRefreshing] = useState(false);
     const [bodyFilter, setBodyFilter] = useState("");
@@ -34,7 +34,7 @@ function MainContainer() {
                             <BodyFilter.Provider value={bodyFilter}>
                                 <SetBodyFilter.Provider value={setBodyFilter}>
                                     <Navbar/>
-                                    <Body/>
+                                    <Routes/>
                                 </SetBodyFilter.Provider>
                             </BodyFilter.Provider>
                         </SetRefreshing.Provider>
@@ -45,4 +45,4 @@ function MainContainer() {
     );
 }
 
-export default MainContainer;
+export default Main;

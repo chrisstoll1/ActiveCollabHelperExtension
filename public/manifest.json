@@ -6,7 +6,7 @@
   "version": "0.1",
   "action": {
     "default_popup": "index.html",
-    "default_icon": "assets/img/logo-color.png"
+    "default_icon": "logo-color.png"
   },
   "background": {
     "service_worker": "service_workers/background.js",

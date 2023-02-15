@@ -1,4 +1,5 @@
-particlesJS("particles-js", {
+
+export const particleConfig = {
     "particles": {
       "number": {
         "value": 150,
@@ -107,4 +108,5 @@ particlesJS("particles-js", {
       }
     },
     "retina_detect": true
-  });
+  }
+

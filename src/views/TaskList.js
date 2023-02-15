@@ -1,8 +1,8 @@
 /* global chrome */
 import { useContext, useEffect, useState } from 'react';
-import { BodyFilter, IsRefreshing, SetExtState, SetBodyFilter } from '../../ExtStateContext';
-import Loading from '../Body/Loading';
-import Task from './Task';
+import { BodyFilter, IsRefreshing, SetExtState, SetBodyFilter } from '../store/ExtStateContext';
+import Loading from '../components/Background/Loading';
+import Task from '../components/Cards/Task';
 import './TaskList.css';
 
 function Tasklist() {

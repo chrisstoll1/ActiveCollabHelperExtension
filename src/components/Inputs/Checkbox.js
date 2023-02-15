@@ -1,6 +1,6 @@
 /*global chrome*/
 import { useEffect, useState, useContext } from 'react';
-import { SettingsTogglesContext, SetSettingsTogglesContext } from './SettingsContext';
+import { SettingsTogglesContext, SetSettingsTogglesContext } from '../../store/SettingsContext';
 
 function Checkbox(props) {
     const settingsToggles = useContext(SettingsTogglesContext);

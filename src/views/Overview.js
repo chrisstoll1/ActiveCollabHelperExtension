@@ -1,8 +1,8 @@
 /*global chrome*/
 import { useState, useContext, useEffect } from 'react';
-import OverviewProject from './OverviewProject'
-import { IsRefreshing, SetRefreshing, BodyFilter, SetExtState, SetBodyFilter } from '../../ExtStateContext';
-import Loading from '../Body/Loading';
+import OverviewProject from '../components/Cards/OverviewProject';
+import { IsRefreshing, SetRefreshing, BodyFilter, SetExtState, SetBodyFilter } from '../store/ExtStateContext';
+import Loading from '../components/Background/Loading';
 
 function Overview() {
     const bodyFilter = useContext(BodyFilter);
