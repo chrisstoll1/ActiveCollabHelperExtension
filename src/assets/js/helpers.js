@@ -1,4 +1,3 @@
-/* global chrome */
 export function formatUnixTimestamp(timestamp) {
     var date = new Date(timestamp * 1000);
     var month = '' + (date.getMonth() + 1),

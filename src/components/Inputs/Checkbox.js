@@ -1,4 +1,3 @@
-/*global chrome*/
 import { useEffect, useState, useContext } from 'react';
 import { SettingsTogglesContext, SetSettingsTogglesContext } from '../../store/SettingsContext';
 
@@ -23,7 +22,7 @@ function Checkbox(props) {
                 setChecked(settingsToggles[props.id]);
             }
         }
-    }, [settingsToggles]);
+    }, [settingsToggles, props.id]);
 
     return (
         <div class="custom-control custom-checkbox custom-checkbox-switch">
