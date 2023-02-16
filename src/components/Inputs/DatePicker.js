@@ -1,18 +1,22 @@
-import { useEffect, useRef } from 'react';
+import { forwardRef, useEffect } from 'react';
 import flatpickr from 'flatpickr';
 
-function DatePicker() {
-    const datePicker = useRef(null);
+const DatePicker = forwardRef((props, ref) => {
+    const { handleChange } = props;
 
     useEffect(() => {
-        flatpickr(datePicker.current, {
-            dateFormat: "m/d/Y"
-        });
+        flatpickr(
+            ref.current, 
+            {
+                dateFormat: "m/d/Y",
+                onChange: handleChange
+            }
+        );
     }, []);
 
     return (
-        <input class="form-control settings-input" ref={datePicker}  type="text" placeholder="Select a Date" />
+        <input class="form-control settings-input" ref={ref} type="text" placeholder="Select a Date" />
     );
-}
+});
 
 export default DatePicker;

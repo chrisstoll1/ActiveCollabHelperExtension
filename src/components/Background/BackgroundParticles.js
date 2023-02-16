@@ -5,12 +5,11 @@ import { particleConfig } from '../../assets/js/backgroud-particles';
 
 function BackgroundParticles() {
     const particlesInit = useCallback(async engine => {
-        console.log(engine);
         await loadFull(engine);
     }, []);
 
     const particlesLoaded = useCallback(async container => {
-        await console.log(container);
+        // await console.log(container);
     }, []);
 
     return (

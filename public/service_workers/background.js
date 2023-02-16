@@ -3,6 +3,28 @@ import { formatProject } from './ActiveCollab/ActiveCollabDataFormat.js';
 
 chrome.runtime.onInstalled.addListener(() => {
     console.log("Installed!");
+
+    // Set default settings
+    chrome.storage.sync.set({"user_settings": {
+      "discussionMessageDateFilter": {
+          "operator": "",
+          "type": "",
+          "input": "",
+          "datepicker": ""
+        },
+      "discussionMessageSenderFilter": {
+          "input": "",
+          "select": ""
+        },
+      "settingsToggles": {
+          "hide-unflagged-discussions": false,
+          "hide-open-tasks": false,
+          "hide-completed-tasks": false,
+          "hide-overdue-tasks": false,
+          "hide-empty-projects": false
+        }
+      }
+    });
 });
 
 chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
