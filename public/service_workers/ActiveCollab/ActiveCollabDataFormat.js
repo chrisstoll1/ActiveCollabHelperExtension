@@ -54,16 +54,27 @@ const formatProjectTaskListTasks = (projectTasks, taskList) => {
     let taskList_Open_Count = 0;
 
     const formattedTasks = filteredTasks.map((task) => { //NOTE: Keep in mind, this is only run per OPEN task, not all tasks
-        // Assume the task is open
-        let taskStatusList = ['Open'];
-        let task_level = 2;
-        taskList_Open_Count++;
+        // initialize the status list and badge level
+        let taskStatusList = [];
+        let task_level = 0;
+        
+        // If the task is completed, add the status and update the badge level
+        if (task.is_completed) {
+            taskStatusList.push('Completed');
+            task_level = 1;
+        }else{
+            // Otherwise, assume it is open
+            taskStatusList.push('Open');
+            task_level = 2;
+            taskList_Open_Count++;
 
-        // Determine if the task is overdue
-        if ((task.due_on < Math.floor(Date.now() / 1000)) && task.due_on !== null) {
-            taskStatusList.push('Overdue');
-            task_level = 3;
-            taskList_Overdue_Count++;
+            // If the task is open
+            // Determine if the task is overdue
+            if ((task.due_on < Math.floor(Date.now() / 1000)) && task.due_on !== null) {
+                taskStatusList.push('Overdue');
+                task_level = 3;
+                taskList_Overdue_Count++;
+            }
         }
 
         // Add the status to the status list if it doesn't already exist

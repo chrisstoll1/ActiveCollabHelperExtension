@@ -39,6 +39,7 @@ function Task(props) {
                         <small></small>
                     </div>
                     <div>
+                        {(props.task.status.includes('Completed')) ? <span class="badge badge-secondary">Completed</span> : null}
                         {(props.task.status.includes('Open')) ? <span class="badge badge-success">Open</span> : null}
                         {(props.task.status.includes('Overdue')) ? <span class="badge badge-danger">Overdue</span> : null}
                     </div>

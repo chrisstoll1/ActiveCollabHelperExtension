@@ -1,4 +1,4 @@
-import { GetInitial, GetProjectsDATA, GetProjectTasksDATA, GetProjectDiscussionsDATA } from './ActiveCollab/ActiveCollabAPI.js';
+import { GetInitial, GetProjectsDATA, GetProjectTasksDATA, GetProjectTasksArchivedDATA, GetProjectDiscussionsDATA } from './ActiveCollab/ActiveCollabAPI.js';
 import { formatProject } from './ActiveCollab/ActiveCollabDataFormat.js';
 
 chrome.runtime.onInstalled.addListener(async () => {
@@ -84,15 +84,18 @@ async function buildActiveCollabDataObject() {
   //Get List of Tasks and Discussions for each project
   const projectDataPromises = projectsRAW.map(async project => {
     var projectTasks = GetProjectTasksDATA(sessionCookie, accountNumber, project.id);
+    var projectTasksArchived = GetProjectTasksArchivedDATA(sessionCookie, accountNumber, project.id);
     var projectDiscussions = GetProjectDiscussionsDATA(sessionCookie, accountNumber, project.id);
-    return Promise.all([projectTasks, projectDiscussions]);
+    return Promise.all([projectTasks, projectTasksArchived, projectDiscussions]);
   });
   const projectData = await Promise.all(projectDataPromises);
 
   //Format the data into a single object
   const projectsWithData = projectsRAW.map((project, index) => {
-    const [projectTasks, projectDiscussions] = projectData[index];
-    return formatProject(project, projectTasks, projectDiscussions);
+    const [projectTasks, projectTasksArchived, projectDiscussions] = projectData[index];
+    let projectTasksAll = projectTasks;
+    projectTasksAll.tasks = projectTasks.tasks.concat(projectTasksArchived); //Combine active and archived tasks
+    return formatProject(project, projectTasksAll, projectDiscussions);
   });
 
   return projectsWithData;

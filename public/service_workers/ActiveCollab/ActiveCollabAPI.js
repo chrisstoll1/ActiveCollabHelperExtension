@@ -46,6 +46,24 @@ export async function GetProjectTasks(sessionCookie, accountNumber, projectId) {
     return await fetch(`https://app.activecollab.com/${accountNumber}/api/v1/projects/${projectId}/tasks`, options);
 }
 
+export async function GetProjectTasksArchivedDATA(sessionCookie, accountNumber, projectId) {
+  var getProjectTasksArchivedRequestResponse = await GetProjectTasksArchived(sessionCookie, accountNumber, projectId);
+  var projectTasksArchivedResponseText = await getProjectTasksArchivedRequestResponse.text();
+  return JSON.parse(projectTasksArchivedResponseText);
+}
+
+export async function GetProjectTasksArchived(sessionCookie, accountNumber, projectId) {
+    var headers = new Headers();
+    headers.append("Cookie", sessionCookie);
+    var options = {
+      method: 'GET',
+      headers: headers,
+      redirect: 'follow'
+    };
+
+    return await fetch(`https://app.activecollab.com/${accountNumber}/api/v1/projects/${projectId}/tasks/archive`, options);
+}
+
 export async function GetProjectDiscussionsDATA(sessionCookie, accountNumber, projectId) {
   var getProjectDiscussionsRequestResponse = await GetProjectDiscussions(sessionCookie, accountNumber, projectId);
   var projectDiscussionsResponseText = await getProjectDiscussionsRequestResponse.text();
