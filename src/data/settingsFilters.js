@@ -1,46 +1,6 @@
-/* global chrome */
-
 // NOTE: This is messy and needs to be refactored but it works for now
 
-export async function FilterProjectData(Projects) {
-    // Grab Settings from Sync Storage
-    let Settings = await chrome.storage.sync.get(["user_settings"]);
-    Settings = Settings.user_settings;
-
-    const FilteredProjects = Projects.map((project) => {
-        return filterProject(project, Settings);
-    }).filter((project) => {
-        if (Settings.settingsToggles["hide-empty-projects"]){
-            if (project.discussions.length > 0 || project.task_lists.length > 0) {
-                return true;
-            }else{
-                return false;
-            }
-        }else{
-            return true;
-        }
-    });
-    
-    return FilteredProjects;
-}
-
-export async function FilterWorkingProject(Project) {
-    // Grab Settings from Sync Storage
-    let Settings = await chrome.storage.sync.get(["user_settings"]);
-    Settings = Settings.user_settings;
-
-    return filterProject(Project, Settings);
-}
-
-export async function FilterTaskList(TaskList) {
-    // Grab Settings from Sync Storage
-    let Settings = await chrome.storage.sync.get(["user_settings"]);
-    Settings = Settings.user_settings;
-
-    return filterTaskList(TaskList, Settings.settingsToggles);
-}
-
-const filterProject = (project, Settings) => {
+export const filterProject = (project, Settings) => {
     const [DiscussionMessageDateFilter, DiscussionMessageSenderFilter, SettingsToggles] = [Settings.discussionMessageDateFilter, Settings.discussionMessageSenderFilter, Settings.settingsToggles];
     const [filteredDiscussions, project_discussion_flagged] = filterDiscussions(project.discussions, DiscussionMessageDateFilter, DiscussionMessageSenderFilter, SettingsToggles);
     const [filteredTaskLists, task_lists_badge_level] = filterTaskLists(project.task_lists, SettingsToggles);
@@ -205,7 +165,7 @@ const filterTaskLists = (taskLists, SettingsToggles) => {
     return [newFilteredtaskLists, badge_level];
 }
 
-const filterTaskList = (taskList, SettingsToggles) => {
+export const filterTaskList = (taskList, SettingsToggles) => {
     const hiddenBadges = [];
     if (SettingsToggles["hide-completed-tasks"]) {
         hiddenBadges.push("Completed");

@@ -5,7 +5,7 @@ import Settings from '../views/Settings';
 import Project from '../views/Project';
 import Login from '../views/Login';
 import TaskList from '../views/TaskList';
-import { ExtState } from '../store/ExtStateContext';
+import { ExtState } from '../context/ExtStateContext'
 
 function Routes() {
     const extState = useContext(ExtState);

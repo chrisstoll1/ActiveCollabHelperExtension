@@ -1,8 +1,8 @@
 /*global chrome*/
 import { useState, useContext, useEffect } from 'react';
 import OverviewProject from '../components/Cards/OverviewProject';
-import { IsRefreshing, SetRefreshing, BodyFilter, SetExtState, SetBodyFilter } from '../store/ExtStateContext';
-import { FilterProjectData } from '../store/SettingsFilters';
+import { IsRefreshing, SetRefreshing, BodyFilter, SetExtState, SetBodyFilter } from '../context/ExtStateContext'
+import { filterProjectData } from '../utils/filterProjectData';
 import Loading from '../components/Background/Loading';
 
 function Overview() {
@@ -32,7 +32,7 @@ function Overview() {
     chrome.runtime.onMessage.addListener((request, sender, reply) => {
         if (request.event === "updated"){
             chrome.storage.local.get(["ACProjects"]).then((result) => {
-                FilterProjectData(JSON.parse(result.ACProjects)).then((filteredProjectData) => {
+                filterProjectData(JSON.parse(result.ACProjects)).then((filteredProjectData) => {
                     setProjects(filteredProjectData);
                     setEmptyProjectResponse(emptyProjectResponses[Math.floor(Math.random() * emptyProjectResponses.length)]);
                 });
@@ -55,7 +55,7 @@ function Overview() {
                 setRefreshing(true);
                 chrome.runtime.sendMessage({event: "refresh"});
             }else{
-                FilterProjectData(JSON.parse(result.ACProjects)).then((filteredProjectData) => {
+                filterProjectData(JSON.parse(result.ACProjects)).then((filteredProjectData) => {
                     setProjects(filteredProjectData);
                     setEmptyProjectResponse(emptyProjectResponses[Math.floor(Math.random() * emptyProjectResponses.length)]);
                 });

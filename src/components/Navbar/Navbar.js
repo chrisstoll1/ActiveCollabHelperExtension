@@ -1,14 +1,12 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import RefreshButton from "./RefreshButton";
 import BreadCrumb from "./BreadCrumb";
 import SettingsButton from "./SettingsButton";
 import Filter from "./Filter";
-import './Navbar.css';
-import { ExtState, SetExtState } from '../../store/ExtStateContext';
+import '../../assets/css/components/Navbar/Navbar.css';
 
 function Navbar() {
     const [scrolled, setScrolled] = useState(false);
-    const setExtState = useContext(SetExtState);
 
     useEffect(() => {
         if (typeof window !== "undefined"){

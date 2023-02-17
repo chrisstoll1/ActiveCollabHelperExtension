@@ -1,8 +1,8 @@
 /* global chrome */
 import { useContext } from 'react';
-import { SetExtState } from '../../store/ExtStateContext';
-import { formatUnixTimestamp } from '../../assets/js/helpers';
-import './OverviewProject.css';
+import { SetExtState } from '../../context/ExtStateContext'
+import { formatUnixTimestamp } from '../../utils/formatUnixTimestamp'
+import '../../assets/css/components/Cards/OverviewProject.css'
 
 function OverviewProject(props) {
     const setExtState = useContext(SetExtState);

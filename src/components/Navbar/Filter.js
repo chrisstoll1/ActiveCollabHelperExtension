@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { BodyFilter, SetBodyFilter } from '../../store/ExtStateContext';
-import './Filter.css';
+import { BodyFilter, SetBodyFilter } from '../../context/ExtStateContext';
+import '../../assets/css/components/Navbar/Filter.css';
 
 function Filter() {
     const setBodyFilter = useContext(SetBodyFilter);

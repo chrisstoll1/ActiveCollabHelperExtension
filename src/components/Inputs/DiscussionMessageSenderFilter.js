@@ -1,6 +1,6 @@
 /* global chrome */
 import { useEffect, useRef, useContext } from "react";
-import { DiscussionMessageSenderFilterContext, SetDiscussionMessageSenderFilterContext } from "../../store/SettingsContext";
+import { DiscussionMessageSenderFilterContext, SetDiscussionMessageSenderFilterContext } from "../../context/SettingsContext";
 
 function DiscussionMessageSenderFilter(){
     const discussionMessageSenderFilter = useContext(DiscussionMessageSenderFilterContext);

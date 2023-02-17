@@ -1,13 +1,13 @@
 /*global chrome*/
-import { useState, useRef, useEffect } from 'react';
-import './Settings.css';
-import { useEffectOnlyOnUpdate } from '../store/UseEffectOnlyOnUpdateHook';
+import { useState, useEffect } from 'react';
+import '../assets/css/views/Settings.css';
+import { useEffectOnlyOnUpdate } from '../hooks/UseEffectOnlyOnUpdate'
 import Checkbox from '../components/Inputs/Checkbox';
 import DiscussionMessageDateFilter from '../components/Inputs/DiscussionMessageDateFilter';
 import DiscussionMessageSenderFilter from '../components/Inputs/DiscussionMessageSenderFilter';
 import DeleteTokenButton from '../components/Inputs/DeleteTokenButton';
 import ResetSettingsButton from '../components/Inputs/ResetSettingsButton';
-import { DiscussionMessageSenderFilterContext, SetDiscussionMessageSenderFilterContext, DiscussionMessageDateFilterContext, SetDiscussionMessageDateFilterContext, SettingsTogglesContext, SetSettingsTogglesContext} from '../store/SettingsContext';
+import { DiscussionMessageSenderFilterContext, SetDiscussionMessageSenderFilterContext, DiscussionMessageDateFilterContext, SetDiscussionMessageDateFilterContext, SettingsTogglesContext, SetSettingsTogglesContext} from '../context/SettingsContext';
 
 function Settings() {
     const [discussionMessageSenderFilter, setDiscussionMessageSenderFilter] = useState({});

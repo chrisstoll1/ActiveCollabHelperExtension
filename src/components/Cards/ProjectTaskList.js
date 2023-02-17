@@ -1,6 +1,6 @@
 /* global chrome */
 import { useContext } from 'react';
-import { SetExtState } from '../../store/ExtStateContext';
+import { SetExtState } from '../../context/ExtStateContext'
 
 function ProjectTaskList(props) {
     const setExtState = useContext(SetExtState);

@@ -1,6 +1,6 @@
 /* global chrome */
 import { useEffect, useRef, useContext, useState } from 'react';
-import { DiscussionMessageDateFilterContext, SetDiscussionMessageDateFilterContext } from '../../store/SettingsContext';
+import { DiscussionMessageDateFilterContext, SetDiscussionMessageDateFilterContext } from '../../context/SettingsContext'
 import DatePicker from './DatePicker';
 
 function DiscussionMessageDateFilter() {

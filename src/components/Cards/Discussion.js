@@ -1,6 +1,6 @@
 /* global chrome */
-import { formatUnixTimestamp } from "../../assets/js/helpers"
-import "./Discussion.css"
+import { formatUnixTimestamp } from "../../utils/formatUnixTimestamp"
+import "../../assets/css/components/Cards/Discussion.css"
 
 function Discussion(props){
     const discussionURL = `https://app.activecollab.com/${props.accountNumber}/projects/${props.projectId}/discussions?modal=Discussion-${props.discussion.id}-${props.projectId}`;

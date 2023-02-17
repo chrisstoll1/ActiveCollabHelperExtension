@@ -1,10 +1,10 @@
 /* global chrome */
 import { useContext, useEffect, useState } from 'react';
-import { BodyFilter, IsRefreshing, SetExtState, SetBodyFilter } from '../store/ExtStateContext';
+import { BodyFilter, IsRefreshing, SetExtState, SetBodyFilter } from '../context/ExtStateContext'
 import Loading from '../components/Background/Loading';
 import Task from '../components/Cards/Task';
-import { FilterTaskList } from '../store/SettingsFilters';
-import './TaskList.css';
+import { filterWorkingTaskList } from '../utils/filterWorkingTaskList';
+import '../assets/css/views/TaskList.css';
 
 function Tasklist() {
     const setExtState = useContext(SetExtState);
@@ -31,7 +31,7 @@ function Tasklist() {
                 if (Object.keys(result).length === 0){
                     setExtState("Project");
                 }else{
-                    FilterTaskList(JSON.parse(result.WorkingTaskList)).then((filteredWorkingTaskList) => {
+                    filterWorkingTaskList(JSON.parse(result.WorkingTaskList)).then((filteredWorkingTaskList) => {
                         if (filteredWorkingTaskList === null){
                             setExtState("Project");
                         }else{
@@ -52,7 +52,7 @@ function Tasklist() {
             if (Object.keys(workingTaskListResult).length === 0){
                 setExtState("Project");
             }else{
-                const filteredWorkingTaskList = await FilterTaskList(JSON.parse(workingTaskListResult.WorkingTaskList));
+                const filteredWorkingTaskList = await filterWorkingTaskList(JSON.parse(workingTaskListResult.WorkingTaskList));
                 if (filteredWorkingTaskList === null){
                     setExtState("Project");
                 }else{

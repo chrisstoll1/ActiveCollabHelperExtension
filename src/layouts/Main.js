@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import Routes from './Routes';
-import { ExtState, SetExtState, IsRefreshing, SetRefreshing, BodyFilter, SetBodyFilter } from '../store/ExtStateContext';
+import { ExtState, SetExtState, IsRefreshing, SetRefreshing, BodyFilter, SetBodyFilter } from '../context/ExtStateContext'
 
 function Main() {
     const [extState, setExtState] = useState("Overview");

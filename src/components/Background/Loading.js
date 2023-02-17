@@ -1,4 +1,4 @@
-import './Loading.css';
+import '../../assets/css/components/Background/Loading.css'
 
 function Loading() {
     return (

@@ -1,4 +1,4 @@
-import './Login.css';
+import '../assets/css/views/Login.css'
 
 function Login(){
     var url_path = `https://app.activecollab.com`;

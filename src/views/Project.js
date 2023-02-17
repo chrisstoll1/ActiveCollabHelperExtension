@@ -1,11 +1,11 @@
 /* global chrome */
 import { useEffect, useState, useContext } from "react"
-import { SetExtState, IsRefreshing, BodyFilter, SetBodyFilter } from "../store/ExtStateContext";
+import { SetExtState, IsRefreshing, BodyFilter, SetBodyFilter } from "../context/ExtStateContext"
 import Loading from "../components/Background/Loading";
 import Discussion from "../components/Cards/Discussion";
 import ProjectTaskList from "../components/Cards/ProjectTaskList";
-import { formatUnixTimestamp } from "../assets/js/helpers";
-import { FilterWorkingProject } from "../store/SettingsFilters";
+import { formatUnixTimestamp } from "../utils/formatUnixTimestamp";
+import { filterWorkingProject } from "../utils/filterWorkingProject";
 
 function Project(){
     const bodyFilter = useContext(BodyFilter);
@@ -31,7 +31,7 @@ function Project(){
                 if (Object.keys(result).length === 0){
                     setExtState("Overview");
                 }else{
-                    FilterWorkingProject(JSON.parse(result.WorkingProject)).then((filteredWorkingProject) => {;
+                    filterWorkingProject(JSON.parse(result.WorkingProject)).then((filteredWorkingProject) => {;
                         setProject(filteredWorkingProject);
                     });
                 }
@@ -48,7 +48,7 @@ function Project(){
             if (Object.keys(workingProjectResult).length === 0){
                 setExtState("Overview");
             }else{
-                const filteredWorkingProject = await FilterWorkingProject(JSON.parse(workingProjectResult.WorkingProject));
+                const filteredWorkingProject = await filterWorkingProject(JSON.parse(workingProjectResult.WorkingProject));
                 setProject(filteredWorkingProject);
             }
 

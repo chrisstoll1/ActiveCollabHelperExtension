@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import { SettingsTogglesContext, SetSettingsTogglesContext } from '../../store/SettingsContext';
+import { SettingsTogglesContext, SetSettingsTogglesContext } from '../../context/SettingsContext';
 
 function Checkbox(props) {
     const settingsToggles = useContext(SettingsTogglesContext);
