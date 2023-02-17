@@ -1,17 +1,17 @@
 /* global chrome */
 
+// NOTE: This is messy and needs to be refactored but it works for now
+
 export async function FilterProjectData(Projects) {
     // Grab Settings from Sync Storage
     let Settings = await chrome.storage.sync.get(["user_settings"]);
     Settings = Settings.user_settings;
-    console.log(`Settings:`);
-    console.log(Settings);
 
     const FilteredProjects = Projects.map((project) => {
         return filterProject(project, Settings);
     }).filter((project) => {
         if (Settings.settingsToggles["hide-empty-projects"]){
-            if (project.discussion_flag) { // && project.task_lists.length > 0
+            if (project.discussions.length > 0 || project.task_lists.length > 0) {
                 return true;
             }else{
                 return false;
@@ -20,19 +20,35 @@ export async function FilterProjectData(Projects) {
             return true;
         }
     });
-
-    console.log(`FilterProjectData:`);
-    console.log(FilteredProjects);
     
     return FilteredProjects;
+}
+
+export async function FilterWorkingProject(Project) {
+    // Grab Settings from Sync Storage
+    let Settings = await chrome.storage.sync.get(["user_settings"]);
+    Settings = Settings.user_settings;
+
+    return filterProject(Project, Settings);
+}
+
+export async function FilterTaskList(TaskList) {
+    // Grab Settings from Sync Storage
+    let Settings = await chrome.storage.sync.get(["user_settings"]);
+    Settings = Settings.user_settings;
+
+    return filterTaskList(TaskList, Settings.settingsToggles);
 }
 
 const filterProject = (project, Settings) => {
     const [DiscussionMessageDateFilter, DiscussionMessageSenderFilter, SettingsToggles] = [Settings.discussionMessageDateFilter, Settings.discussionMessageSenderFilter, Settings.settingsToggles];
     const [filteredDiscussions, project_discussion_flagged] = filterDiscussions(project.discussions, DiscussionMessageDateFilter, DiscussionMessageSenderFilter, SettingsToggles);
-    
+    const [filteredTaskLists, task_lists_badge_level] = filterTaskLists(project.task_lists, SettingsToggles);
+
     project.discussions = filteredDiscussions;
     project.discussion_flag = project_discussion_flagged;
+    project.task_lists = filteredTaskLists;
+    project.task_lists_badge_level = task_lists_badge_level;
 
     return project;
 }
@@ -159,8 +175,74 @@ const filterDiscussions = (discussions, DateFilter, SenderFilter, SettingsToggle
     return [filteredDiscussions, project_discussion_flagged];
 }
 
-const filterTasks = (taskLists, SettingsToggles) => {
-    // TODO: Filter Tasks based on Settings
+const filterTaskLists = (taskLists, SettingsToggles) => {
+    // loop through task lists
+    const filteredTaskLists = taskLists.map((taskList) => {
+        return filterTaskList(taskList, SettingsToggles);
+    });
 
-    return taskLists;
+    // remove null task lists
+    const newFilteredtaskLists = filteredTaskLists.filter((taskList) => taskList !== null);
+    let badge_level = 0;
+
+    // recalculate task list badge level
+    newFilteredtaskLists.forEach((taskList) => {
+        var taskListBadgeLevel = 0;
+        if (taskList.badges.includes("Completed")) {
+            taskListBadgeLevel = 1;
+        }
+        if (taskList.badges.includes("Open")) {
+            taskListBadgeLevel = 2;
+        }
+        if (taskList.badges.includes("Overdue")) {
+            taskListBadgeLevel = 3;
+        }       
+        if (taskListBadgeLevel > badge_level) {
+            badge_level = taskListBadgeLevel;
+        }
+    });  
+
+    return [newFilteredtaskLists, badge_level];
+}
+
+const filterTaskList = (taskList, SettingsToggles) => {
+    const hiddenBadges = [];
+    if (SettingsToggles["hide-completed-tasks"]) {
+        hiddenBadges.push("Completed");
+    }
+    if (SettingsToggles["hide-open-tasks"]) {
+        hiddenBadges.push("Open");
+    }
+    if (SettingsToggles["hide-overdue-tasks"]) {
+        hiddenBadges.push("Overdue");
+    }
+
+    // if badges include a hidden one
+    if (taskList.badges.some((badge) => hiddenBadges.includes(badge))) {
+        // loop through tasks
+        const filteredTasks = taskList.tasks.map((task) => {
+            // if badges include a hidden one
+            if (task.status.some((badge) => hiddenBadges.includes(badge))) {
+                // remove badge
+                task.status = task.status.filter((badge) => !hiddenBadges.includes(badge));
+            }
+            // if there are no other badges remove the task
+            if (task.status.length === 0) {
+                return null;
+            }else{
+                return task;
+            }
+        });
+        // remove null tasks
+        taskList.tasks = filteredTasks.filter((task) => task !== null);
+
+        // remove hidden badges from taskList
+        taskList.badges = taskList.badges.filter((badge) => !hiddenBadges.includes(badge));
+    }
+    // if there are no other tasks remove the task list
+    if (taskList.tasks.length === 0) {
+        return null;
+    }
+
+    return taskList;
 }

@@ -5,6 +5,7 @@ import Loading from "../components/Background/Loading";
 import Discussion from "../components/Cards/Discussion";
 import ProjectTaskList from "../components/Cards/ProjectTaskList";
 import { formatUnixTimestamp } from "../assets/js/helpers";
+import { FilterWorkingProject } from "../store/SettingsFilters";
 
 function Project(){
     const bodyFilter = useContext(BodyFilter);
@@ -30,7 +31,9 @@ function Project(){
                 if (Object.keys(result).length === 0){
                     setExtState("Overview");
                 }else{
-                    setProject(JSON.parse(result.WorkingProject));
+                    FilterWorkingProject(JSON.parse(result.WorkingProject)).then((filteredWorkingProject) => {;
+                        setProject(filteredWorkingProject);
+                    });
                 }
             });
         }
@@ -45,7 +48,8 @@ function Project(){
             if (Object.keys(workingProjectResult).length === 0){
                 setExtState("Overview");
             }else{
-                setProject(JSON.parse(workingProjectResult.WorkingProject));
+                const filteredWorkingProject = await FilterWorkingProject(JSON.parse(workingProjectResult.WorkingProject));
+                setProject(filteredWorkingProject);
             }
 
             const accountNumberResult = await chrome.storage.sync.get(["activecollab_user_instances"]);

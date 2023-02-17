@@ -42,8 +42,8 @@ function OverviewProject(props) {
                 </div>
                 <div class="card-meta">
                     <div class="card-options">
-                        <span className={taskClass()}>Tasks {props.project.count_tasks}</span>
-                        <span className={discussionClass()}>Discussions {props.project.count_discussions}</span>
+                        <span className={taskClass()}>Task Lists {props.project.task_lists.length}</span>
+                        <span className={discussionClass()}>Discussions {props.project.discussions.length}</span>
                     </div>
                 </div>
             </div>

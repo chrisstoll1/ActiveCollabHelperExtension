@@ -1,30 +1,9 @@
 import { GetInitial, GetProjectsDATA, GetProjectTasksDATA, GetProjectDiscussionsDATA } from './ActiveCollab/ActiveCollabAPI.js';
 import { formatProject } from './ActiveCollab/ActiveCollabDataFormat.js';
 
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener(async () => {
     console.log("Installed!");
-
-    // Set default settings
-    chrome.storage.sync.set({"user_settings": {
-      "discussionMessageDateFilter": {
-          "operator": "",
-          "type": "",
-          "input": "",
-          "datepicker": ""
-        },
-      "discussionMessageSenderFilter": {
-          "input": "",
-          "select": ""
-        },
-      "settingsToggles": {
-          "hide-unflagged-discussions": false,
-          "hide-open-tasks": false,
-          "hide-completed-tasks": false,
-          "hide-overdue-tasks": false,
-          "hide-empty-projects": false
-        }
-      }
-    });
+    resetSyncedSettings();
 });
 
 chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
@@ -43,6 +22,10 @@ chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
       await removeLocalStorageObject("WorkingTaskList");
       await removeLocalStorageObject("ExtState");
       refreshActiveCollabData();
+    }
+    if (request.event === "reset_settings"){
+      await resetSyncedSettings();
+      chrome.runtime.sendMessage({event: "settings_reset"});
     }
 });
 
@@ -177,4 +160,28 @@ async function removeSyncStorageObject(key) {
   } catch (error) {
     console.error(error);
   }
+}
+
+async function resetSyncedSettings(){
+  // Set default settings
+  await chrome.storage.sync.set({"user_settings": {
+    "discussionMessageDateFilter": {
+        "operator": "",
+        "type": "",
+        "input": "",
+        "datepicker": ""
+      },
+    "discussionMessageSenderFilter": {
+        "input": "",
+        "select": ""
+      },
+    "settingsToggles": {
+        "hide-unflagged-discussions": false,
+        "hide-open-tasks": false,
+        "hide-completed-tasks": false,
+        "hide-overdue-tasks": false,
+        "hide-empty-projects": false
+      }
+    }
+  });
 }

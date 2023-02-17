@@ -1,6 +1,8 @@
+/* global chrome */
+
 function ResetSettingsButton() {
     function resetSettings(){
-
+        chrome.runtime.sendMessage({event: "reset_settings"});
     }
   
     return (

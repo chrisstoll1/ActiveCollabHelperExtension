@@ -20,7 +20,6 @@ function Settings() {
             discussionMessageDateFilter: discussionMessageDateFilter,
             settingsToggles: settingsToggles
         };
-        console.log(settings);
         chrome.storage.sync.set({"user_settings": settings});
     }, [discussionMessageSenderFilter, discussionMessageDateFilter, settingsToggles]);
 
@@ -33,6 +32,19 @@ function Settings() {
             }
         });
     }, []);
+
+    chrome.runtime.onMessage.addListener(async (request) => {
+        if (request.event === "settings_reset"){
+            chrome.storage.sync.get("user_settings", function(result) {
+                if (result.user_settings) {
+                    setDiscussionMessageSenderFilter(result.user_settings.discussionMessageSenderFilter);
+                    setDiscussionMessageDateFilter(result.user_settings.discussionMessageDateFilter);
+                    setSettingsToggles(result.user_settings.settingsToggles);
+                }
+            });
+        }
+    });
+
 
     return (
         <div class="main-body">

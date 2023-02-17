@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { BodyFilter, IsRefreshing, SetExtState, SetBodyFilter } from '../store/ExtStateContext';
 import Loading from '../components/Background/Loading';
 import Task from '../components/Cards/Task';
+import { FilterTaskList } from '../store/SettingsFilters';
 import './TaskList.css';
 
 function Tasklist() {
@@ -30,7 +31,13 @@ function Tasklist() {
                 if (Object.keys(result).length === 0){
                     setExtState("Project");
                 }else{
-                    setTaskList(JSON.parse(result.WorkingTaskList));
+                    FilterTaskList(JSON.parse(result.WorkingTaskList)).then((filteredWorkingTaskList) => {
+                        if (filteredWorkingTaskList === null){
+                            setExtState("Project");
+                        }else{
+                            setTaskList(filteredWorkingTaskList);
+                        }
+                    });
                 }
             });
         }
@@ -45,7 +52,12 @@ function Tasklist() {
             if (Object.keys(workingTaskListResult).length === 0){
                 setExtState("Project");
             }else{
-                setTaskList(JSON.parse(workingTaskListResult.WorkingTaskList));
+                const filteredWorkingTaskList = await FilterTaskList(JSON.parse(workingTaskListResult.WorkingTaskList));
+                if (filteredWorkingTaskList === null){
+                    setExtState("Project");
+                }else{
+                    setTaskList(filteredWorkingTaskList);
+                }
             }
     
             const workingProjectResult = await chrome.storage.local.get(["WorkingProject"]);
