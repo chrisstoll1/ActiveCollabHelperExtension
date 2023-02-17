@@ -101,7 +101,7 @@ const formatProjectDiscussions = (projectDiscussions) => {
             last_activity_by = lastComment.created_by_email;
         }
 
-        let discussionFlagged = false; //TODO: Add flagging functionality
+        let discussionFlagged = false;
 
         // If the discussion is flagged, set the project discussion flag to true
         if (discussionFlagged) {

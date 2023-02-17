@@ -7,3 +7,8 @@
     cursor: pointer;
     transform: scale(1.01);
 }
+
+.badge-purple {
+    background-color: #5d2bff;
+    color: var(--light);
+}
