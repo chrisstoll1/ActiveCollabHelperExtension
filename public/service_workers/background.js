@@ -30,10 +30,20 @@ chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
 });
 
 async function refreshActiveCollabData() {
+  // Cache the existing data
+  var oldActiveCollabData = await chrome.storage.local.get(["ACProjects"]);
+  if (Object.keys(oldActiveCollabData).length === 0){
+      oldActiveCollabData = [];
+  }else{
+      oldActiveCollabData = JSON.parse(oldActiveCollabData.ACProjects);
+  }
+
+  // Remove existing data from storage
   await removeLocalStorageObject("ACProjects");
 
   if (await isTokenValid()) {
-    var activeCollabData = await buildActiveCollabDataObject();
+    // Get new data
+    var activeCollabData = await buildActiveCollabDataObject(oldActiveCollabData);
 
     //Refresh projects
     await chrome.storage.local.set({"ACProjects": JSON.stringify(activeCollabData)});
@@ -71,7 +81,7 @@ async function refreshActiveCollabData() {
   }
 }
 
-async function buildActiveCollabDataObject() {
+async function buildActiveCollabDataObject(oldActiveCollabData) {
   var PHPSESSID = await chrome.storage.sync.get(["PHPSESSID"])
   var accountNumber = await chrome.storage.sync.get(["activecollab_user_instances"])
   PHPSESSID = PHPSESSID.PHPSESSID.toString();
@@ -83,6 +93,13 @@ async function buildActiveCollabDataObject() {
 
   //Get List of Tasks and Discussions for each project
   const projectDataPromises = projectsRAW.map(async project => {
+    // determine if project has been updated since we last grabbed it
+    const oldProject = oldActiveCollabData.find(oldProject => oldProject.id === project.id);
+    if (oldProject && oldProject.last_active === project.last_activity_on) {
+      project.useOldData = true;
+      return [[], [], []];
+    }
+
     var projectTasks = GetProjectTasksDATA(sessionCookie, accountNumber, project.id);
     var projectTasksArchived = GetProjectTasksArchivedDATA(sessionCookie, accountNumber, project.id);
     var projectDiscussions = GetProjectDiscussionsDATA(sessionCookie, accountNumber, project.id);
@@ -92,6 +109,10 @@ async function buildActiveCollabDataObject() {
 
   //Format the data into a single object
   const projectsWithData = projectsRAW.map((project, index) => {
+    if (project.useOldData) {
+      return oldActiveCollabData.find(oldProject => oldProject.id === project.id);
+    }
+
     const [projectTasks, projectTasksArchived, projectDiscussions] = projectData[index];
     let projectTasksAll = projectTasks;
     projectTasksAll.tasks = projectTasks.tasks.concat(projectTasksArchived); //Combine active and archived tasks
