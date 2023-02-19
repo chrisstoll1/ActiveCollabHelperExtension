@@ -1,6 +1,6 @@
 /* global chrome */
 import { useEffect, useState, useContext } from "react"
-import { SetExtState, IsRefreshing, BodyFilter, SetBodyFilter } from "../context/ExtStateContext"
+import { SetExtState, IsRefreshing, ProjectFilter } from "../context/ExtStateContext"
 import Loading from "../components/Background/Loading";
 import Discussion from "../components/Cards/Discussion";
 import ProjectTaskList from "../components/Cards/ProjectTaskList";
@@ -8,15 +8,14 @@ import { formatUnixTimestamp } from "../utils/formatUnixTimestamp";
 import { filterWorkingProject } from "../utils/filterWorkingProject";
 
 function Project(){
-    const bodyFilter = useContext(BodyFilter);
-    const setBodyFilter = useContext(SetBodyFilter);
+    const projectFilter = useContext(ProjectFilter);
     const setExtState = useContext(SetExtState);
     const isRefreshing = useContext(IsRefreshing);
     const [loadingStorage, setLoadingStorage] = useState(false);
     const [project, setProject] = useState({discussions: [], task_lists: []});
     const [accountNumber, setAccountNumber] = useState(0);
-    const filteredDiscussions = project.discussions.filter(discussion => discussion.name.toLowerCase().includes(bodyFilter.toLowerCase()));
-    const filteredTasks = project.task_lists.filter(task_list => task_list.name.toLowerCase().includes(bodyFilter.toLowerCase()));
+    const filteredDiscussions = project.discussions.filter(discussion => discussion.name.toLowerCase().includes(projectFilter.toLowerCase()));
+    const filteredTasks = project.task_lists.filter(task_list => task_list.name.toLowerCase().includes(projectFilter.toLowerCase()));
 
     const projectURL = `https://app.activecollab.com/${accountNumber}/projects/${project.id}`;
 
@@ -41,7 +40,6 @@ function Project(){
 
     useEffect(() => {
         const fetchData = async () => {
-            setBodyFilter("");
             setLoadingStorage(true);   
 
             const workingProjectResult = await chrome.storage.local.get(["WorkingProject"]);

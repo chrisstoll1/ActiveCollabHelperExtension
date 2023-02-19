@@ -1,10 +1,29 @@
 import { useContext } from "react";
-import { BodyFilter, SetBodyFilter } from '../../context/ExtStateContext';
+import { ExtState, OverviewFilter, SetOverviewFilter, ProjectFilter, SetProjectFilter, TaskListFilter, SetTaskListFilter } from '../../context/ExtStateContext';
 import '../../assets/css/components/Navbar/Filter.css';
 
 function Filter() {
-    const setBodyFilter = useContext(SetBodyFilter);
-    const bodyFilter = useContext(BodyFilter);
+    const extState = useContext(ExtState);
+    const overviewFilter = useContext(OverviewFilter);
+    const setOverviewFilter = useContext(SetOverviewFilter);
+    const projectFilter = useContext(ProjectFilter);
+    const setProjectFilter = useContext(SetProjectFilter);
+    const taskListFilter = useContext(TaskListFilter);
+    const setTaskListFilter = useContext(SetTaskListFilter);
+
+    const filterValue = extState === "Overview" ? overviewFilter : extState === "Project" ? projectFilter : taskListFilter;
+
+    function handleFilterChange(value) {
+        if (extState === "Overview"){
+            setOverviewFilter(value);
+        }
+        if (extState === "Project"){
+            setProjectFilter(value);
+        }
+        if (extState === "TaskList"){
+            setTaskListFilter(value);
+        }
+    }
 
     return (
         <filter>
@@ -14,7 +33,7 @@ function Filter() {
                 <i class="material-icons">filter_list</i>-
                 </span>
             </div>
-            <input value={bodyFilter} onChange={event => setBodyFilter(event.target.value)} type="search" class="form-control filter-list-input filter-input" placeholder="Filter" aria-label="Filter"/>
+            <input value={filterValue} onChange={event => handleFilterChange(event.target.value)} type="search" class="form-control filter-list-input filter-input" placeholder="Filter" aria-label="Filter"/>
             </div>
         </filter>
     );

@@ -1,15 +1,14 @@
 /*global chrome*/
 import { useState, useContext, useEffect } from 'react';
 import OverviewProject from '../components/Cards/OverviewProject';
-import { IsRefreshing, SetRefreshing, BodyFilter, SetExtState, SetBodyFilter } from '../context/ExtStateContext'
+import { IsRefreshing, SetRefreshing, SetExtState, OverviewFilter } from '../context/ExtStateContext'
 import { filterProjectData } from '../utils/filterProjectData';
 import Loading from '../components/Background/Loading';
 
 function Overview() {
-    const bodyFilter = useContext(BodyFilter);
-    const setBodyFilter = useContext(SetBodyFilter);
+    const overviewFilter = useContext(OverviewFilter);
     const [projects, setProjects] = useState([]);
-    const filteredProjects = projects.filter(project => project.name.toLowerCase().includes(bodyFilter.toLowerCase()));
+    const filteredProjects = projects.filter(project => project.name.toLowerCase().includes(overviewFilter.toLowerCase()));
     const [isLoadingStorage, setLoadingStorage] = useState(false);
     const [emptyProjectResponse, setEmptyProjectResponse] = useState("");
     const isRefreshing = useContext(IsRefreshing);
@@ -46,8 +45,6 @@ function Overview() {
     });
 
     useEffect(() => {
-        setBodyFilter("");
-
         //Load projects from local storage, if it doesnt exist refresh from API
         setLoadingStorage(true);
         chrome.storage.local.get(["ACProjects"]).then((result) => {

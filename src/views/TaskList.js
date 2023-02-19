@@ -1,6 +1,6 @@
 /* global chrome */
 import { useContext, useEffect, useState } from 'react';
-import { BodyFilter, IsRefreshing, SetExtState, SetBodyFilter } from '../context/ExtStateContext'
+import { IsRefreshing, SetExtState, TaskListFilter } from '../context/ExtStateContext'
 import Loading from '../components/Background/Loading';
 import Task from '../components/Cards/Task';
 import { filterWorkingTaskList } from '../utils/filterWorkingTaskList';
@@ -12,11 +12,10 @@ function Tasklist() {
     const [projectId, setProjectId] = useState(0);
     const [projectName, setProjectName] = useState("");
     const [accountNumber, setAccountNumber] = useState(0);
-    const bodyFilter = useContext(BodyFilter);
-    const setBodyFilter = useContext(SetBodyFilter);
+    const taskListFilter = useContext(TaskListFilter);
     const isRefreshing = useContext(IsRefreshing);
     const [loadingStorage, setLoadingStorage] = useState(false);
-    const filteredOpenTasks = taskList.tasks.filter(task => task.name.toLowerCase().includes(bodyFilter.toLowerCase()));
+    const filteredOpenTasks = taskList.tasks.filter(task => task.name.toLowerCase().includes(taskListFilter.toLowerCase()));
 
     const taskListURL = `https://app.activecollab.com/${accountNumber}/projects/${projectId}/task-lists/${taskList.id}`;
 
@@ -45,7 +44,6 @@ function Tasklist() {
 
     useEffect(() => {
         const fetchData = async () => {
-            setBodyFilter("");
             setLoadingStorage(true);
 
             const workingTaskListResult = await chrome.storage.local.get(["WorkingTaskList"]);

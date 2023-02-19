@@ -2,12 +2,14 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import Routes from './Routes';
-import { ExtState, SetExtState, IsRefreshing, SetRefreshing, BodyFilter, SetBodyFilter } from '../context/ExtStateContext'
+import { ExtState, SetExtState, IsRefreshing, SetRefreshing, OverviewFilter, SetOverviewFilter, ProjectFilter, SetProjectFilter, TaskListFilter, SetTaskListFilter } from '../context/ExtStateContext'
 
 function Main() {
     const [extState, setExtState] = useState("Overview");
     const [isRefreshing, setRefreshing] = useState(false);
-    const [bodyFilter, setBodyFilter] = useState("");
+    const [overviewFilter, setOverviewFilter] = useState("");
+    const [projectFilter, setProjectFilter] = useState("");
+    const [taskListFilter, setTaskListFilter] = useState("");
 
     useEffect(() => {
         //Load extension state from local storage
@@ -31,12 +33,20 @@ function Main() {
                 <SetExtState.Provider value={setExtState}>
                     <IsRefreshing.Provider value={isRefreshing}>
                         <SetRefreshing.Provider value={setRefreshing}>
-                            <BodyFilter.Provider value={bodyFilter}>
-                                <SetBodyFilter.Provider value={setBodyFilter}>
-                                    <Navbar/>
-                                    <Routes/>
-                                </SetBodyFilter.Provider>
-                            </BodyFilter.Provider>
+                            <OverviewFilter.Provider value={overviewFilter}>
+                                <SetOverviewFilter.Provider value={setOverviewFilter}>
+                                    <ProjectFilter.Provider value={projectFilter}>
+                                        <SetProjectFilter.Provider value={setProjectFilter}>
+                                            <TaskListFilter.Provider value={taskListFilter}>
+                                                <SetTaskListFilter.Provider value={setTaskListFilter}>
+                                                    <Navbar/>
+                                                    <Routes/>
+                                                </SetTaskListFilter.Provider>
+                                            </TaskListFilter.Provider>
+                                        </SetProjectFilter.Provider>
+                                    </ProjectFilter.Provider>
+                                </SetOverviewFilter.Provider>
+                            </OverviewFilter.Provider>
                         </SetRefreshing.Provider>
                     </IsRefreshing.Provider>
                 </SetExtState.Provider>
