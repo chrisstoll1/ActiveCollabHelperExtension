@@ -4,13 +4,15 @@
 This is a Google Chrome extension built with React that aims to improve the accuracy and efficiency of project management in [ActiveCollab](https://www.activecollab.com/)
 ## Installation
 
-To install the extension, first visit the [releases page](https://github.com/chrisstoll1/ActiveCollabHelperExtension/releases) on GitHub and download the latest version. Once the download is complete, extract the "build" folder from the release package.
+1. Download the latest release of the extension from the [releases page on GitHub](https://github.com/chrisstoll1/ActiveCollabHelperExtension/releases).
+2. Extract the build folder from the downloaded release package.
+3. Open Google Chrome and enter chrome://extensions/ in the address bar.
+4. Toggle on the "Developer Mode" option in the top right corner of the extensions page.
+5. Click the "Load unpacked" button in the top left corner of the page.
+6. Browse to the extracted build folder and select it.
+7. Click "Open" to install the extension.
 
-Next, open Google Chrome and go to the extensions page by entering "chrome://extensions/" in the address bar. Make sure that the "Developer Mode" toggle is switched on.
-
-Click the "Load unpacked" button and browse to the extracted "build" folder. Select the folder and click "Open".
-
-The extension should now be successfully installed and ready to use.
+The extension is now installed and ready for use in Google Chrome.
 
 ## Features
 
