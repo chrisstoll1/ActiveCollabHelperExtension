@@ -1,4 +1,4 @@
-import { GetInitial, GetProjectsDATA, GetProjectTasksDATA, GetProjectTasksArchivedDATA, GetProjectDiscussionsDATA } from './ActiveCollab/ActiveCollabAPI.js';
+import { GetInitial, GetProjectsDATA, GetProjectTasksDATA, GetProjectTasksArchivedDATA, GetProjectDiscussionsDATA, GetProjectLabelsDATA } from './ActiveCollab/ActiveCollabAPI.js';
 import { formatProject } from './ActiveCollab/ActiveCollabDataFormat.js';
 
 chrome.runtime.onInstalled.addListener(async () => {
@@ -44,6 +44,8 @@ async function refreshActiveCollabData() {
   if (await isTokenValid()) {
     // Get new data
     var activeCollabData = await buildActiveCollabDataObject(oldActiveCollabData);
+
+    console.log(activeCollabData);
 
     //Refresh projects
     await chrome.storage.local.set({"ACProjects": JSON.stringify(activeCollabData)});
@@ -107,15 +109,31 @@ async function buildActiveCollabDataObject(oldActiveCollabData) {
   });
   const projectData = await Promise.all(projectDataPromises);
 
+  //Get List of Labels for all projects
+  const projectLabels = await GetProjectLabelsDATA(sessionCookie, accountNumber);
+  console.log(projectLabels);
+
   //Format the data into a single object
   const projectsWithData = projectsRAW.map((project, index) => {
+    // If old data is valid use it
     if (project.useOldData) {
       return oldActiveCollabData.find(oldProject => oldProject.id === project.id);
     }
 
+    // Deconstruct the project data
     const [projectTasks, projectTasksArchived, projectDiscussions] = projectData[index];
+
+    // Combine active and archived tasks
     let projectTasksAll = projectTasks;
-    projectTasksAll.tasks = projectTasks.tasks.concat(projectTasksArchived); //Combine active and archived tasks
+    projectTasksAll.tasks = projectTasks.tasks.concat(projectTasksArchived);
+
+    // Add label text to project 
+    const foundLabel = projectLabels.find(label => label.id === project.label_id);
+    if (foundLabel) {
+      project.label_text = foundLabel.name;
+    }
+
+    // format the project data
     return formatProject(project, projectTasksAll, projectDiscussions);
   });
 

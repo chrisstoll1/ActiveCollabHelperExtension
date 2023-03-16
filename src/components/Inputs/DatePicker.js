@@ -15,7 +15,7 @@ const DatePicker = forwardRef((props, ref) => {
     }, []);
 
     return (
-        <input class="form-control settings-input" ref={ref} type="text" placeholder="Select a Date" />
+        <input className="form-control settings-input" ref={ref} type="text" placeholder="Select a Date" />
     );
 });
 

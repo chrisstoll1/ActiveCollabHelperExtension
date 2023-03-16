@@ -1,0 +1,12 @@
+.overview-header {
+    display: inline;
+    padding-bottom: 10px;
+}
+
+.overview-counter-text{
+    font-weight: bold;
+}
+
+.inline-element {
+    display: inline;
+}

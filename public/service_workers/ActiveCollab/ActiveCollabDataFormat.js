@@ -5,6 +5,7 @@ export const formatProject = (project, projectTasks, projectDiscussions) => {
     return {
         name: project.name,
         id: project.id,
+        label: project.label_text,
         count_tasks: project.count_tasks,
         count_discussions: project.count_discussions,
         last_active: project.last_activity_on,

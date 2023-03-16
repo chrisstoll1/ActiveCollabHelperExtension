@@ -25,15 +25,15 @@ function Checkbox(props) {
     }, [settingsToggles, props.id]);
 
     return (
-        <div class="custom-control custom-checkbox custom-checkbox-switch">
+        <div className="custom-control custom-checkbox custom-checkbox-switch">
             <input 
                 type="checkbox" 
-                class="custom-control-input" 
+                className="custom-control-input" 
                 id={props.id} 
                 checked={checked}
                 onChange={handleChange}
             />
-            <label class="custom-control-label settings-input" for={props.id}>{props.label}</label>
+            <label className="custom-control-label settings-input" for={props.id}>{props.label}</label>
         </div>
     );
 }

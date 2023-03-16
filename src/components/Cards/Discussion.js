@@ -35,13 +35,13 @@ function Discussion(props){
     }
 
     return (
-        <li class="list-group-item d-flex align-items-start justify-content-between" onClick={redirect}>
+        <li className="list-group-item d-flex align-items-start justify-content-between" onClick={redirect}>
             <div className={discussionTitleWrapperClass()}>
                 <div>
                     <span><i className={discussionIconClass()}>chat</i> </span>
                 </div>
                 <div>
-                    <p class="discussion-name">{props.discussion.name}</p>
+                    <p className="discussion-name">{props.discussion.name}</p>
                     <div>{(props.discussion.last_activity_by === undefined || props.discussion.last_active === undefined) ? 
                         <small></small>
                     : 
@@ -51,7 +51,7 @@ function Discussion(props){
                 </div>
             </div>
             <div>
-                <div class="d-flex justify-content-right">
+                <div className="d-flex justify-content-right">
                     <div>{(props.discussion.comments_count === null) ?
                         <div></div>
                     :

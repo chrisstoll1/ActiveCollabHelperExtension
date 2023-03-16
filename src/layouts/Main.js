@@ -28,7 +28,7 @@ function Main() {
     }, [extState]);
 
     return (
-        <div class="main-container">
+        <div className="main-container">
             <ExtState.Provider value={extState}>
                 <SetExtState.Provider value={setExtState}>
                     <IsRefreshing.Provider value={isRefreshing}>

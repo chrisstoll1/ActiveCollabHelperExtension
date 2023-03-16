@@ -5,7 +5,7 @@ function DeleteTokenButton(){
     }
 
     return (
-        <button type="button" class="btn btn-danger" onClick={deleteToken}>Delete Token</button>
+        <button type="button" className="btn btn-danger" onClick={deleteToken}>Delete Token</button>
     );
 }
 

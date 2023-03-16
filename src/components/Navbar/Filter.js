@@ -26,16 +26,16 @@ function Filter() {
     }
 
     return (
-        <filter>
-            <div class="input-group input-group-round">
-            <div class="input-group-prepend filter-input">
-                <span class="input-group-text">
-                <i class="material-icons">filter_list</i>-
+        <div className="navbar-filter">
+            <div className="input-group input-group-round">
+            <div className="input-group-prepend filter-input">
+                <span className="input-group-text">
+                <i className="material-icons">filter_list</i>-
                 </span>
             </div>
-            <input value={filterValue} onChange={event => handleFilterChange(event.target.value)} type="search" class="form-control filter-list-input filter-input" placeholder="Filter" aria-label="Filter"/>
+            <input value={filterValue} onChange={event => handleFilterChange(event.target.value)} type="search" className="form-control filter-list-input filter-input" placeholder="Filter" aria-label="Filter"/>
             </div>
-        </filter>
+        </div>
     );
 }
 

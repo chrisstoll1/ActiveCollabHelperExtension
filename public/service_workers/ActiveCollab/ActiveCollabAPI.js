@@ -93,3 +93,21 @@ export async function GetUser(sessionCookie, accountNumber, userId) {
 
     return await fetch(`https://app.activecollab.com/${accountNumber}/api/v1/users/${userId}`, options);
 }
+
+export async function GetProjectLabelsDATA(sessionCookie, accountNumber) {
+  var getProjectLabelsRequestResponse = await GetProjectLabels(sessionCookie, accountNumber);
+  var projectLabelsResponseText = await getProjectLabelsRequestResponse.text();
+  return JSON.parse(projectLabelsResponseText);
+}
+
+export async function GetProjectLabels(sessionCookie, accountNumber) {
+  var headers = new Headers();
+  headers.append("Cookie", sessionCookie);
+  var options = {
+    method: 'GET',
+    headers: headers,
+    redirect: 'follow'
+  };
+
+  return await fetch(`https://app.activecollab.com/${accountNumber}/api/v1/projects/labels`, options);
+}

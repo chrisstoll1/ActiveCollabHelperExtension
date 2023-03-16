@@ -4,6 +4,7 @@ import OverviewProject from '../components/Cards/OverviewProject';
 import { IsRefreshing, SetRefreshing, SetExtState, OverviewFilter } from '../context/ExtStateContext'
 import { filterProjectData } from '../utils/filterProjectData';
 import Loading from '../components/Background/Loading';
+import OverviewHeader from '../components/Background/OverviewHeader';
 
 function Overview() {
     const overviewFilter = useContext(OverviewFilter);
@@ -62,26 +63,30 @@ function Overview() {
     }, []);
 
     return (
-        <div class="main-body">
+        <div className="main-body">
             {(isLoadingStorage || isRefreshing) ? 
                 <Loading/>
             :
-                <div class="card-list">
-                    <div class="card-list-head">
-                        <h6>Projects</h6>
+                <div className="card-list">
+                    <div className="card-list-head">
+                        <OverviewHeader 
+                            filteredProjects={filteredProjects}
+                            projects={projects}
+                        />
                     </div>
-                    <div class="card-list-body">
+                    <div className="card-list-body">
                         {(filteredProjects.length === 0) ? 
-                            <div class="filter-quip">
+                            <div className="filter-quip">
                                 {(projects.length > filteredProjects.length) ? 
-                                    <muted>Sorry, no results were found for your search.</muted>
+                                    <div className='text-muted'>Sorry, no results were found for your search.</div>
                                 :
-                                    <muted>{emptyProjectResponse}</muted>
+                                    <div className='text-muted'>{emptyProjectResponse}</div>
                                 }
                             </div>
                         : 
                             filteredProjects.map((project,index)=>{
                                 return <OverviewProject 
+                                    key={index}
                                     project={project}
                                 />
                             })

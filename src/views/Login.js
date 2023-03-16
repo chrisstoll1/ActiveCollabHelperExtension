@@ -8,12 +8,12 @@ function Login(){
     }
 
     return(
-        <div class="row justify-content-center login">
-            <div class="col-xl-5 col-lg-6 col-md-7">
-                <div class="text-center">
-                    <h1 class="h2">No Token 🤔</h1>
-                    <p class="lead">Token does not exist or is invalid</p>
-                    <button class="btn btn-lg btn-block ac-button" role="button" type="submit" onClick={redirect}> 
+        <div className="row justify-content-center login">
+            <div className="col-xl-5 col-lg-6 col-md-7">
+                <div className="text-center">
+                    <h1 className="h2">No Token 🤔</h1>
+                    <p className="lead">Token does not exist or is invalid</p>
+                    <button className="btn btn-lg btn-block ac-button" role="button" type="submit" onClick={redirect}> 
                         Open ActiveCollab
                     </button>
                     <small>Open up ActiveCollab and sign in to grab a new one</small>

@@ -64,30 +64,30 @@ function Project(){
     }, []);
 
     return (
-        <div class="main-body">
+        <div className="main-body">
             {(loadingStorage || isRefreshing) ?
                 <Loading />
             :
-            <div class="card-list">
-                <div class="d-flex justify-content-between">
-                    <div class="task-list-header">
+            <div className="card-list">
+                <div className="d-flex justify-content-between">
+                    <div className="task-list-header">
                         <h5>{project.name}</h5>
                         <small>Last Activity: {formatUnixTimestamp(project.last_active)}</small>
                     </div>
-                    <div class="project-link-icon">
-                        <i class="material-icons" onClick={redirect}>link</i>
+                    <div className="project-link-icon">
+                        <i className="material-icons" onClick={redirect}>link</i>
                     </div>
                 </div>
 
-                <div class="card-list-body">
-                    <div class="card-list">
-                        <div class="card-list-head">
+                <div className="card-list-body">
+                    <div className="card-list">
+                        <div className="card-list-head">
                             <h6>Discussions</h6>
                         </div>
-                        <div class="card-list-body">
-                            <ul class="list-group">
+                        <div className="card-list-body">
+                            <ul className="list-group">
                                 {(filteredDiscussions.length === 0) ?
-                                    <div class="filter-quip">
+                                    <div className="filter-quip">
                                         {(project.discussions.length > filteredDiscussions.length) ? 
                                             <muted>Sorry, no results were found for your search.</muted>
                                         :
@@ -104,14 +104,14 @@ function Project(){
                             </ul>
                         </div>
                     </div>
-                    <div class="card-list">
-                        <div class="card-list-head">
+                    <div className="card-list">
+                        <div className="card-list-head">
                             <h6>Task Lists</h6>
                         </div>
-                        <div class="card-list-body">
-                            <ul class="list-group">
+                        <div className="card-list-body">
+                            <ul className="list-group">
                                 {(filteredTasks.length === 0) ?
-                                    <div class="filter-quip">
+                                    <div className="filter-quip">
                                         {(project.task_lists.length > filteredTasks.length) ?
                                             <muted>Sorry, no results were found for your search.</muted>
                                         :

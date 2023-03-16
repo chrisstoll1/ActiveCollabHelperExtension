@@ -18,13 +18,13 @@ function Task(props) {
     };
 
     return (
-        <li class="list-group-item d-flex justify-content-between" onClick={redirect}>
+        <li className="list-group-item d-flex justify-content-between" onClick={redirect}>
             <div className={taskTitleWrapperClass()}>
                 <div>
-                    <span><i class="material-icons">task_alt</i> </span>
+                    <span><i className="material-icons">task_alt</i> </span>
                 </div>
                 <div>
-                    <p class="discussion-name">{props.task.name}</p>
+                    <p className="discussion-name">{props.task.name}</p>
                     <div>{(props.task.due_on === null) ? 
                         <small></small>
                     : 
@@ -34,14 +34,14 @@ function Task(props) {
                 </div>
             </div>
             <div>
-                <div class="d-flex justify-content-right">
+                <div className="d-flex justify-content-right">
                     <div>
                         <small></small>
                     </div>
                     <div>
-                        {(props.task.status.includes('Completed')) ? <span class="badge badge-secondary">Completed</span> : null}
-                        {(props.task.status.includes('Open')) ? <span class="badge badge-success">Open</span> : null}
-                        {(props.task.status.includes('Overdue')) ? <span class="badge badge-danger">Overdue</span> : null}
+                        {(props.task.status.includes('Completed')) ? <span className="badge badge-secondary">Completed</span> : null}
+                        {(props.task.status.includes('Open')) ? <span className="badge badge-success">Open</span> : null}
+                        {(props.task.status.includes('Overdue')) ? <span className="badge badge-danger">Overdue</span> : null}
                     </div>
                 </div>
             </div>
