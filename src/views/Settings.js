@@ -205,12 +205,6 @@ function Settings() {
                     </DiscussionMessageDateFilterContext.Provider>
                 </SetDiscussionMessageSenderFilterContext.Provider>
             </DiscussionMessageSenderFilterContext.Provider>
-
-            <div className="d-flex justify-content-end">
-                <div className="p-2">
-                    <small>ActiveCollab Helper Extension v0.0.1</small>
-                </div>
-            </div>
         </div>
     );
 }

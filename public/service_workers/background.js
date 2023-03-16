@@ -21,6 +21,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
       await removeLocalStorageObject("WorkingProject");
       await removeLocalStorageObject("WorkingTaskList");
       await removeLocalStorageObject("ExtState");
+      await removeLocalStorageObject("LastRefreshTime");
       refreshActiveCollabData();
     }
     if (request.event === "reset_settings"){
@@ -45,7 +46,11 @@ async function refreshActiveCollabData() {
     // Get new data
     var activeCollabData = await buildActiveCollabDataObject(oldActiveCollabData);
 
-    console.log(activeCollabData);
+    //Set refresh time
+    var date = new Date();
+    var refreshTime = date.toLocaleString();
+    await chrome.storage.local.set({"LastRefreshTime": refreshTime});
+    await chrome.runtime.sendMessage({event: "refresh-date-updated"});
 
     //Refresh projects
     await chrome.storage.local.set({"ACProjects": JSON.stringify(activeCollabData)});

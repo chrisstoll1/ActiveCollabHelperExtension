@@ -1,6 +1,7 @@
 /*global chrome*/
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar/Navbar';
+import Footer from '../components/Footer/Footer';
 import Routes from './Routes';
 import { ExtState, SetExtState, IsRefreshing, SetRefreshing, OverviewFilter, SetOverviewFilter, ProjectFilter, SetProjectFilter, TaskListFilter, SetTaskListFilter } from '../context/ExtStateContext'
 
@@ -41,6 +42,7 @@ function Main() {
                                                 <SetTaskListFilter.Provider value={setTaskListFilter}>
                                                     <Navbar/>
                                                     <Routes/>
+                                                    <Footer/>
                                                 </SetTaskListFilter.Provider>
                                             </TaskListFilter.Provider>
                                         </SetProjectFilter.Provider>
