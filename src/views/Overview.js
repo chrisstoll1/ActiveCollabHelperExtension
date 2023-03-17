@@ -4,7 +4,10 @@ import OverviewProject from '../components/Cards/OverviewProject';
 import { IsRefreshing, SetRefreshing, SetExtState, OverviewFilter } from '../context/ExtStateContext'
 import { filterProjectData } from '../utils/filterProjectData';
 import Loading from '../components/Background/Loading';
-import OverviewHeader from '../components/Background/OverviewHeader';
+import OverviewHeader from '../components/Text/OverviewHeader';
+import OverviewSortBy from '../components/Inputs/OverviewSortBy';
+import { emptyProjectResponses } from '../data/emptyProjectResponses'
+import { SortDirection, SetSortDirection, SortOption, SetSortOption } from '../context/OverviewContext'
 
 function Overview() {
     const overviewFilter = useContext(OverviewFilter);
@@ -12,27 +15,16 @@ function Overview() {
     const filteredProjects = projects.filter(project => project.name.toLowerCase().includes(overviewFilter.toLowerCase()));
     const [isLoadingStorage, setLoadingStorage] = useState(false);
     const [emptyProjectResponse, setEmptyProjectResponse] = useState("");
+    const [sortDirection, setSortDirection] = useState("ASC"); //ASC v DESC ^
+    const [sortOption, setSortOption] = useState("Default"); //Name, Active Date, Discussion Count, Task Count
     const isRefreshing = useContext(IsRefreshing);
     const setRefreshing = useContext(SetRefreshing);
     const setExtState = useContext(SetExtState);
 
-    const emptyProjectResponses = [
-        "No projects to conquer! Yay!",
-        "Nada, zip, zilch.",
-        "Nope, nothing to do here.",
-        "No projects? Time to retire.",
-        "Nothing to do here, move along.",
-        "Nothing here, let's watch paint dry.",
-        "Projects? What projects?",
-        "No projects, no worries. Time for coffee.",
-        "Where are all the projects?",
-        "No projects in sight, time to relax."
-    ]
-
     chrome.runtime.onMessage.addListener((request, sender, reply) => {
         if (request.event === "updated"){
             chrome.storage.local.get(["ACProjects"]).then((result) => {
-                filterProjectData(JSON.parse(result.ACProjects)).then((filteredProjectData) => {
+                filterProjectData(JSON.parse(result.ACProjects), sortOption, sortDirection).then((filteredProjectData) => {
                     setProjects(filteredProjectData);
                     setEmptyProjectResponse(emptyProjectResponses[Math.floor(Math.random() * emptyProjectResponses.length)]);
                 });
@@ -53,26 +45,35 @@ function Overview() {
                 setRefreshing(true);
                 chrome.runtime.sendMessage({event: "refresh"});
             }else{
-                filterProjectData(JSON.parse(result.ACProjects)).then((filteredProjectData) => {
+                filterProjectData(JSON.parse(result.ACProjects), sortOption, sortDirection).then((filteredProjectData) => {
                     setProjects(filteredProjectData);
                     setEmptyProjectResponse(emptyProjectResponses[Math.floor(Math.random() * emptyProjectResponses.length)]);
                 });
             }
             setLoadingStorage(false);
         });
-    }, []);
+    }, [sortDirection, sortOption]);
 
     return (
         <div className="main-body">
             {(isLoadingStorage || isRefreshing) ? 
                 <Loading/>
             :
-                <div className="card-list">
+                <div className="card-list overview-card-list">
                     <div className="card-list-head">
                         <OverviewHeader 
                             filteredProjects={filteredProjects}
                             projects={projects}
                         />
+                        <SortDirection.Provider value={sortDirection}>
+                            <SetSortDirection.Provider value={setSortDirection}>
+                                <SortOption.Provider value={sortOption}>
+                                    <SetSortOption.Provider value={setSortOption}>
+                                        <OverviewSortBy />
+                                    </SetSortOption.Provider>
+                                </SortOption.Provider>
+                            </SetSortDirection.Provider>
+                        </SortDirection.Provider>
                     </div>
                     <div className="card-list-body">
                         {(filteredProjects.length === 0) ? 

@@ -193,3 +193,7 @@ body {
     cursor: pointer;
     transform: scale(1.1);
 }
+
+.overview-card-list {
+    min-height: 460px;
+}

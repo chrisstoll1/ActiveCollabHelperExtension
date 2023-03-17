@@ -1,11 +1,13 @@
 /* global chrome */
 import { filterProject } from "../data/settingsFilters";
+import { sortProjects } from "../data/projectSorting";
 
-export async function filterProjectData(Projects) {
+export async function filterProjectData(Projects, SortOption, SortDirection) {
     // Grab Settings from Sync Storage
     let Settings = await chrome.storage.sync.get(["user_settings"]);
     Settings = Settings.user_settings;
 
+    // Filter Projects
     const FilteredProjects = Projects.map((project) => {
         return filterProject(project, Settings);
     }).filter((project) => {
@@ -19,6 +21,10 @@ export async function filterProjectData(Projects) {
             return true;
         }
     });
+
+    // Sort Projects
+    const SortedFilteredProjects = sortProjects(FilteredProjects, SortOption, SortDirection);
     
-    return FilteredProjects;
+    // Returned Formatted Projects
+    return SortedFilteredProjects;
 }
