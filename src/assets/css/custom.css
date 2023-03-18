@@ -193,3 +193,8 @@ body {
     cursor: pointer;
     transform: scale(1.1);
 }
+
+/* Popper does not like margin */
+.dropdown-menu { 
+    margin: 0 !important;
+}

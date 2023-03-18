@@ -12,6 +12,8 @@ function Footer() {
     function footerClass() {
         if (extState === "Settings") {
             return ("footer-wrapper d-flex justify-content-end");
+        }else if (extState === "Login") {
+            return ("footer-disabled");
         }else{
             return ("footer-wrapper d-flex justify-content-center");
         }

@@ -105,15 +105,15 @@ function Tasklist() {
                                     {(filteredOpenTasks.length === 0) ?
                                         <div className="filter-quip">
                                             {(taskList.tasks.length > filteredOpenTasks.length) ?
-                                                <muted>Sorry, no results were found for your search.</muted>
+                                                <div className="text-muted">Sorry, no results were found for your search.</div>
                                             :
-                                                <muted>No Open Tasks!</muted>
+                                                <div className="text-muted">No Open Tasks!</div>
                                             }
                                         </div>
                                     :
-                                        filteredOpenTasks.map((task) => {
+                                        filteredOpenTasks.map((task, index) => {
                                             return (
-                                                <Task task={task} projectId={projectId} accountNumber={accountNumber} />
+                                                <Task key={index} task={task} projectId={projectId} accountNumber={accountNumber} />
                                             )
                                         })   
                                     }

@@ -1,11 +1,11 @@
 /* global chrome */
-import { useEffect, useState, useContext } from "react"
+import { useEffect, useState, useContext, useCallback } from "react"
 import { SetExtState, IsRefreshing, ProjectFilter } from "../context/ExtStateContext"
 import Loading from "../components/Background/Loading";
 import Discussion from "../components/Cards/Discussion";
 import ProjectTaskList from "../components/Cards/ProjectTaskList";
-import { formatUnixTimestamp } from "../utils/formatUnixTimestamp";
 import { filterWorkingProject } from "../utils/filterWorkingProject";
+import ProjectHeader from "../components/Text/ProjectHeader";
 
 function Project(){
     //Project
@@ -26,10 +26,10 @@ function Project(){
     //Redirect to project page
     const [accountNumber, setAccountNumber] = useState(0);
     const projectURL = `https://app.activecollab.com/${accountNumber}/projects/${project.id}`;
-    function redirect(){
+    const handleRedirect = useCallback((projectURL) => {
         chrome.tabs.create({url: projectURL});
         console.log("Redirecting to: " + projectURL);
-    }
+    }, []);
 
     //Message Listener for Chrome related events
     chrome.runtime.onMessage.addListener((request, sender, reply) => {
@@ -77,15 +77,7 @@ function Project(){
                 <Loading />
             :
             <div className="card-list">
-                <div className="d-flex justify-content-between">
-                    <div className="task-list-header">
-                        <h5>{project.name}</h5>
-                        <small>Last Activity: {formatUnixTimestamp(project.last_active)}</small>
-                    </div>
-                    <div className="project-link-icon">
-                        <i className="material-icons" onClick={redirect}>link</i>
-                    </div>
-                </div>
+                <ProjectHeader project={project} projectURL={projectURL} redirect={handleRedirect} />
 
                 <div className="card-list-body">
                     <div className="card-list">
@@ -97,15 +89,15 @@ function Project(){
                                 {(filteredDiscussions.length === 0) ?
                                     <div className="filter-quip">
                                         {(project.discussions.length > filteredDiscussions.length) ? 
-                                            <muted>Sorry, no results were found for your search.</muted>
+                                            <div className="text-muted">Sorry, no results were found for your search.</div>
                                         :
-                                            <muted>No Discussions!</muted>
+                                            <div className="text-muted">No Discussions!</div>
                                         }
                                     </div>
                                 :
-                                    filteredDiscussions.map((discussion) => {
+                                    filteredDiscussions.map((discussion, index) => {
                                         return (
-                                            <Discussion discussion={discussion} projectId={project.id} accountNumber={accountNumber} />
+                                            <Discussion key={index} discussion={discussion} projectId={project.id} accountNumber={accountNumber} />
                                         )
                                     })
                                 }
@@ -121,15 +113,15 @@ function Project(){
                                 {(filteredTasks.length === 0) ?
                                     <div className="filter-quip">
                                         {(project.task_lists.length > filteredTasks.length) ?
-                                            <muted>Sorry, no results were found for your search.</muted>
+                                            <div className="text-muted">Sorry, no results were found for your search.</div>
                                         :
-                                            <muted>No Task Lists!</muted>
+                                            <div className="text-muted">No Task Lists!</div>
                                         }
                                     </div>
                                 :
-                                    filteredTasks.map((task_list) => {
+                                    filteredTasks.map((task_list, index) => {
                                         return (
-                                            <ProjectTaskList task_list={task_list} projectId={project.id} />
+                                            <ProjectTaskList key={index} task_list={task_list} projectId={project.id} />
                                         )
                                     })   
                                 }

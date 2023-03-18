@@ -5,3 +5,7 @@
 .footer-small {
     font-size: 0.9rem;
 }
+
+.footer-disabled {
+    display: none;
+}
