@@ -8,22 +8,30 @@ import { formatUnixTimestamp } from "../utils/formatUnixTimestamp";
 import { filterWorkingProject } from "../utils/filterWorkingProject";
 
 function Project(){
-    const projectFilter = useContext(ProjectFilter);
-    const setExtState = useContext(SetExtState);
-    const isRefreshing = useContext(IsRefreshing);
-    const [loadingStorage, setLoadingStorage] = useState(false);
+    //Project
     const [project, setProject] = useState({discussions: [], task_lists: []});
-    const [accountNumber, setAccountNumber] = useState(0);
+
+    //Text Filter
+    const projectFilter = useContext(ProjectFilter);
     const filteredDiscussions = project.discussions.filter(discussion => discussion.name.toLowerCase().includes(projectFilter.toLowerCase()));
     const filteredTasks = project.task_lists.filter(task_list => task_list.name.toLowerCase().includes(projectFilter.toLowerCase()));
 
-    const projectURL = `https://app.activecollab.com/${accountNumber}/projects/${project.id}`;
+    //TODO: Remove? 
+    const [loadingStorage, setLoadingStorage] = useState(false);
+    
+    //Context
+    const setExtState = useContext(SetExtState);
+    const isRefreshing = useContext(IsRefreshing);
 
+    //Redirect to project page
+    const [accountNumber, setAccountNumber] = useState(0);
+    const projectURL = `https://app.activecollab.com/${accountNumber}/projects/${project.id}`;
     function redirect(){
         chrome.tabs.create({url: projectURL});
         console.log("Redirecting to: " + projectURL);
     }
 
+    //Message Listener for Chrome related events
     chrome.runtime.onMessage.addListener((request, sender, reply) => {
         if (request.event === "updated"){
             chrome.storage.local.get(["WorkingProject"]).then((result) => {
@@ -64,7 +72,7 @@ function Project(){
     }, []);
 
     return (
-        <div className="main-body">
+        <div className="main-body flex-grow-1">
             {(loadingStorage || isRefreshing) ?
                 <Loading />
             :

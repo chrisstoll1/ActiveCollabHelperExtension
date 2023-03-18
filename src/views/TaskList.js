@@ -80,7 +80,7 @@ function Tasklist() {
     }, []);
 
     return (
-        <div className="main-body">
+        <div className="main-body flex-grow-1">
             {(loadingStorage || isRefreshing) ?
                 <Loading />
             :

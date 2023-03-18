@@ -29,7 +29,7 @@ function Main() {
     }, [extState]);
 
     return (
-        <div className="main-container">
+        <div className="main-container d-flex flex-column min-vh-100">
             <ExtState.Provider value={extState}>
                 <SetExtState.Provider value={setExtState}>
                     <IsRefreshing.Provider value={isRefreshing}>

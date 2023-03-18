@@ -1,6 +1,6 @@
 /*global chrome*/
 import { useState, useContext, useEffect } from 'react';
-import OverviewProject from '../components/Cards/OverviewProject';
+import FilteredProjects from '../components/Cards/FilteredProjects';
 import { IsRefreshing, SetRefreshing, SetExtState, OverviewFilter } from '../context/ExtStateContext'
 import { filterProjectData } from '../utils/filterProjectData';
 import Loading from '../components/Background/Loading';
@@ -10,17 +10,26 @@ import { emptyProjectResponses } from '../data/emptyProjectResponses'
 import { SortDirection, SetSortDirection, SortOption, SetSortOption } from '../context/OverviewContext'
 
 function Overview() {
-    const overviewFilter = useContext(OverviewFilter);
+    //Projects
     const [projects, setProjects] = useState([]);
+
+    //Text Filter
+    const overviewFilter = useContext(OverviewFilter);
     const filteredProjects = projects.filter(project => project.name.toLowerCase().includes(overviewFilter.toLowerCase()));
-    const [isLoadingStorage, setLoadingStorage] = useState(false);
+    
+    //Empty Project Response (Quips)
     const [emptyProjectResponse, setEmptyProjectResponse] = useState("");
+
+    //Sorting
     const [sortDirection, setSortDirection] = useState("ASC"); //ASC v DESC ^
     const [sortOption, setSortOption] = useState("Default"); //Name, Active Date, Discussion Count, Task Count
+
+    //Context
     const isRefreshing = useContext(IsRefreshing);
     const setRefreshing = useContext(SetRefreshing);
     const setExtState = useContext(SetExtState);
 
+    //Message Listener for Chrome related events
     chrome.runtime.onMessage.addListener((request, sender, reply) => {
         if (request.event === "updated"){
             chrome.storage.local.get(["ACProjects"]).then((result) => {
@@ -33,13 +42,11 @@ function Overview() {
         if (request.event === "invalid_token"){
             setExtState("Login");
             setRefreshing(false);
-            setLoadingStorage(false);
         }
     });
 
     useEffect(() => {
         //Load projects from local storage, if it doesnt exist refresh from API
-        setLoadingStorage(true);
         chrome.storage.local.get(["ACProjects"]).then((result) => {
             if (Object.keys(result).length === 0){
                 setRefreshing(true);
@@ -50,13 +57,12 @@ function Overview() {
                     setEmptyProjectResponse(emptyProjectResponses[Math.floor(Math.random() * emptyProjectResponses.length)]);
                 });
             }
-            setLoadingStorage(false);
         });
     }, [sortDirection, sortOption]);
 
     return (
-        <div className="main-body">
-            {(isLoadingStorage || isRefreshing) ? 
+        <div className="main-body flex-grow-1">
+            {(isRefreshing) ? 
                 <Loading/>
             :
                 <div className="card-list overview-card-list">
@@ -85,12 +91,7 @@ function Overview() {
                                 }
                             </div>
                         : 
-                            filteredProjects.map((project,index)=>{
-                                return <OverviewProject 
-                                    key={index}
-                                    project={project}
-                                />
-                            })
+                            <FilteredProjects filteredProjects={filteredProjects}/>
                         }
                     </div>
                 </div>

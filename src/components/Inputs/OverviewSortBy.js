@@ -47,7 +47,9 @@ function OverviewSortBy() {
                     <Dropdown.Item className="sortby-option" eventKey="Task Count">Task Count</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
-            <i className={arrowIconClass()} onClick={handleArrowClick}>south</i>
+
+            {(sortOption !== "Default") ? <i className={arrowIconClass()} onClick={handleArrowClick}>south</i> : null}
+            
         </span>
     );
 }

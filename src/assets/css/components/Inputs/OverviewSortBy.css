@@ -1,6 +1,6 @@
 .sortby-wrapper {
     position: relative;
-    top: -4px;
+    top: -2px;
     display: flex;
     align-items: center;
     height: 25px;
@@ -95,4 +95,14 @@
     background-color: #6e42c194;
     color: var(--light);
     cursor: pointer;
+}
+
+.sortby-option:active {
+    background-color: #6e42c194;
+    color: var(--light);
+}
+
+.sortby-option:focus {
+    background-color: #6e42c194;
+    color: var(--light);
 }
