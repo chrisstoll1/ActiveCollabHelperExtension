@@ -1,3 +1,9 @@
 .filter-input {
     height: 33.25px;
 }
+
+.filter-icon {
+    position: relative;
+    left: -5px;
+    font-size: 20px !important;
+}

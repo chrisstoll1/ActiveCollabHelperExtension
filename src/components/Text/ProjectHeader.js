@@ -9,7 +9,12 @@ function ProjectHeader(props) {
     return (
         <div className="project-header d-flex justify-content-between">
             <div className="project-title">
-                <h5 onClick={handleRedirect}>{props.project.name}</h5>
+                <div className="project-name-wrapper">
+                    <h5 onClick={handleRedirect}>
+                        <i className="material-icons project-title-icon">link</i>
+                        <span className='project-name'>{props.project.name}</span>
+                    </h5>
+                </div>
                 <div className="project-subtitle">
                     <i className="material-icons project-header-icon">schedule</i>
                     <span>{formatUnixTimestamp(props.project.last_active)}</span>
@@ -29,11 +34,20 @@ function ProjectHeader(props) {
                     :
                         null
                     }
+                    {(props.project.label) ?  
+                        <span>
+                            <span className='inline-bullet'>&#8226;</span>
+                            <span className="project-status-label-text">
+                                {props.project.label}
+                            </span>
+                        </span>
+                    : 
+                        null
+                    }
                 </div>
             </div>
             <div className="project-header-right">
                 <i className="material-icons mute-project-icon">notifications</i>
-                <div className="project-label">{props.project.label}</div>
             </div>
         </div>
     );

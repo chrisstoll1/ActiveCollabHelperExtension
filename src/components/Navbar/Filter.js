@@ -30,10 +30,10 @@ function Filter() {
             <div className="input-group input-group-round">
             <div className="input-group-prepend filter-input">
                 <span className="input-group-text">
-                <i className="material-icons">filter_list</i>-
+                    <i className="material-icons filter-icon">search</i>
                 </span>
             </div>
-            <input value={filterValue} onChange={event => handleFilterChange(event.target.value)} type="search" className="form-control filter-list-input filter-input" placeholder="Filter" aria-label="Filter"/>
+            <input value={filterValue} onChange={event => handleFilterChange(event.target.value)} type="search" className="form-control filter-list-input filter-input" placeholder="Search" aria-label="Filter"/>
             </div>
         </div>
     );

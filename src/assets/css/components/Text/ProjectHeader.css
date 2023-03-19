@@ -3,28 +3,65 @@
     z-index: 1;
 }
 
-.project-title h5 {
-    color: var(--light);
-    font-weight: 600;
-    margin-bottom: 5px;
+.project-name-wrapper {
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    transition: background-color 0s ease-in-out;
+    width: calc(100% + 23px);
+    border-radius: 3px;
 }
 
-.project-title h5:hover {
+.project-name-wrapper:hover {
     background-color: #6e42c156;
     cursor: pointer;
     transform: scale(1.01);
+    transition: background-color 0.3s ease-in-out 0.3s;
+}
+
+.project-name-wrapper h5 {
+    color: var(--light);
+    font-weight: 600;
+    margin-bottom: 2px;
+    margin-top: 2px;
+    margin-right: 3px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.project-name-wrapper h5:hover i {
+    opacity: 1;
+}
+
+.project-name-wrapper h5:hover .project-name {
+    transform: translateX(23px);
+}
+
+.project-name-wrapper .project-name {
+    transition: transform .4s ease-in-out;
+}
+
+.project-title-icon {
+    opacity: 0;
+    font-size: 16px !important;
+    position: absolute;
+    top: 2px;
+    left: 3px;
+    margin-right: 5px;
+    transition: opacity .4s ease-in-out;
 }
 
 .project-subtitle {
-    color: var(--light);
-    font-size: 0.85em;
+    color: var(--gray);
+    font-size: 12px;
 }
 
 .project-header-icon {
     position: relative;
-    top: 3px;
-    color: var(--light);
-    font-size: 16px !important;
+    top: 2px;
+    color: var(--gray);
+    font-size: .975rem !important;
     margin-right: 5px;
 }
 
@@ -34,12 +71,6 @@
 
 .project-header-icon-wrapper:not(:first-child) {
     margin-left: 5px;
-}
-
-.project-label {
-    margin-top: 4px;
-    margin-bottom: 5px;
-    font-weight: bold;
 }
 
 .mute-project-icon {
@@ -52,3 +83,4 @@
     flex-direction: column;
     align-items: end;
 }
+
