@@ -35,6 +35,9 @@
 }
 
 .badge {
+	display: flex;
+    align-items: center;
+	justify-content: center;
     margin-left: 5px;
     padding-bottom: 0px;
     transition: all .1s ease-in-out;
@@ -45,21 +48,30 @@
 }
 
 .badge-text {
-	width: 14px;
-	height: 11px;
 	color: #ffffff;
 	font-weight: 700;
-	font-size: 8px;
-	text-align: center;
+	font-size: 0.75rem;
+	margin: 3px;
 }
 
 .badge-counter {
-    position: relative;
-    top: -5px;
     font-size: 0.75rem;
+	margin: 0px;
 }
 
 .badge-icon {
-    position: relative;
     font-size: 18px !important;
+	margin-bottom: 2px;
+	padding: 0px !important;
+}
+
+.badge-container-horizontal {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.badge-container-horizontal i {
+	margin-right: .25rem;
 }

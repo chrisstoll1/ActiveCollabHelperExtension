@@ -18,7 +18,7 @@ function OverviewDiscussionBadge(props){
     }
 
     return (
-        <Badge color={badgeColor()} icon={"chat"} counter={badgeCounter()} customClass={"badge-width-100"} />
+        <Badge color={badgeColor()} icon={"chat"} counter={badgeCounter()} />
     )
 }
 

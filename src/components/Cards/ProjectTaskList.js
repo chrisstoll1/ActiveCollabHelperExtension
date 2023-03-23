@@ -1,6 +1,7 @@
 /* global chrome */
 import { useContext } from 'react';
 import { SetExtState } from '../../context/ExtStateContext'
+import ProjectTaskListBadge from '../Badge/ProjectTaskListBadge';
 
 function ProjectTaskList(props) {
     const setExtState = useContext(SetExtState);
@@ -12,26 +13,11 @@ function ProjectTaskList(props) {
 
     return (
         <li className="list-group-item d-flex align-items-start justify-content-between" onClick={handleClick}>
-            <div className="d-flex justify-content-left">
-                <div>
-                    <span><i className="material-icons">assignment</i> </span>
-                </div>
-                <div>
-                    <p>{props.task_list.name}</p>
-                </div>
+            <div className="d-flex justify-content-left align-items-center">
+                <i className="material-icons">assignment</i>
+                <p>{props.task_list.name}</p>
             </div>
-            <div>
-                <div className="d-flex justify-content-right">
-                    <div>
-                        <small></small>
-                    </div>
-                    <div>
-                        {(props.task_list.badges.includes('Completed')) ? <span className="badge badge-secondary">Completed {props.task_list.completed_tasks}</span> : null}
-                        {(props.task_list.badges.includes('Open')) ? <span className="badge badge-success">Open {props.task_list.open_tasks}</span> : null}
-                        {(props.task_list.badges.includes('Overdue')) ? <span className="badge badge-danger">Overdue {props.task_list.overdue_tasks}</span> : null}
-                    </div>
-                </div>
-            </div>
+            <ProjectTaskListBadge task_list={props.task_list} />
         </li>
     );
 }

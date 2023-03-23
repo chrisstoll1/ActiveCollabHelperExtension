@@ -8,11 +8,6 @@
     transform: scale(1.01);
 }
 
-.badge-purple {
-    background-color: #5d2bff;
-    color: var(--light);
-}
-
 .last-active-icon {
     position: relative;
     top: 2px;
@@ -24,11 +19,6 @@
     font-size: .975rem !important;
     padding-left: 7px;
     padding-right: 7px;
-}
-
-.project-status-label-text {
-    font-size: .875rem !important;
-    font-weight: bold;
 }
 
 .overview-project-label {
@@ -45,15 +35,11 @@
 }
   
 .stacked-badge-item:not(:last-child) {
-    margin-bottom: 3px;
+    margin-bottom: 6px;
 }
 
 .card-body .card-options {
     top: 0.85rem !important;
     right: 1.5rem !important;
     min-width: 50px;
-}
-
-.badge-width-100 {
-    width: 100%;
 }

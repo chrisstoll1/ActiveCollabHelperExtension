@@ -22,7 +22,7 @@ function OverviewTaskBadge(props){
     }
 
     return (
-        <Badge color={badgeColor()} icon={"assignment"} counter={badgeCounter()} customClass={"badge-width-100"} />
+        <Badge color={badgeColor()} icon={"assignment"} counter={badgeCounter()} />
     )
 }
 

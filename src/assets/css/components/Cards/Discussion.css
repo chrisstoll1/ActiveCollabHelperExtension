@@ -1,5 +1,10 @@
 .discussion-name {
     margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.discussion-icon {
+    padding-right: 5px !important;
 }
 
 .discussion-flagged-icon-purple {
@@ -8,4 +13,20 @@
 
 .discussion-flagged-badge-purple {
     background-color: #5d2bff;
+}
+
+.discussion-excerpt {
+    font-style: italic;
+}
+
+.discussion-title {
+    display: flex;
+    align-items: center;
+}
+
+.mention-user {
+    background-color: #825efa59;
+    border-radius: 3px;
+    padding-left: 3px;
+    padding-right: 3px;
 }
