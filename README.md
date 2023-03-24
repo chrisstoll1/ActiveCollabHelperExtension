@@ -5,7 +5,7 @@ This is a Google Chrome extension built with React that aims to improve the accu
 ## Installation
 
 1. Download the latest release of the extension from the [releases page on GitHub](https://github.com/chrisstoll1/ActiveCollabHelperExtension/releases).
-2. Extract the build folder from the downloaded release package.
+2. Extract the dist folder from the downloaded release package.
 3. Open Google Chrome and enter chrome://extensions/ in the address bar.
 4. Toggle on the "Developer Mode" option in the top right corner of the extensions page.
 5. Click the "Load unpacked" button in the top left corner of the page.
@@ -31,7 +31,7 @@ If you would like to contribute to the project, please follow the steps below:
 1. Fork the repository
 2. Clone the repository to your local machine
 3. Install the dependencies by running `npm install`
-4. Run `npm run build` to build the extension
+4. Run `npm run dev` to build the extension
 5. Load the extension into your browser
 6. Make your changes
 7. Submit a pull request
