@@ -18,9 +18,9 @@ function BreadCrumb(){
 
     return (
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                {breadcrumbMap[extState].map((state)=>{
-                    return <li class="breadcrumb-item" onClick={() => BreadcrumbClick(state)}>{state}</li>
+            <ol className="breadcrumb">
+                {breadcrumbMap[extState].map((state, index)=>{
+                    return <li key={index} className="breadcrumb-item" onClick={() => BreadcrumbClick(state)}>{state}</li>
                 })}
             </ol>
         </nav>

@@ -58,34 +58,34 @@ function DiscussionMessageDateFilter() {
     }, [discussionMessageDateFilter]);
 
     return (
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-4">
-                        <label class="form-control settings-label-text">Last Message Date</label>
+        <div className="card">
+            <div className="card-body">
+                <div className="row">
+                    <div className="col-4">
+                        <label className="form-control settings-label-text">Last Message Date</label>
                     </div>
-                    <div class="col-2">
-                        <select ref={operatorSelectRef} onChange={handleChange} class="form-control settings-input">
+                    <div className="col-2">
+                        <select ref={operatorSelectRef} onChange={handleChange} className="form-control settings-input">
                             <option selected value=""></option>
                             <option value="before">Before</option>
                             <option value="after">After</option>
                             <option value="on">On</option>
                         </select>
                     </div>
-                    <div class="col-3">
-                        <select ref={typeSelectRef} onChange={handleChange} class="form-control settings-input">
+                    <div className="col-3">
+                        <select ref={typeSelectRef} onChange={handleChange} className="form-control settings-input">
                             <option selected value=""></option>
                             <option value="static">Static</option>
                             <option value="today+">Today +</option>
                             <option value="today-">Today -</option>
                         </select>
                     </div>
-                    <div class="col-3">
+                    <div className="col-3">
                         <div style={datepickerStyle}>
                             <DatePicker ref={datepickerRef} handleChange={handleChange}/>
                         </div>
                         <div style={inputStyle}>
-                            <input ref={inputRef} onChange={handleChange} type="number" class="form-control settings-input" placeholder="1"/>
+                            <input ref={inputRef} onChange={handleChange} type="number" className="form-control settings-input" placeholder="1"/>
                         </div>
                     </div>
                 </div>

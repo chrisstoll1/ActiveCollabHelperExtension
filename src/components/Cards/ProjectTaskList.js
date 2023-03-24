@@ -1,37 +1,24 @@
 /* global chrome */
 import { useContext } from 'react';
 import { SetExtState } from '../../context/ExtStateContext'
+import ProjectTaskListBadge from '../Badge/ProjectTaskListBadge';
 
 function ProjectTaskList(props) {
     const setExtState = useContext(SetExtState);
     
-    function handleClick() {
-        chrome.storage.local.set({"WorkingTaskList": JSON.stringify(props.task_list)});
+    async function handleClick() {
+        await chrome.storage.local.set({"WorkingTaskList": JSON.stringify(props.task_list)});
+        console.log(props.task_list);
         setExtState("TaskList");
     }
 
     return (
-        <li class="list-group-item d-flex align-items-start justify-content-between" onClick={handleClick}>
-            <div class="d-flex justify-content-left">
-                <div>
-                    <span><i class="material-icons">assignment</i> </span>
-                </div>
-                <div>
-                    <p>{props.task_list.name}</p>
-                </div>
+        <li className="list-group-item d-flex align-items-start justify-content-between" onClick={handleClick}>
+            <div className="d-flex justify-content-left align-items-center">
+                <i className="material-icons">assignment</i>
+                <p>{props.task_list.name} <span className="counter-text text-muted">({props.task_list.tasks.length})</span></p>
             </div>
-            <div>
-                <div class="d-flex justify-content-right">
-                    <div>
-                        <small></small>
-                    </div>
-                    <div>
-                        {(props.task_list.badges.includes('Completed')) ? <span class="badge badge-secondary">Completed {props.task_list.completed_tasks}</span> : null}
-                        {(props.task_list.badges.includes('Open')) ? <span class="badge badge-success">Open {props.task_list.open_tasks}</span> : null}
-                        {(props.task_list.badges.includes('Overdue')) ? <span class="badge badge-danger">Overdue {props.task_list.overdue_tasks}</span> : null}
-                    </div>
-                </div>
-            </div>
+            <ProjectTaskListBadge task_list={props.task_list} />
         </li>
     );
 }

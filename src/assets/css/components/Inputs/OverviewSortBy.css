@@ -1,0 +1,108 @@
+.sortby-wrapper {
+    position: relative;
+    top: -2px;
+    display: flex;
+    align-items: center;
+    height: 25px;
+}
+
+.sortby-wrapper .dropdown-toggle::after {
+    display: none !important; 
+}
+
+.sort-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 5px;
+    border-radius: 5px;
+    /* background-color: rgba(0, 0, 0, 0.35); */
+    transition: all .1s ease-in-out;
+}
+
+.sort-container:hover {
+    background-color: rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+}
+
+.sortby-text {
+    color: var(--light);
+    font-size: 1.1rem;
+    font-weight: 500;
+    z-index: 1;
+}
+
+.sort-container:hover .sortby-text-item {
+    color: #a1a1a1;
+}
+
+.sortby-icon {
+    position: relative;
+    top: -1px;
+    right: 2px;
+    transform: scaleX(-1);
+    color: var(--light);
+    font-size: 20px !important;
+    transition: all .3s ease-in-out;
+}
+
+.sortby-icon-arrow-asc {
+    position: relative;
+    top: -1px;
+    left: 2px;
+    color: var(--light);
+    font-size: 16px !important;
+    transition: all .2s ease-in-out;
+}
+
+.sortby-icon-arrow-asc:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+    color: var(--purple);
+}
+
+.sortby-icon-arrow-desc {
+    position: relative;
+    top: -2px;
+    left: 2px;
+    color: var(--light);
+    font-size: 16px !important;
+    transition: all .2s ease-in-out;
+    transform: rotate(180deg);
+}
+
+.sortby-icon-arrow-desc:hover {
+    transform: scale(1.1) rotate(180deg);
+    cursor: pointer;
+    color: var(--purple);
+}
+
+.sortby-options {
+    background-color: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(5px);
+    border-radius: 5px;
+    padding: 5px 0;
+    border: none;
+}
+
+.sortby-option {
+    color: var(--light);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.sortby-option:hover {
+    background-color: #6e42c194;
+    color: var(--light);
+    cursor: pointer;
+}
+
+.sortby-option:active {
+    background-color: #6e42c194;
+    color: var(--light);
+}
+
+.sortby-option:focus {
+    background-color: #6e42c194;
+    color: var(--light);
+}

@@ -3,6 +3,8 @@ import { useContext } from 'react';
 import { SetExtState } from '../../context/ExtStateContext'
 import { formatUnixTimestamp } from '../../utils/formatUnixTimestamp'
 import '../../assets/css/components/Cards/OverviewProject.css'
+import OverviewTaskBadge from '../Badge/OverviewTaskBadge';
+import OverviewDiscussionBadge from '../Badge/OverviewDiscussionBadge';
 
 function OverviewProject(props) {
     const setExtState = useContext(SetExtState);
@@ -13,37 +15,36 @@ function OverviewProject(props) {
         setExtState("Project");
     }
 
-    const taskClass = () => {
-        if (props.project.task_lists_badge_level === 1){
-            return "badge badge-secondary";
-        } else if (props.project.task_lists_badge_level === 2){
-            return "badge badge-success";
-        } else if (props.project.task_lists_badge_level === 3){
-            return "badge badge-danger";
-        }else{
-            return "badge badge-secondary";
-        }
-    }
-
-    const discussionClass = () => {
-        if (props.project.discussion_flag){
-            return "badge badge-purple";
-        }else{
-            return "badge badge-secondary";
-        }
-    }
-
     return (
-        <div class="card card-task card-project" onClick={handleClick}>
-            <div class="card-body">
-                <div class="card-title">
-                    <h6 data-filter-by="text" class="H6-filter-by-text">{props.project.name}</h6>
-                    <span class="text-small">Last Activity: {formatUnixTimestamp(props.project.last_active)}</span>
+        <div className="card card-task card-project" onClick={handleClick}>
+            <div className="card-body">
+                <div className="card-title overview-project-card-title">
+                    <h6 data-filter-by="text" className="H6-filter-by-text overview-project-label">{props.project.name}</h6>
+                    <span className="text-small">
+                        <i className='last-active-icon material-icons'>schedule</i>
+                        {formatUnixTimestamp(props.project.last_active)}
+                        {(props.project.label) ?  
+                            <span>
+                                <span className='inline-bullet'>&#8226;</span>
+                                <span className="project-status-label-text">
+                                    {props.project.label}
+                                </span>
+                            </span>
+                        : 
+                            null
+                        }
+                    </span>
                 </div>
-                <div class="card-meta">
-                    <div class="card-options">
-                        <span className={taskClass()}>Task Lists {props.project.task_lists.length}</span>
-                        <span className={discussionClass()}>Discussions {props.project.discussions.length}</span>
+                <div className="card-meta">
+                    <div className="card-options">
+                        <div className="stacked-badges">
+                            <div className="stacked-badge-item">
+                                <OverviewDiscussionBadge project={props.project} />
+                            </div>
+                            <div className="stacked-badge-item">
+                                <OverviewTaskBadge project={props.project} />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

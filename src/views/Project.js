@@ -1,29 +1,37 @@
 /* global chrome */
-import { useEffect, useState, useContext } from "react"
+import { useEffect, useState, useContext, useCallback } from "react"
 import { SetExtState, IsRefreshing, ProjectFilter } from "../context/ExtStateContext"
 import Loading from "../components/Background/Loading";
 import Discussion from "../components/Cards/Discussion";
 import ProjectTaskList from "../components/Cards/ProjectTaskList";
-import { formatUnixTimestamp } from "../utils/formatUnixTimestamp";
 import { filterWorkingProject } from "../utils/filterWorkingProject";
+import ProjectHeader from "../components/Text/ProjectHeader";
 
 function Project(){
-    const projectFilter = useContext(ProjectFilter);
-    const setExtState = useContext(SetExtState);
-    const isRefreshing = useContext(IsRefreshing);
-    const [loadingStorage, setLoadingStorage] = useState(false);
+    //Project
     const [project, setProject] = useState({discussions: [], task_lists: []});
-    const [accountNumber, setAccountNumber] = useState(0);
+
+    //Text Filter
+    const projectFilter = useContext(ProjectFilter);
     const filteredDiscussions = project.discussions.filter(discussion => discussion.name.toLowerCase().includes(projectFilter.toLowerCase()));
     const filteredTasks = project.task_lists.filter(task_list => task_list.name.toLowerCase().includes(projectFilter.toLowerCase()));
 
-    const projectURL = `https://app.activecollab.com/${accountNumber}/projects/${project.id}`;
+    //TODO: Remove? 
+    const [loadingStorage, setLoadingStorage] = useState(false);
+    
+    //Context
+    const setExtState = useContext(SetExtState);
+    const isRefreshing = useContext(IsRefreshing);
 
-    function redirect(){
+    //Redirect to project page
+    const [accountNumber, setAccountNumber] = useState(0);
+    const projectURL = `https://app.activecollab.com/${accountNumber}/projects/${project.id}`;
+    const handleRedirect = useCallback((projectURL) => {
         chrome.tabs.create({url: projectURL});
         console.log("Redirecting to: " + projectURL);
-    }
+    }, []);
 
+    //Message Listener for Chrome related events
     chrome.runtime.onMessage.addListener((request, sender, reply) => {
         if (request.event === "updated"){
             chrome.storage.local.get(["WorkingProject"]).then((result) => {
@@ -64,64 +72,56 @@ function Project(){
     }, []);
 
     return (
-        <div class="main-body">
+        <div className="main-body flex-grow-1">
             {(loadingStorage || isRefreshing) ?
                 <Loading />
             :
-            <div class="card-list">
-                <div class="d-flex justify-content-between">
-                    <div class="task-list-header">
-                        <h5>{project.name}</h5>
-                        <small>Last Activity: {formatUnixTimestamp(project.last_active)}</small>
-                    </div>
-                    <div class="project-link-icon">
-                        <i class="material-icons" onClick={redirect}>link</i>
-                    </div>
-                </div>
+            <div className="card-list">
+                <ProjectHeader project={project} projectURL={projectURL} redirect={handleRedirect} />
 
-                <div class="card-list-body">
-                    <div class="card-list">
-                        <div class="card-list-head">
+                <div className="card-list-body">
+                    <div className="card-list">
+                        <div className="card-list-head">
                             <h6>Discussions</h6>
                         </div>
-                        <div class="card-list-body">
-                            <ul class="list-group">
+                        <div className="card-list-body">
+                            <ul className="list-group">
                                 {(filteredDiscussions.length === 0) ?
-                                    <div class="filter-quip">
+                                    <div className="filter-quip">
                                         {(project.discussions.length > filteredDiscussions.length) ? 
-                                            <muted>Sorry, no results were found for your search.</muted>
+                                            <div className="text-muted">Sorry, no results were found for your search.</div>
                                         :
-                                            <muted>No Discussions!</muted>
+                                            <div className="text-muted">No Discussions!</div>
                                         }
                                     </div>
                                 :
-                                    filteredDiscussions.map((discussion) => {
+                                    filteredDiscussions.map((discussion, index) => {
                                         return (
-                                            <Discussion discussion={discussion} projectId={project.id} accountNumber={accountNumber} />
+                                            <Discussion key={index} discussion={discussion} projectId={project.id} accountNumber={accountNumber} />
                                         )
                                     })
                                 }
                             </ul>
                         </div>
                     </div>
-                    <div class="card-list">
-                        <div class="card-list-head">
+                    <div className="card-list">
+                        <div className="card-list-head">
                             <h6>Task Lists</h6>
                         </div>
-                        <div class="card-list-body">
-                            <ul class="list-group">
+                        <div className="card-list-body">
+                            <ul className="list-group">
                                 {(filteredTasks.length === 0) ?
-                                    <div class="filter-quip">
+                                    <div className="filter-quip">
                                         {(project.task_lists.length > filteredTasks.length) ?
-                                            <muted>Sorry, no results were found for your search.</muted>
+                                            <div className="text-muted">Sorry, no results were found for your search.</div>
                                         :
-                                            <muted>No Task Lists!</muted>
+                                            <div className="text-muted">No Task Lists!</div>
                                         }
                                     </div>
                                 :
-                                    filteredTasks.map((task_list) => {
+                                    filteredTasks.map((task_list, index) => {
                                         return (
-                                            <ProjectTaskList task_list={task_list} projectId={project.id} />
+                                            <ProjectTaskList key={index} task_list={task_list} projectId={project.id} />
                                         )
                                     })   
                                 }

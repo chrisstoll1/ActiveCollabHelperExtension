@@ -1,4 +1,4 @@
-import { GetInitial, GetProjectsDATA, GetProjectTasksDATA, GetProjectTasksArchivedDATA, GetProjectDiscussionsDATA } from './ActiveCollab/ActiveCollabAPI.js';
+import { GetInitial, GetProjectsDATA, GetProjectLabelsDATA, GetProjectCategoriesDATA, GetProjectsChildDATA, GetProjectsLeadersDATA } from './ActiveCollab/ActiveCollabAPI.js';
 import { formatProject } from './ActiveCollab/ActiveCollabDataFormat.js';
 
 chrome.runtime.onInstalled.addListener(async () => {
@@ -21,6 +21,8 @@ chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
       await removeLocalStorageObject("WorkingProject");
       await removeLocalStorageObject("WorkingTaskList");
       await removeLocalStorageObject("ExtState");
+      await removeLocalStorageObject("LastRefreshTime");
+      await removeLocalStorageObject("ACLeaders");
       refreshActiveCollabData();
     }
     if (request.event === "reset_settings"){
@@ -30,6 +32,9 @@ chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
 });
 
 async function refreshActiveCollabData() {
+  // Delete existing data DEBUG
+  // await removeLocalStorageObject("ACProjects");
+
   // Cache the existing data
   var oldActiveCollabData = await chrome.storage.local.get(["ACProjects"]);
   if (Object.keys(oldActiveCollabData).length === 0){
@@ -37,16 +42,31 @@ async function refreshActiveCollabData() {
   }else{
       oldActiveCollabData = JSON.parse(oldActiveCollabData.ACProjects);
   }
+  //Get Cached Leader Data
+  var oldLeaderData = await chrome.storage.local.get(["ACLeaders"]);
+  if (Object.keys(oldLeaderData).length === 0){
+      oldLeaderData = [];
+  }else{
+      oldLeaderData = JSON.parse(oldLeaderData.ACLeaders);
+  }
 
   // Remove existing data from storage
   await removeLocalStorageObject("ACProjects");
+  await removeLocalStorageObject("ACLeaders");
 
   if (await isTokenValid()) {
     // Get new data
-    var activeCollabData = await buildActiveCollabDataObject(oldActiveCollabData);
+    const [activeCollabData, projectLeaderData] = await buildActiveCollabDataObject(oldActiveCollabData, oldLeaderData);
 
-    //Refresh projects
+    //Set refresh time
+    var date = new Date();
+    var refreshTime = date.toLocaleString();
+    await chrome.storage.local.set({"LastRefreshTime": refreshTime});
+    await chrome.runtime.sendMessage({event: "refresh-date-updated"});
+
+    //Set Local Storage to new data
     await chrome.storage.local.set({"ACProjects": JSON.stringify(activeCollabData)});
+    await chrome.storage.local.set({"ACLeaders": JSON.stringify(projectLeaderData)});
 
     //Refresh working project if it exists
     await chrome.storage.local.get(["WorkingProject"], async function(result) {
@@ -81,7 +101,7 @@ async function refreshActiveCollabData() {
   }
 }
 
-async function buildActiveCollabDataObject(oldActiveCollabData) {
+async function buildActiveCollabDataObject(oldActiveCollabData, oldLeaderData) {
   var PHPSESSID = await chrome.storage.sync.get(["PHPSESSID"])
   var accountNumber = await chrome.storage.sync.get(["activecollab_user_instances"])
   PHPSESSID = PHPSESSID.PHPSESSID.toString();
@@ -91,35 +111,55 @@ async function buildActiveCollabDataObject(oldActiveCollabData) {
   //Get List of Projects
   var projectsRAW = await GetProjectsDATA(sessionCookie, accountNumber);
 
-  //Get List of Tasks and Discussions for each project
-  const projectDataPromises = projectsRAW.map(async project => {
-    // determine if project has been updated since we last grabbed it
-    const oldProject = oldActiveCollabData.find(oldProject => oldProject.id === project.id);
-    if (oldProject && oldProject.last_active === project.last_activity_on) {
-      project.useOldData = true;
-      return [[], [], []];
-    }
+  //Project Data (Discussions, Tasks)
+  const projectData = await GetProjectsChildDATA(sessionCookie, accountNumber, projectsRAW, oldActiveCollabData);
 
-    var projectTasks = GetProjectTasksDATA(sessionCookie, accountNumber, project.id);
-    var projectTasksArchived = GetProjectTasksArchivedDATA(sessionCookie, accountNumber, project.id);
-    var projectDiscussions = GetProjectDiscussionsDATA(sessionCookie, accountNumber, project.id);
-    return Promise.all([projectTasks, projectTasksArchived, projectDiscussions]);
-  });
-  const projectData = await Promise.all(projectDataPromises);
+  //Get List of Labels for all projects
+  const projectLabels = await GetProjectLabelsDATA(sessionCookie, accountNumber);
+
+  //Get List of Categories for all projects
+  const projectCategories = await GetProjectCategoriesDATA(sessionCookie, accountNumber);
+
+  //Get List of Leaders for all projects
+  const projectLeaders = await GetProjectsLeadersDATA(sessionCookie, accountNumber, projectsRAW, oldLeaderData);
 
   //Format the data into a single object
   const projectsWithData = projectsRAW.map((project, index) => {
+    // If old data is valid use it
     if (project.useOldData) {
       return oldActiveCollabData.find(oldProject => oldProject.id === project.id);
     }
 
+    // Deconstruct the project data
     const [projectTasks, projectTasksArchived, projectDiscussions] = projectData[index];
+
+    // Combine active and archived tasks
     let projectTasksAll = projectTasks;
-    projectTasksAll.tasks = projectTasks.tasks.concat(projectTasksArchived); //Combine active and archived tasks
+    projectTasksAll.tasks = projectTasks.tasks.concat(projectTasksArchived);
+
+    // Add label text to project 
+    const foundLabel = projectLabels.find(label => label.id === project.label_id);
+    if (foundLabel) {
+      project.label_text = foundLabel.name;
+    }
+
+    // Add category text to project
+    const foundCategory = projectCategories.find(category => category.id === project.category_id);
+    if (foundCategory) {
+      project.category_text = foundCategory.name;
+    }
+
+    // Add leader name to project
+    const foundLeader = projectLeaders.find(leader => leader.id === project.leader_id);
+    if (foundLeader) {
+      project.leader_name = foundLeader.display_name;
+    }
+
+    // format the project data
     return formatProject(project, projectTasksAll, projectDiscussions);
   });
 
-  return projectsWithData;
+  return [projectsWithData, projectLeaders];
 }
 
 async function isTokenValid() {

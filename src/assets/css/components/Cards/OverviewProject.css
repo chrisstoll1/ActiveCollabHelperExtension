@@ -8,7 +8,38 @@
     transform: scale(1.01);
 }
 
-.badge-purple {
-    background-color: #5d2bff;
-    color: var(--light);
+.last-active-icon {
+    position: relative;
+    top: 2px;
+    padding-right: 5px;
+    font-size: .975rem !important;
+}
+
+.inline-bullet {
+    font-size: .975rem !important;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+.overview-project-label {
+    padding-bottom: 5px;
+}
+
+.overview-project-card-title {
+    margin-bottom: 0rem !important;
+}
+
+.stacked-badges {
+    display: flex;
+    flex-direction: column;
+}
+  
+.stacked-badge-item:not(:last-child) {
+    margin-bottom: 6px;
+}
+
+.card-body .card-options {
+    top: 0.85rem !important;
+    right: 1.5rem !important;
+    min-width: 50px;
 }

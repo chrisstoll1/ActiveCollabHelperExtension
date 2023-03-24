@@ -1,0 +1,77 @@
+.badge-purple {
+    background-color: #5d2bff9d;
+	border-color: #5d2bff;
+    color: var(--light);
+	border-width: 0.75px;
+	border-style: solid;
+	border-radius: 3px 3px 3px 3px;
+}
+
+.badge-secondary {
+    background-color: #6c757d98;
+	border-color: #6c757d;
+    color: var(--light);
+	border-width: 0.75px;
+	border-style: solid;
+	border-radius: 3px 3px 3px 3px;
+}
+
+.badge-success {
+    background-color: #28a746a1;
+	border-color: #28a745;
+    color: var(--light);
+	border-width: 0.75px;
+	border-style: solid;
+	border-radius: 3px 3px 3px 3px;
+}
+
+.badge-danger {
+    background-color: #dc35469f;
+	border-color: #dc3545;
+    color: var(--light);
+	border-width: 0.75px;
+	border-style: solid;
+	border-radius: 3px 3px 3px 3px;
+}
+
+.badge {
+	display: flex;
+    align-items: center;
+	justify-content: center;
+    margin-left: 5px;
+    padding-bottom: 0px;
+    transition: all .1s ease-in-out;
+}
+
+.badge:hover {
+    transform: scale(1.05);
+}
+
+.badge-text {
+	color: #ffffff;
+	font-weight: 700;
+	font-size: 0.75rem;
+	margin: 3px;
+}
+
+.badge-counter {
+    font-size: 0.75rem;
+	margin: 0px;
+}
+
+.badge-icon {
+    font-size: 18px !important;
+	margin-bottom: 2px;
+	padding: 0px !important;
+}
+
+.badge-container-horizontal {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.badge-container-horizontal i {
+	margin-right: .25rem;
+}

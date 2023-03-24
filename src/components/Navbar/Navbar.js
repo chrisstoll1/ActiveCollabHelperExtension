@@ -17,10 +17,10 @@ function Navbar() {
     }, []);
 
     return (
-        <div class="main-header">
+        <div className="main-header">
             <div className={scrolled ? "navbar breadcrumb-bar navbar-scrolled" : "navbar breadcrumb-bar navbar-normal"}>
                 <BreadCrumb/> 
-                <div class="extension-controls">
+                <div className="extension-controls">
                     <Filter/>
                     <RefreshButton/>
                     <SettingsButton/>

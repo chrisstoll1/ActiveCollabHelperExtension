@@ -5,6 +5,9 @@ export const formatProject = (project, projectTasks, projectDiscussions) => {
     return {
         name: project.name,
         id: project.id,
+        label: project.label_text,
+        leader: project.leader_name,
+        category: project.category_text,
         count_tasks: project.count_tasks,
         count_discussions: project.count_discussions,
         last_active: project.last_activity_on,
@@ -104,12 +107,44 @@ const formatProjectDiscussions = (projectDiscussions) => {
     let project_discussion_flagged = false;
 
     const formattedDiscussions = projectDiscussions.discussions.map((discussion) => {
-        // If there are comments, get the last comment's created_on and created_by_email
-        let last_active, last_activity_by;
+        // If there are comments, get the last comment's created_on, created_by_email and body_excerpt
+        let last_active, last_activity_by, last_activity_excerpt;
+
         if (discussion.comments_count > 0) {
             const lastComment = projectDiscussions.comments.Discussion[discussion.id];
+
+            // Format the body into a excerpt
+            const formattedBody = () => {
+                let body = lastComment.body;
+                let maxLength = 100;
+
+                // Insert @ symbol before the content of spans with mention and mention-user classes
+                body = body.replace(/<span class="mention mention-user">|<span class="mention">/gi, '<span class="mention-user">@');
+
+                // Extract a substring containing the first maxLength characters
+                const bodySubstring = body.substring(0, maxLength);
+
+                // Count the number of span tags within the first maxLength characters
+                const spanTagsCount = (bodySubstring.match(/<span[^>]*>/gi) || []).length;
+
+                // Increase maxLength by 30 for every span tag found
+                maxLength += 30 * spanTagsCount;
+
+                // Remove all HTML tags except span
+                body = body.replace(/<\/?((?!span)[a-z]+)(\s[^>]*)?>/gi, '');
+
+                if (body.length > maxLength) {
+                    body = body.substring(0, maxLength);
+                    body = body.substring(0, Math.min(body.length, body.lastIndexOf(' ')));
+                    body += '...';
+                }
+
+                return body;
+            };
+
             last_active = lastComment.created_on;
             last_activity_by = lastComment.created_by_email;
+            last_activity_excerpt = formattedBody();
         }
 
         let discussionFlagged = false;
@@ -125,6 +160,7 @@ const formatProjectDiscussions = (projectDiscussions) => {
             comments_count: discussion.comments_count,
             last_active: last_active,
             last_activity_by: last_activity_by,
+            last_activity_excerpt: last_activity_excerpt,
             flagged: discussionFlagged
         };
     });

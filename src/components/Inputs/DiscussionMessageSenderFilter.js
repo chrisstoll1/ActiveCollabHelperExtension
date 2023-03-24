@@ -27,21 +27,21 @@ function DiscussionMessageSenderFilter(){
 
 
     return (
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-4">
-                        <label class="form-control settings-label-text">Last Message Sender</label>
+        <div className="card">
+            <div className="card-body">
+                <div className="row">
+                    <div className="col-4">
+                        <label className="form-control settings-label-text">Last Message Sender</label>
                     </div>
-                    <div class="col-4">
-                        <select ref={selectRef} onChange={handleChange} class="form-control settings-input">
+                    <div className="col-4">
+                        <select ref={selectRef} onChange={handleChange} className="form-control settings-input">
                             <option selected value=""></option>
                             <option value="doesNotContain">Does Not Contain</option>
                             <option value="contains">Contains</option>
                         </select>
                     </div>
-                    <div class="col-4">
-                        <input ref={inputRef} onChange={handleChange} type="text" class="form-control settings-input" placeholder="@gmail.com"/>
+                    <div className="col-4">
+                        <input ref={inputRef} onChange={handleChange} type="text" className="form-control settings-input" placeholder="@gmail.com"/>
                     </div>
                 </div>
             </div>

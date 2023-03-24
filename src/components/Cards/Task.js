@@ -1,5 +1,7 @@
 /* global chrome */
 import { formatUnixTimestamp } from '../../utils/formatUnixTimestamp';
+import Badge from '../Badge/Badge';
+import '../../assets/css/components/Cards/Task.css';
 
 function Task(props) {
     const taskURL = `https://app.activecollab.com/${props.accountNumber}/projects/${props.projectId}?modal=Task-${props.task.id}-${props.projectId}`;
@@ -9,41 +11,59 @@ function Task(props) {
         console.log('Redirecting to: ' + taskURL);
     }
 
-    const taskTitleWrapperClass = () => {
-        if (props.task.due_on === null) {
-            return 'd-flex justify-content-left';
-        } else {
-            return 'd-flex align-items-center justify-content-left';
+    const taskIcon = () => {
+        if (props.task.status.includes('Completed')){
+            return 'assignment_turned_in';
+        }else if (props.task.status.includes('Overdue')){
+            return 'notification_important';
+        }else if (props.task.status.includes('Open')){
+            return 'play_for_work';
+        }else{
+            return 'task_alt';
         }
-    };
+    }
 
     return (
-        <li class="list-group-item d-flex justify-content-between" onClick={redirect}>
-            <div className={taskTitleWrapperClass()}>
-                <div>
-                    <span><i class="material-icons">task_alt</i> </span>
-                </div>
-                <div>
-                    <p class="discussion-name">{props.task.name}</p>
-                    <div>{(props.task.due_on === null) ? 
-                        <small></small>
+        <li className="list-group-item d-flex justify-content-between" onClick={redirect}>
+            <div className="d-flex align-items-center justify-content-left">
+                <i className="material-icons task-header-icon">{taskIcon()}</i>
+                <span>
+                    <div className="task-name-text">{props.task.name}</div>
+                    {(props.task.due_on === null) ? 
+                        null
                     : 
-                        <small>Due on {formatUnixTimestamp(props.task.due_on)}</small>
-                    }
-                    </div>
-                </div>
+                        <small className="text-muted task-due-on-wrapper">
+                            <i className="material-icons task-due-on-icon">event</i>
+                            {formatUnixTimestamp(props.task.due_on)}
+                        </small>
+                    } 
+                </span>
             </div>
-            <div>
-                <div class="d-flex justify-content-right">
-                    <div>
-                        <small></small>
-                    </div>
-                    <div>
-                        {(props.task.status.includes('Completed')) ? <span class="badge badge-secondary">Completed</span> : null}
-                        {(props.task.status.includes('Open')) ? <span class="badge badge-success">Open</span> : null}
-                        {(props.task.status.includes('Overdue')) ? <span class="badge badge-danger">Overdue</span> : null}
-                    </div>
-                </div>
+            <div className="d-flex align-items-center justify-content-right">
+                {(props.task.status.includes('Completed')) ? 
+                    <Badge 
+                        color="secondary" 
+                        text="Completed"
+                    /> 
+                : 
+                    null
+                }
+                {(props.task.status.includes('Open')) ? 
+                    <Badge 
+                        color="success" 
+                        text="Open"
+                    /> 
+                : 
+                    null
+                }
+                {(props.task.status.includes('Overdue')) ? 
+                    <Badge 
+                        color="danger" 
+                        text="Overdue"
+                    /> 
+                : 
+                    null
+                }
             </div>
         </li>
     );

@@ -47,7 +47,7 @@ function Settings() {
 
 
     return (
-        <div class="main-body">
+        <div className="main-body">
             <DiscussionMessageSenderFilterContext.Provider value={discussionMessageSenderFilter}>
                 <SetDiscussionMessageSenderFilterContext.Provider value={setDiscussionMessageSenderFilter}>
                     <DiscussionMessageDateFilterContext.Provider value={discussionMessageDateFilter}>
@@ -55,15 +55,15 @@ function Settings() {
                             <SettingsTogglesContext.Provider value={settingsToggles}>
                                 <SetSettingsTogglesContext.Provider value={setSettingsToggles}>
 
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-12">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <div className="row">
+                                                <div className="col-12">
                                                     
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <h5 class="settings-title">Discussion Filters</h5>
-                                                            <hr class="mt-4"/>
+                                                    <div className="row">
+                                                        <div className="col-12">
+                                                            <h5 className="settings-title">Discussion Filters</h5>
+                                                            <hr className="mt-4"/>
                                                         </div>
                                                     </div>
                                             
@@ -71,13 +71,13 @@ function Settings() {
 
                                                     <DiscussionMessageDateFilter/>
 
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <div class="row">
-                                                                <div class="col-4">
-                                                                    <label class="form-control settings-label-text">Hide Unflagged Discussions</label>
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            <div className="row">
+                                                                <div className="col-4">
+                                                                    <label className="form-control settings-label-text">Hide Unflagged Discussions</label>
                                                                 </div>
-                                                                <div class="col-8">
+                                                                <div className="col-8">
                                                                     <Checkbox id="hide-unflagged-discussions" label=""/>    
                                                                 </div>
                                                             </div>
@@ -88,51 +88,51 @@ function Settings() {
                                         </div>
                                     </div>
 
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-12">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <div className="row">
+                                                <div className="col-12">
                                                     
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <h5 class="settings-title">Task Filters</h5>
-                                                            <hr class="mt-4"/>
+                                                    <div className="row">
+                                                        <div className="col-12">
+                                                            <h5 className="settings-title">Task Filters</h5>
+                                                            <hr className="mt-4"/>
                                                         </div>
                                                     </div>
 
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <div class="row">
-                                                                <div class="col-4">
-                                                                    <label class="form-control settings-label-text">Hide Open Tasks</label>
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            <div className="row">
+                                                                <div className="col-4">
+                                                                    <label className="form-control settings-label-text">Hide Open Tasks</label>
                                                                 </div>
-                                                                <div class="col-8">
+                                                                <div className="col-8">
                                                                     <Checkbox id="hide-open-tasks" label=""/>     
                                                                 </div>
                                                             </div>
                                                         </div>  
                                                     </div>
 
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <div class="row">
-                                                                <div class="col-4">
-                                                                    <label class="form-control settings-label-text">Hide Completed Tasks</label>
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            <div className="row">
+                                                                <div className="col-4">
+                                                                    <label className="form-control settings-label-text">Hide Completed Tasks</label>
                                                                 </div>
-                                                                <div class="col-8">
+                                                                <div className="col-8">
                                                                     <Checkbox id="hide-completed-tasks" label=""/>      
                                                                 </div>
                                                             </div>
                                                         </div>  
                                                     </div>
 
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <div class="row">
-                                                                <div class="col-4">
-                                                                    <label class="form-control settings-label-text">Hide Overdue Tasks</label>
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            <div className="row">
+                                                                <div className="col-4">
+                                                                    <label className="form-control settings-label-text">Hide Overdue Tasks</label>
                                                                 </div>
-                                                                <div class="col-8">
+                                                                <div className="col-8">
                                                                     <Checkbox id="hide-overdue-tasks" label=""/>     
                                                                 </div>
                                                             </div>
@@ -143,51 +143,51 @@ function Settings() {
                                         </div>
                                     </div>
 
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-12">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <div className="row">
+                                                <div className="col-12">
                                                     
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <h5 class="settings-title">General</h5>
-                                                            <hr class="mt-4"/>
+                                                    <div className="row">
+                                                        <div className="col-12">
+                                                            <h5 className="settings-title">General</h5>
+                                                            <hr className="mt-4"/>
                                                         </div>
                                                     </div>
 
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <div class="row">
-                                                                <div class="col-4">
-                                                                    <label class="form-control settings-label-text">Hide Empty Projects</label>
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            <div className="row">
+                                                                <div className="col-4">
+                                                                    <label className="form-control settings-label-text">Hide Empty Projects</label>
                                                                 </div>
-                                                                <div class="col-8">
+                                                                <div className="col-8">
                                                                     <Checkbox id="hide-empty-projects" label=""/>       
                                                                 </div>
                                                             </div>
                                                         </div>  
                                                     </div>
                                             
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <div class="row">
-                                                                <div class="col-4">
-                                                                    <label class="form-control settings-label-text">Sign Out of ActiveCollab</label>
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            <div className="row">
+                                                                <div className="col-4">
+                                                                    <label className="form-control settings-label-text">Sign Out of ActiveCollab</label>
                                                                 </div>
-                                                                <div class="col-8">
+                                                                <div className="col-8">
                                                                     <DeleteTokenButton/>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
 
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <div class="row">
-                                                                <div class="col-4">
-                                                                    <label class="form-control settings-label-text">Reset All Settings</label>
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            <div className="row">
+                                                                <div className="col-4">
+                                                                    <label className="form-control settings-label-text">Reset All Settings</label>
                                                                 </div>
-                                                                <div class="col-8">
+                                                                <div className="col-8">
                                                                     <ResetSettingsButton/>
                                                                 </div>
                                                             </div>
@@ -205,12 +205,6 @@ function Settings() {
                     </DiscussionMessageDateFilterContext.Provider>
                 </SetDiscussionMessageSenderFilterContext.Provider>
             </DiscussionMessageSenderFilterContext.Provider>
-
-            <div class="d-flex justify-content-end">
-                <div class="p-2">
-                    <small>ActiveCollab Helper Extension v0.0.1</small>
-                </div>
-            </div>
         </div>
     );
 }
