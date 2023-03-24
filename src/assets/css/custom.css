@@ -182,19 +182,12 @@ body {
     padding: 0.3em 0.4em;
 }
 
-.project-link-icon {
-    color: var(--light);
-    z-index: 1;
-    transition: all .1s ease-in-out;
-}
-
-.project-link-icon:hover {
-    color: var(--purple);
-    cursor: pointer;
-    transform: scale(1.1);
-}
-
 /* Popper does not like margin */
 .dropdown-menu { 
     margin: 0 !important;
+}
+
+.counter-text {
+    font-weight: bold;
+    font-size: 0.9em;
 }

@@ -1,3 +1,31 @@
+.task-list-header-title {
+    display: flex;
+    align-items: center;
+}
+
 .task-list-header h5 {
+    margin-top: 0px;
     margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 3px;
+}
+
+.task-list-header i {
+    margin-top: -4px;
+    margin-right: 2px;
+    color: var(--light);
+}
+
+.task-list-header small {
+    font-weight: bold;
+    margin-left: 3px;
+    font-size: 12px;
+}
+
+.task-list-header-badges {
+    z-index: 1;
+}
+
+.task-list-header-wrapper {
+    margin-bottom: 5px;
 }

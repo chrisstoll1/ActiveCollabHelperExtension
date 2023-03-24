@@ -1,4 +1,4 @@
-import '../../assets/css/components/Background/OverviewHeader.css';
+import '../../assets/css/components/Text/OverviewHeader.css';
 
 function OverviewHeader(props) {
     const { filteredProjects, projects } = props;

@@ -9,6 +9,10 @@ function Footer() {
     const [lastRefreshTime, setLastRefreshTime] = useState("");
     const [currentTime, setCurrentTime] = useState(new Date());
 
+    function redirect() {
+        chrome.tabs.create({url: "https://github.com/chrisstoll1/ActiveCollabHelperExtension"});
+    }
+
     function footerClass() {
         if (extState === "Settings") {
             return ("footer-wrapper d-flex justify-content-end");
@@ -21,7 +25,9 @@ function Footer() {
 
     function footerText() {
         if (extState === "Settings") {
-            return ("ActiveCollab Helper Extension v0.0.1");
+            return (
+                <span onClick={redirect} className="footer-link">ActiveCollab Helper Extension v0.0.2</span>
+            );
         }else{
             if (lastRefreshTime !== ""){
                 return ("Refreshed: " + formatDateStringToTimeAgo(lastRefreshTime, currentTime));

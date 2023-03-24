@@ -1,0 +1,19 @@
+.task-due-on-icon {
+    font-size: 16px !important;
+    position: relative;
+    top: 4px;
+    padding-right: 2px !important;
+}
+
+.task-header-icon {
+    font-size: 28px !important;
+}
+
+.task-name-text {
+    font-size: 14px;
+    color: var(--light);
+}
+
+.task-name-text:not(:last-child) {
+    margin-bottom: -5px;
+}

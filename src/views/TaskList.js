@@ -5,17 +5,24 @@ import Loading from '../components/Background/Loading';
 import Task from '../components/Cards/Task';
 import { filterWorkingTaskList } from '../utils/filterWorkingTaskList';
 import '../assets/css/views/TaskList.css';
+import TaskListHeader from '../components/Text/TaskListHeader';
 
-function Tasklist() {
+function Tasklist(props) {
     const setExtState = useContext(SetExtState);
-    const [taskList, setTaskList] = useState({tasks: []});
+    const [taskList, setTaskList] = useState({tasks: [], badges: [], completed_tasks: 0, overdue_tasks: 0, open_tasks: 0}); //TODO: initialize with prop
     const [projectId, setProjectId] = useState(0);
     const [projectName, setProjectName] = useState("");
     const [accountNumber, setAccountNumber] = useState(0);
     const taskListFilter = useContext(TaskListFilter);
     const isRefreshing = useContext(IsRefreshing);
     const [loadingStorage, setLoadingStorage] = useState(false);
-    const filteredOpenTasks = taskList.tasks.filter(task => task.name.toLowerCase().includes(taskListFilter.toLowerCase()));
+    const filteredTasks = taskList.tasks.filter(task => task.name.toLowerCase().includes(taskListFilter.toLowerCase()));
+
+    //Split tasks into completed and open
+    const completedTasks = taskList.tasks.filter(task => task.status.includes('Completed'));
+    const openTasks = taskList.tasks.filter(task => task.status.includes('Open'));
+    const completedFilteredTasks = filteredTasks.filter(task => task.status.includes('Completed'));
+    const openFilteredTasks = filteredTasks.filter(task => task.status.includes('Open'));
 
     const taskListURL = `https://app.activecollab.com/${accountNumber}/projects/${projectId}/task-lists/${taskList.id}`;
 
@@ -85,15 +92,7 @@ function Tasklist() {
                 <Loading />
             :
                 <div className="card-list">
-                    <div className="d-flex justify-content-between">
-                        <div className="task-list-header">
-                            <h5>{taskList.name}</h5>
-                            <small>{projectName}</small>
-                        </div>
-                        <div className="project-link-icon">
-                            <i className="material-icons" onClick={redirect}>link</i>
-                        </div>
-                    </div>
+                    <TaskListHeader filteredTasks={filteredTasks} taskList={taskList} projectName={projectName} />
 
                     <div className="card-list-body">
                         <div className="card-list">
@@ -102,19 +101,48 @@ function Tasklist() {
                             </div>
                             <div className="card-list-body">
                                 <ul className="list-group">
-                                    {(filteredOpenTasks.length === 0) ?
+                                    {(openFilteredTasks.length === 0) ?
                                         <div className="filter-quip">
-                                            {(taskList.tasks.length > filteredOpenTasks.length) ?
+                                            {(openTasks.length > openFilteredTasks.length) ?
                                                 <div className="text-muted">Sorry, no results were found for your search.</div>
                                             :
                                                 <div className="text-muted">No Open Tasks!</div>
                                             }
                                         </div>
                                     :
-                                        filteredOpenTasks.map((task, index) => {
-                                            return (
-                                                <Task key={index} task={task} projectId={projectId} accountNumber={accountNumber} />
-                                            )
+                                        openFilteredTasks.map((task, index) => {
+                                            if (task.status.includes("Open")){
+                                                return (
+                                                    <Task key={index} task={task} projectId={projectId} accountNumber={accountNumber} />
+                                                )
+                                            }
+                                        })   
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div className="card-list">
+                            <div className="card-list-head">
+                                <h6>Completed Tasks</h6>
+                            </div>
+                            <div className="card-list-body">
+                                <ul className="list-group">
+                                    {(completedFilteredTasks.length === 0) ?
+                                        <div className="filter-quip">
+                                            {(completedTasks.length > completedFilteredTasks.length) ?
+                                                <div className="text-muted">Sorry, no results were found for your search.</div>
+                                            :
+                                                <div className="text-muted">No Completed Tasks!</div>
+                                            }
+                                        </div>
+                                    :
+                                        completedFilteredTasks.map((task, index) => {
+                                            if (task.status.includes("Completed")){
+                                                return (
+                                                    <Task key={index} task={task} projectId={projectId} accountNumber={accountNumber} />
+                                                )
+                                            }
                                         })   
                                     }
                                 </ul>
