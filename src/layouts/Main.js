@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import Routes from './Routes';
+import { setChromeBadge } from '../utils/setChromeBadge';
 import { ExtState, SetExtState, IsRefreshing, SetRefreshing, OverviewFilter, SetOverviewFilter, ProjectFilter, SetProjectFilter, TaskListFilter, SetTaskListFilter } from '../context/ExtStateContext'
 
 function Main() {
@@ -17,6 +18,14 @@ function Main() {
         chrome.storage.local.get(["ExtState"]).then((result) => {
             if (Object.keys(result).length !== 0){
                 setExtState(result.ExtState);
+            }
+        });
+
+        // Update Chrome Badge using setChromeBadge
+        chrome.storage.local.get(["ACProjects"]).then(async (result) => {
+            const projects = JSON.parse(result.ACProjects);
+            if (Object.keys(projects).length !== 0){
+                await setChromeBadge(projects);
             }
         });
     }, []);

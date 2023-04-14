@@ -1,3 +1,4 @@
+import { setChromeBadge } from "../utils/setChromeBadge";
 import { GetInitial, GetProjectsDATA, GetProjectLabelsDATA, GetProjectCategoriesDATA, GetProjectsChildDATA, GetProjectsLeadersDATA } from './ActiveCollab/ActiveCollabAPI.js';
 import { formatProject } from './ActiveCollab/ActiveCollabDataFormat.js';
 
@@ -35,14 +36,14 @@ async function refreshActiveCollabData() {
   // Delete existing data DEBUG
   // await removeLocalStorageObject("ACProjects");
 
-  // Cache the existing data
+  // Cache Project data
   var oldActiveCollabData = await chrome.storage.local.get(["ACProjects"]);
   if (Object.keys(oldActiveCollabData).length === 0){
       oldActiveCollabData = [];
   }else{
       oldActiveCollabData = JSON.parse(oldActiveCollabData.ACProjects);
   }
-  //Get Cached Leader Data
+  // Cached Leader Data
   var oldLeaderData = await chrome.storage.local.get(["ACLeaders"]);
   if (Object.keys(oldLeaderData).length === 0){
       oldLeaderData = [];
@@ -67,6 +68,9 @@ async function refreshActiveCollabData() {
     //Set Local Storage to new data
     await chrome.storage.local.set({"ACProjects": JSON.stringify(activeCollabData)});
     await chrome.storage.local.set({"ACLeaders": JSON.stringify(projectLeaderData)});
+
+    //Set Chrome Badge to number of projects
+    await setChromeBadge(activeCollabData);
 
     //Refresh working project if it exists
     await chrome.storage.local.get(["WorkingProject"], async function(result) {
@@ -244,7 +248,8 @@ async function resetSyncedSettings(){
         "hide-open-tasks": false,
         "hide-completed-tasks": false,
         "hide-overdue-tasks": false,
-        "hide-empty-projects": false
+        "hide-empty-projects": false,
+        "show-badge-count": true
       }
     }
   });

@@ -9,7 +9,7 @@
     "default_icon": "logo-color.png"
   },
   "background": {
-    "service_worker": "service_workers/background.js",
+    "service_worker": "background.bundle.js",
     "type": "module"
   },
   "content_scripts": [{

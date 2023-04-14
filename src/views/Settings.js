@@ -8,6 +8,7 @@ import DiscussionMessageSenderFilter from '../components/Inputs/DiscussionMessag
 import DeleteTokenButton from '../components/Inputs/DeleteTokenButton';
 import ResetSettingsButton from '../components/Inputs/ResetSettingsButton';
 import { DiscussionMessageSenderFilterContext, SetDiscussionMessageSenderFilterContext, DiscussionMessageDateFilterContext, SetDiscussionMessageDateFilterContext, SettingsTogglesContext, SetSettingsTogglesContext} from '../context/SettingsContext';
+import { setChromeBadge } from '../utils/setChromeBadge';
 
 function Settings() {
     const [discussionMessageSenderFilter, setDiscussionMessageSenderFilter] = useState({});
@@ -21,6 +22,15 @@ function Settings() {
             settingsToggles: settingsToggles
         };
         chrome.storage.sync.set({"user_settings": settings});
+
+        // Update Chrome Badge using setChromeBadge
+        chrome.storage.local.get(["ACProjects"]).then(async (result) => {
+            const projects = JSON.parse(result.ACProjects);
+            if (Object.keys(projects).length !== 0){
+                await setChromeBadge(projects);
+            }
+        });
+
     }, [discussionMessageSenderFilter, discussionMessageDateFilter, settingsToggles]);
 
     useEffect(() => {
