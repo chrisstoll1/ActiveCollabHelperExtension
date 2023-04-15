@@ -1,0 +1,32 @@
+.accordion-header {
+    padding-top: 15px;
+    padding-bottom: 5px;
+}
+
+.accordion-body {
+    padding-top: 0px;
+}
+
+.type-ahead-select {
+    z-index: 9999;
+}
+
+.type-ahead-select svg {
+    position: inherit;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: none;
+}
+
+.filters-card {
+    overflow: visible !important;
+}
+
+.label-filter-custom-option-badge-icon {
+    position: relative;
+    top: 4px;
+    font-size: 18px !important;
+	padding: 0px !important;
+}

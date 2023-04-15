@@ -14,7 +14,7 @@ option {
 .mt-4 {
     margin-bottom: 15px;
     margin-top: 0px !important;
-    border-top: 1px solid var(--purple);
+    border-top: 1px solid var(--light);
 }
 
 .card .card {
@@ -127,4 +127,8 @@ span.flatpickr-weekday {
 .flatpickr-current-month {
     font-size: 100%;
     padding: 0 0 0 0;
+}
+
+.form-check-inline {
+    margin-right: 0px;
 }

@@ -1,5 +1,6 @@
 /* global chrome */
 import { useEffect, useRef, useContext } from "react";
+import { Card, Row, Col, Form } from 'react-bootstrap';
 import { DiscussionMessageSenderFilterContext, SetDiscussionMessageSenderFilterContext } from "../../context/SettingsContext";
 
 function DiscussionMessageSenderFilter(){
@@ -27,25 +28,36 @@ function DiscussionMessageSenderFilter(){
 
 
     return (
-        <div className="card">
-            <div className="card-body">
-                <div className="row">
-                    <div className="col-4">
-                        <label className="form-control settings-label-text">Last Message Sender</label>
-                    </div>
-                    <div className="col-4">
-                        <select ref={selectRef} onChange={handleChange} className="form-control settings-input">
-                            <option selected value=""></option>
-                            <option value="doesNotContain">Does Not Contain</option>
-                            <option value="contains">Contains</option>
-                        </select>
-                    </div>
-                    <div className="col-4">
-                        <input ref={inputRef} onChange={handleChange} type="text" className="form-control settings-input" placeholder="@gmail.com"/>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <Card>
+        <Card.Body>
+          <Row>
+            <Col md={4}>
+              <Form.Label className="form-control settings-label-text">Last Message Sender</Form.Label>
+            </Col>
+            <Col md={4}>
+              <Form.Control
+                as="select"
+                ref={selectRef}
+                onChange={handleChange}
+                className="settings-input"
+              >
+                <option value=""></option>
+                <option value="doesNotContain">Does Not Contain</option>
+                <option value="contains">Contains</option>
+              </Form.Control>
+            </Col>
+            <Col md={4}>
+              <Form.Control
+                type="text"
+                ref={inputRef}
+                onChange={handleChange}
+                className="settings-input"
+                placeholder="@gmail.com"
+              />
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
     );
 }
 

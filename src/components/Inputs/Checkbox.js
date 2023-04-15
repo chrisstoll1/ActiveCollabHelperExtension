@@ -14,6 +14,11 @@ function Checkbox(props) {
         newSettingsToggles[props.id] = !checked;
 
         setSettingsToggles(newSettingsToggles);
+
+        // Call the optional callback function if provided
+        if (props.onChangeCallback) {
+            props.onChangeCallback(!checked);
+        }
     };
 
     useEffect(() => {
@@ -33,7 +38,7 @@ function Checkbox(props) {
                 checked={checked}
                 onChange={handleChange}
             />
-            <label className="custom-control-label settings-input" for={props.id}>{props.label}</label>
+            <label className="custom-control-label settings-input" htmlFor={props.id}>{props.label}</label>
         </div>
     );
 }

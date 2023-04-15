@@ -1,5 +1,6 @@
 /* global chrome */
 import { useEffect, useRef, useContext, useState } from 'react';
+import { Card, Row, Col, Form } from 'react-bootstrap';
 import { DiscussionMessageDateFilterContext, SetDiscussionMessageDateFilterContext } from '../../context/SettingsContext'
 import DatePicker from './DatePicker';
 
@@ -58,39 +59,55 @@ function DiscussionMessageDateFilter() {
     }, [discussionMessageDateFilter]);
 
     return (
-        <div className="card">
-            <div className="card-body">
-                <div className="row">
-                    <div className="col-4">
-                        <label className="form-control settings-label-text">Last Message Date</label>
-                    </div>
-                    <div className="col-2">
-                        <select ref={operatorSelectRef} onChange={handleChange} className="form-control settings-input">
-                            <option selected value=""></option>
-                            <option value="before">Before</option>
-                            <option value="after">After</option>
-                            <option value="on">On</option>
-                        </select>
-                    </div>
-                    <div className="col-3">
-                        <select ref={typeSelectRef} onChange={handleChange} className="form-control settings-input">
-                            <option selected value=""></option>
-                            <option value="static">Static</option>
-                            <option value="today+">Today +</option>
-                            <option value="today-">Today -</option>
-                        </select>
-                    </div>
-                    <div className="col-3">
-                        <div style={datepickerStyle}>
-                            <DatePicker ref={datepickerRef} handleChange={handleChange}/>
-                        </div>
-                        <div style={inputStyle}>
-                            <input ref={inputRef} onChange={handleChange} type="number" className="form-control settings-input" placeholder="1"/>
-                        </div>
-                    </div>
-                </div>
-            </div>  
-        </div>
+        <Card>
+        <Card.Body>
+          <Row>
+            <Col md={4}>
+              <Form.Label className="form-control settings-label-text">Last Message Date</Form.Label>
+            </Col>
+            <Col md={2}>
+              <Form.Control
+                as="select"
+                ref={operatorSelectRef}
+                onChange={handleChange}
+                className="settings-input"
+              >
+                <option value=""></option>
+                <option value="before">Before</option>
+                <option value="after">After</option>
+                <option value="on">On</option>
+              </Form.Control>
+            </Col>
+            <Col md={3}>
+              <Form.Control
+                as="select"
+                ref={typeSelectRef}
+                onChange={handleChange}
+                className="settings-input"
+              >
+                <option value=""></option>
+                <option value="static">Static</option>
+                <option value="today+">Today +</option>
+                <option value="today-">Today -</option>
+              </Form.Control>
+            </Col>
+            <Col md={3}>
+              <div style={datepickerStyle}>
+                <DatePicker ref={datepickerRef} handleChange={handleChange} />
+              </div>
+              <div style={inputStyle}>
+                <Form.Control
+                  type="number"
+                  ref={inputRef}
+                  onChange={handleChange}
+                  className="settings-input"
+                  placeholder="1"
+                />
+              </div>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
     );
 }
 

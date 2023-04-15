@@ -1,0 +1,12 @@
+.task-enabled-flags-filter-badge-wrapper {
+    position: relative;
+    top: 2px;
+}
+
+.task-settings-title {
+    margin-bottom: 0px;
+}
+
+.task-enabled-flags-filter-label:hover {
+    cursor: pointer;
+}
