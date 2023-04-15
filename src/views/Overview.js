@@ -60,6 +60,18 @@ function Overview() {
         });
     }, [sortDirection, sortOption]);
 
+    useEffect(() => {
+        //grab sort cache from chrome storage
+        chrome.storage.local.get(["SortCache"]).then((result) => {
+            if (Object.keys(result).length !== 0){
+                const sortCache = JSON.parse(result.SortCache);
+                console.log(sortCache);
+                setSortDirection(sortCache.Direction);
+                setSortOption(sortCache.Option);
+            }
+        });
+    }, []);
+
     return (
         <div className="main-body flex-grow-1">
             {(isRefreshing) ? 

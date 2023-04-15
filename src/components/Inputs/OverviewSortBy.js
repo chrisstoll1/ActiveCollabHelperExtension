@@ -1,3 +1,4 @@
+/* global chrome */
 import { useContext, useCallback } from 'react';
 import '../../assets/css/components/Inputs/OverviewSortBy.css';
 import Dropdown from 'react-bootstrap/Dropdown'
@@ -8,6 +9,10 @@ function OverviewSortBy() {
     const setSortDirection = useContext(SetSortDirection);
     const sortOption = useContext(SortOption);
     const setSortOption = useContext(SetSortOption);
+    let sortCache = {
+        "Direction": sortDirection,
+        "Option": sortOption
+    };
 
     const arrowIconClass = () => {
         if (sortDirection === "ASC"){
@@ -18,15 +23,23 @@ function OverviewSortBy() {
     }
 
     function handleArrowClick(){
+        let direction;
         if (sortDirection === "ASC"){
             setSortDirection("DESC");
+            direction = "DESC";
         }else{
             setSortDirection("ASC");
+            direction = "ASC";
         }
+        sortCache.Direction = direction;
+        chrome.storage.local.set({"SortCache": JSON.stringify(sortCache)});
     }
 
     const handleSortOptionClick = useCallback((sortbyOption) => {
         setSortOption(sortbyOption);
+        setSortDirection("ASC");
+        sortCache.Option = sortbyOption;
+        chrome.storage.local.set({"SortCache": JSON.stringify(sortCache)});
     }, []);
 
     return (
