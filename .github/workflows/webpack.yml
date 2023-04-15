@@ -20,7 +20,8 @@ jobs:
       - name: Install dependencies and build
         run: |
           npm ci
-          npx webpack
+          npm install
+          npm run build
 
       - name: Create extension zip
         run: |
