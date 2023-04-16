@@ -241,11 +241,12 @@ async function resetSyncedSettings(){
         "input": "",
         "select": ""
       },
+    "projectLabelsFilter": [],
     "settingsToggles": {
         "filter": false,
-        "show-open-tasks": false,
-        "show-completed-tasks": false,
-        "show-overdue-tasks": false,
+        "show-open-tasks": true,
+        "show-completed-tasks": true,
+        "show-overdue-tasks": true,
         "debug": false
       }
     }

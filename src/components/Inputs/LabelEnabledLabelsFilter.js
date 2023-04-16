@@ -1,35 +1,40 @@
+/*global chrome*/
 import { Row, Col } from 'react-bootstrap';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Select from 'react-select';
+import { ProjectLabelsFilterContext, SetProjectLabelsFilterContext } from '../../context/SettingsContext';
 import { components } from 'react-select';
 
-const data = [
-    {
-      label: 'Project Lead 1',
-      value: 'lead_1',
-      type: 'lead',
-      icon: 'person',
-    },
-    {
-      label: 'Project Lead 2',
-      value: 'lead_2',
-      type: 'lead',
-      icon: 'person',
-    },
-    {
-      label: 'Category 1',
-      value: 'cat_1',
-      type: 'category',
-      icon: 'label_important',
-    },
-    {
-      label: 'Category 2',
-      value: 'cat_2',
-      type: 'category',
-      icon: 'label_important',
-    },
-];
+const data = async () => {
+    let values = [];
+    const storedProjects = await chrome.storage.local.get(["ACProjects"]);
+    const projects = JSON.parse(storedProjects.ACProjects);
+    if (Object.keys(projects).length !== 0){
+        //Get unique leader and category values
+        const leaders = [...new Set(projects.map(item => item.leader))].filter(Boolean);
+        const categories = [...new Set(projects.map(item => item.category))].filter(Boolean);
+
+        //Create array of objects for each leader and category
+        leaders.forEach(leader => {
+            values.push({
+                label: leader,
+                value: leader,
+                type: 'lead',
+                icon: 'person',
+            });
+        });
+        categories.forEach(category => {
+            values.push({
+                label: category,
+                value: category,
+                type: 'category',
+                icon: 'label_important',
+            });
+        });
+    }
+    return values;
+};
 
 const customStyles = {
     control: (base, state) => ({
@@ -128,18 +133,29 @@ const CustomMultiValue = (props) => {
 };  
 
 const TypeAheadSelect = () => {
-    const [selectedOptions, setSelectedOptions] = useState([]);
+    const [options, setOptions] = useState([]);
+    const setProjectLabelsFilter = useContext(SetProjectLabelsFilterContext);
+    const projectLabelsFilter = useContext(ProjectLabelsFilterContext);
 
     const handleChange = (options) => {
-        setSelectedOptions(options);
-        console.log(selectedOptions);
+        setProjectLabelsFilter(options);
+        console.log(options);
     };
+
+    //Grab options from chrome storage
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await data();
+            setOptions(result);
+        };
+        fetchData();
+    }, []);
 
     return (
         <Select
             isMulti
-            value={selectedOptions}
-            options={data}
+            value={projectLabelsFilter}
+            options={options}
             onChange={handleChange}
             placeholder="Start Typing..."
             className="type-ahead-select"

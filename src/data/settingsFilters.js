@@ -1,5 +1,3 @@
-// NOTE: This is messy and needs to be refactored but it works for now
-
 export const filterProject = (project, Settings) => {
     const [DiscussionMessageDateFilter, DiscussionMessageSenderFilter, SettingsToggles] = [Settings.discussionMessageDateFilter, Settings.discussionMessageSenderFilter, Settings.settingsToggles];
     const [filteredDiscussions, project_discussion_flagged] = filterDiscussions(project.discussions, DiscussionMessageDateFilter, DiscussionMessageSenderFilter, SettingsToggles);
@@ -15,17 +13,16 @@ export const filterProject = (project, Settings) => {
 
 const filterDiscussions = (discussions, DateFilter, SenderFilter, SettingsToggles) => {
     let project_discussion_flagged = false;
+    let messageSender = SenderFilter.input !== "" && SenderFilter.select !== "";
+    let messageDate = DateFilter.operator !== "";
 
     const filteredDiscussions = discussions.map((discussion) => {
-        var messageSenderFlagged = false;
-        var messageSender = false;
-        var messageDateFlagged = false;
-        var messageDate = false;
+        let messageSenderFlagged = false;
+        let messageDateFlagged = false;
 
         // Discussion Message Sender Filter
         if (discussion.last_activity_by) {
-            if (SenderFilter.input !== "" && SenderFilter.select !== "") {
-                messageSender = true;
+            if (messageSender) {
                 if (SenderFilter.select === "contains"){
                     if (discussion.last_activity_by.toLowerCase().includes(SenderFilter.input.toLowerCase())) {
                         messageSenderFlagged = true;
@@ -40,55 +37,41 @@ const filterDiscussions = (discussions, DateFilter, SenderFilter, SettingsToggle
 
         // Discussion Message Date Filter
         if (discussion.last_active) {
-            if (DateFilter.operator !== "" && DateFilter.type !== "" && (DateFilter.input !== "" || DateFilter.datepicker !== "")) {
-                messageDate = true;
+            // operators: today, last7, last30, last90, custom
+            if (messageDate) {
                 const discussionDate = new Date(parseInt(discussion.last_active) * 1000);
-                const filterDate = new Date(DateFilter.datepicker);
                 const today = new Date();
 
-                if (DateFilter.type === "static") {
-                    if (DateFilter.operator === "before") {
-                        if (discussionDate < filterDate) {
-                            messageDateFlagged = true;
-                        }
-                    }else if (DateFilter.operator === "after") {
-                        if (discussionDate > filterDate) {
-                            messageDateFlagged = true;
-                        }
-                    }else if (DateFilter.operator === "on") {
-                        if (discussionDate.toDateString() === filterDate.toDateString()) {
-                            messageDateFlagged = true;
-                        }
+                if (DateFilter.operator === "today") {
+                    if (discussionDate.toDateString() === today.toDateString()) {
+                        messageDateFlagged = true;
                     }
-                }else if (DateFilter.type === "today+") {
-                    var todayPlus = today + parseInt(DateFilter.input);
-
-                    if (DateFilter.operator === "before") {
-                        if (discussionDate < todayPlus) {
-                            messageDateFlagged = true;
-                        }
-                    }else if (DateFilter.operator === "after") {
-                        if (discussionDate > todayPlus) {
-                            messageDateFlagged = true;
-                        }
-                    }else if (DateFilter.operator === "on") {
-                        if (discussionDate.toDateString() === todayPlus.toDateString()) {
-                            messageDateFlagged = true;
-                        }
+                }else if (DateFilter.operator === "last7") {
+                    const last7 = new Date(today.setDate(today.getDate() - 7));
+                    if (discussionDate >= last7) {
+                        messageDateFlagged = true;
                     }
-                }else if (DateFilter.type === "today-") {
-                    var todayMinus = today - parseInt(DateFilter.input);
-
-                    if (DateFilter.operator === "before") {
-                        if (discussionDate < todayMinus) {
+                }else if (DateFilter.operator === "last30") {
+                    const last30 = new Date(today.setDate(today.getDate() - 30));
+                    if (discussionDate >= last30) {
+                        messageDateFlagged = true;
+                    }
+                }else if (DateFilter.operator === "last90") {
+                    const last90 = new Date(today.setDate(today.getDate() - 90));
+                    if (discussionDate >= last90) {
+                        messageDateFlagged = true;
+                    }
+                }else if (DateFilter.operator === "custom") {
+                    // parse date range string from datepicker into date objects, check if discussion date is between the two. Account for single dates in string.
+                    const dateRange = DateFilter.datepicker.split(" to ");
+                    const date1 = new Date(dateRange[0]);
+                    const date2 = new Date(dateRange[1]);
+                    if (dateRange.length === 1) {
+                        if (discussionDate.toDateString() === date1.toDateString()) {
                             messageDateFlagged = true;
                         }
-                    }else if (DateFilter.operator === "after") {
-                        if (discussionDate > todayMinus) {
-                            messageDateFlagged = true;
-                        }
-                    }else if (DateFilter.operator === "on") {
-                        if (discussionDate.toDateString() === todayMinus.toDateString()) {
+                    }else if (dateRange.length === 2) {
+                        if (discussionDate >= date1 && discussionDate <= date2) {
                             messageDateFlagged = true;
                         }
                     }
@@ -125,7 +108,7 @@ const filterDiscussions = (discussions, DateFilter, SenderFilter, SettingsToggle
         return discussion;
     }).filter((discussion) => {
         // Hide Unflagged Discussions
-        if (SettingsToggles["hide-unflagged-discussions"]) {
+        if (SettingsToggles["filter"] && (messageSender || messageDate)) {
             return discussion.flagged;
         }else{
             return true;
@@ -167,13 +150,13 @@ const filterTaskLists = (taskLists, SettingsToggles) => {
 
 export const filterTaskList = (taskList, SettingsToggles) => {
     const hiddenBadges = [];
-    if (SettingsToggles["hide-completed-tasks"]) {
+    if (!SettingsToggles["show-completed-tasks"]) {
         hiddenBadges.push("Completed");
     }
-    if (SettingsToggles["hide-open-tasks"]) {
+    if (!SettingsToggles["show-open-tasks"]) {
         hiddenBadges.push("Open");
     }
-    if (SettingsToggles["hide-overdue-tasks"]) {
+    if (!SettingsToggles["show-overdue-tasks"]) {
         hiddenBadges.push("Overdue");
     }
 
