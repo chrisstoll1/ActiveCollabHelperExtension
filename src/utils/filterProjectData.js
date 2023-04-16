@@ -7,7 +7,6 @@ export async function filterProjectData(Projects, SortOption, SortDirection) {
     let Settings = await chrome.storage.sync.get(["user_settings"]);
     Settings = Settings.user_settings;
     let projectLabelsFilter = Settings.projectLabelsFilter;
-    console.log(projectLabelsFilter);
     // Filter Projects
     const FilteredProjects = Projects.map((project) => {
         if (Settings.settingsToggles['filter']){
@@ -20,7 +19,6 @@ export async function filterProjectData(Projects, SortOption, SortDirection) {
                 if (projectLabelsFilter.length > 0) { //if label filter is not empty
                     const projectLeader = project.leader;
                     const projectCategory = project.category;
-                    console.log(`projectLeader: ${projectLeader}, projectCategory: ${projectCategory}`);
                     if (projectLabelsFilter.some((label) => label.value === projectLeader)) {
                         return true;
                     }

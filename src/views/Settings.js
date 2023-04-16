@@ -5,22 +5,25 @@ import { useEffectOnlyOnUpdate } from '../hooks/UseEffectOnlyOnUpdate'
 import Checkbox from '../components/Inputs/Checkbox';
 import DeleteTokenButton from '../components/Inputs/DeleteTokenButton';
 import ResetSettingsButton from '../components/Inputs/ResetSettingsButton';
-import { DiscussionMessageSenderFilterContext, SetDiscussionMessageSenderFilterContext, DiscussionMessageDateFilterContext, SetDiscussionMessageDateFilterContext, ProjectLabelsFilterContext, SetProjectLabelsFilterContext, SettingsTogglesContext, SetSettingsTogglesContext} from '../context/SettingsContext';
+import { DiscussionMessageSenderFilterContext, SetDiscussionMessageSenderFilterContext, DiscussionMessageDateFilterContext, SetDiscussionMessageDateFilterContext, ProjectLabelsFilterContext, SetProjectLabelsFilterContext, SettingsTogglesContext, SetSettingsTogglesContext, AutoRefreshOptionsContext, SetAutoRefreshOptionsContext} from '../context/SettingsContext';
 import { setChromeBadge } from '../utils/setChromeBadge';
 import SettingsFilterAccordion from '../components/Cards/SettingsFilterAccordion';
+import SettingsAutoRefreshAccordion from '../components/Cards/SettingsAutoRefreshAccordion';
 
 function Settings() {
     const [discussionMessageSenderFilter, setDiscussionMessageSenderFilter] = useState({});
     const [discussionMessageDateFilter, setDiscussionMessageDateFilter] = useState({});
     const [projectLabelsFilter, setProjectLabelsFilter] = useState({});
     const [settingsToggles, setSettingsToggles] = useState({});
+    const [autoRefreshOptions, setAutoRefreshOptions] = useState({});
 
     useEffectOnlyOnUpdate(() => {        
         let settings = {
             discussionMessageSenderFilter: discussionMessageSenderFilter,
             discussionMessageDateFilter: discussionMessageDateFilter,
             projectLabelsFilter: projectLabelsFilter,
-            settingsToggles: settingsToggles
+            settingsToggles: settingsToggles,
+            autoRefreshOptions: autoRefreshOptions
         };
 
         console.log(settings);
@@ -43,6 +46,7 @@ function Settings() {
                 setDiscussionMessageDateFilter(result.user_settings.discussionMessageDateFilter);
                 setProjectLabelsFilter(result.user_settings.projectLabelsFilter);
                 setSettingsToggles(result.user_settings.settingsToggles);
+                setAutoRefreshOptions(result.user_settings.autoRefreshOptions);
             }
         });
     }, []);
@@ -55,6 +59,7 @@ function Settings() {
                     setDiscussionMessageDateFilter(result.user_settings.discussionMessageDateFilter);
                     setProjectLabelsFilter(result.user_settings.projectLabelsFilter);
                     setSettingsToggles(result.user_settings.settingsToggles);
+                    setAutoRefreshOptions(result.user_settings.autoRefreshOptions);
                 }
             });
         }
@@ -71,65 +76,84 @@ function Settings() {
                                 <SetProjectLabelsFilterContext.Provider value={setProjectLabelsFilter}>
                                     <SettingsTogglesContext.Provider value={settingsToggles}>
                                         <SetSettingsTogglesContext.Provider value={setSettingsToggles}>
+                                            <AutoRefreshOptionsContext.Provider value={autoRefreshOptions}>
+                                                <SetAutoRefreshOptionsContext.Provider value={setAutoRefreshOptions}>
 
-                                            <SettingsFilterAccordion/>
+                                                    <SettingsFilterAccordion/>
 
-                                            <div className="card">
-                                                <div className="card-body">
-                                                    <div className="row">
-                                                        <div className="col-12">
-                                                            
+                                                    <SettingsAutoRefreshAccordion/>
+
+                                                    <div className="card">
+                                                        <div className="card-body">
                                                             <div className="row">
                                                                 <div className="col-12">
-                                                                    <h5 className="settings-title">Options</h5>
-                                                                    <hr className="mt-4"/>
-                                                                </div>
-                                                            </div>
-
-                                                            <div className="card">
-                                                                <div className="card-body">
+                                                                    
                                                                     <div className="row">
-                                                                        <div className="col-4">
-                                                                            <label className="form-control settings-label-text">Debug</label>
-                                                                        </div>
-                                                                        <div className="col-8">
-                                                                            <Checkbox id="debug" label=""/>       
+                                                                        <div className="col-12">
+                                                                            <h5 className="settings-title">Options</h5>
+                                                                            <hr className="mt-4"/>
                                                                         </div>
                                                                     </div>
-                                                                </div>  
-                                                            </div>
-                                                    
-                                                            <div className="card">
-                                                                <div className="card-body">
-                                                                    <div className="row">
-                                                                        <div className="col-4">
-                                                                            <label className="form-control settings-label-text">Sign Out of ActiveCollab</label>
-                                                                        </div>
-                                                                        <div className="col-8">
-                                                                            <DeleteTokenButton/>
+
+                                                                    <div className="card">
+                                                                        <div className="card-body">
+                                                                            <div className="row">
+                                                                                <div className="col-4">
+                                                                                    <label className="form-control settings-label-text">Debug</label>
+                                                                                </div>
+                                                                                <div className="col-8">
+                                                                                    <Checkbox id="debug" label=""/>       
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>  
+                                                                    </div>
+
+                                                                    <div className="card">
+                                                                        <div className="card-body">
+                                                                            <div className="row">
+                                                                                <div className="col-4">
+                                                                                    <label className="form-control settings-label-text">Show Count in Badge</label>
+                                                                                </div>
+                                                                                <div className="col-8">
+                                                                                    <Checkbox id="show-badge-count" label=""/>       
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>  
+                                                                    </div>
+                                                            
+                                                                    <div className="card">
+                                                                        <div className="card-body">
+                                                                            <div className="row">
+                                                                                <div className="col-4">
+                                                                                    <label className="form-control settings-label-text">Sign Out of ActiveCollab</label>
+                                                                                </div>
+                                                                                <div className="col-8">
+                                                                                    <DeleteTokenButton/>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                            </div>
 
-                                                            <div className="card">
-                                                                <div className="card-body">
-                                                                    <div className="row">
-                                                                        <div className="col-4">
-                                                                            <label className="form-control settings-label-text">Reset All Settings</label>
-                                                                        </div>
-                                                                        <div className="col-8">
-                                                                            <ResetSettingsButton/>
+                                                                    <div className="card">
+                                                                        <div className="card-body">
+                                                                            <div className="row">
+                                                                                <div className="col-4">
+                                                                                    <label className="form-control settings-label-text">Reset All Settings</label>
+                                                                                </div>
+                                                                                <div className="col-8">
+                                                                                    <ResetSettingsButton/>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
+
                                                                 </div>
                                                             </div>
-
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
 
+                                                </SetAutoRefreshOptionsContext.Provider>
+                                            </AutoRefreshOptionsContext.Provider>
                                         </SetSettingsTogglesContext.Provider>
                                     </SettingsTogglesContext.Provider>
                                 </SetProjectLabelsFilterContext.Provider>

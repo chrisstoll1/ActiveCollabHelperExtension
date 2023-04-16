@@ -1,6 +1,7 @@
 import { filterProjectData } from "./filterProjectData.js";
 
 export async function setChromeBadge(projects) {
+    console.log("Updating Chrome Badge");
     filterProjectData(projects, "name", "asc").then( async (filteredProjects) => {
         // Grab Settings from Sync Storage
         let Settings = await chrome.storage.sync.get(["user_settings"]);
