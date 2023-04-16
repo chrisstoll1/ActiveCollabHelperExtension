@@ -21,6 +21,8 @@ function Settings() {
             discussionMessageDateFilter: discussionMessageDateFilter,
             settingsToggles: settingsToggles
         };
+
+        console.log(settings);
         chrome.storage.sync.set({"user_settings": settings});
 
         // Update Chrome Badge using setChromeBadge

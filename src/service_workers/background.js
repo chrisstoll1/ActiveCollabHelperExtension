@@ -235,8 +235,6 @@ async function resetSyncedSettings(){
   await chrome.storage.sync.set({"user_settings": {
     "discussionMessageDateFilter": {
         "operator": "",
-        "type": "",
-        "input": "",
         "datepicker": ""
       },
     "discussionMessageSenderFilter": {
@@ -244,12 +242,11 @@ async function resetSyncedSettings(){
         "select": ""
       },
     "settingsToggles": {
-        "hide-unflagged-discussions": false,
-        "hide-open-tasks": false,
-        "hide-completed-tasks": false,
-        "hide-overdue-tasks": false,
-        "hide-empty-projects": false,
-        "show-badge-count": true
+        "filter": false,
+        "show-open-tasks": false,
+        "show-completed-tasks": false,
+        "show-overdue-tasks": false,
+        "debug": false
       }
     }
   });

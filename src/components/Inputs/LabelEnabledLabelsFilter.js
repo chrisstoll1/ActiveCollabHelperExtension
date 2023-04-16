@@ -40,6 +40,7 @@ const customStyles = {
       border: 'none',
       boxShadow: 'none',
       cursor: 'pointer',
+      minHeight: '40px',
     }),
     option: (base, state) => ({
       ...base,
@@ -102,7 +103,12 @@ const CustomOption = (props) => {
     const { data, innerProps, innerRef } = props;
     return (
       <components.Option {...props}>
-        <i className="material-icons label-filter-custom-option-badge-icon">{data.icon}</i>&nbsp;{data.label}
+        <div style={{ height: '20px' }} className='d-flex align-items-center'>
+          <i className="material-icons label-filter-custom-option-badge-icon">{data.icon}</i>&nbsp;
+          <span className='label-filter-custom-option-badge-text'>
+            {data.label}
+          </span>
+        </div>
       </components.Option>
     );
 };
@@ -111,7 +117,12 @@ const CustomMultiValue = (props) => {
     const { data, children, removeProps } = props;
     return (
       <components.MultiValue {...props}>
-        <i className="material-icons label-filter-custom-option-badge-icon">{data.icon}</i>&nbsp;{children}
+        <div style={{ height: '20px' }} className='d-flex align-items-center'>
+          <i className="material-icons label-filter-custom-option-badge-icon">{data.icon}</i>&nbsp;
+          <span className='label-filter-custom-option-badge-text'>
+            {children}
+          </span>
+        </div>
       </components.MultiValue>
     );
 };  

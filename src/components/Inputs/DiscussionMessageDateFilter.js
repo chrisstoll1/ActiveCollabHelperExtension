@@ -8,22 +8,15 @@ function DiscussionMessageDateFilter() {
     const discussionMessageDateFilter = useContext(DiscussionMessageDateFilterContext);
     const setDiscussionMessageDateFilter = useContext(SetDiscussionMessageDateFilterContext);
     const operatorSelectRef = useRef(null);
-    const typeSelectRef = useRef(null);
-    const inputRef = useRef(null);
     const datepickerRef = useRef(null);
-    const [inputStyle, setInputStyle] = useState({display: "none"});
     const [datepickerStyle, setDatepickerStyle] = useState({display: "none"});
 
     function handleChange(){
         var operatorVal = operatorSelectRef.current.value;
-        var typeVal = typeSelectRef.current.value;
-        var inputVal = inputRef.current.value;
         var datepickerVal = datepickerRef.current.value;
 
         setDiscussionMessageDateFilter({
             "operator": operatorVal,
-            "type": typeVal,
-            "input": inputVal,
             "datepicker": datepickerVal
         });
 
@@ -31,18 +24,11 @@ function DiscussionMessageDateFilter() {
     }
 
     function handleTypeChange(){
-        var typeVal = typeSelectRef.current.value;
+        var typeVal = operatorSelectRef.current.value;
         
-        if (typeVal === "static"){
-            setInputStyle({display: "none"});
+        if (typeVal === "custom"){
             setDatepickerStyle({display: "block"});
-        }
-        else if (typeVal === "today+" || typeVal === "today-"){
-            setInputStyle({display: "block"});
-            setDatepickerStyle({display: "none"});
-        }
-        else {
-            setInputStyle({display: "none"});
+        }else{
             setDatepickerStyle({display: "none"});
         }
     }
@@ -50,8 +36,6 @@ function DiscussionMessageDateFilter() {
     useEffect(() => {
         if (Object.keys(discussionMessageDateFilter).length !== 0){
             operatorSelectRef.current.value = discussionMessageDateFilter.operator;
-            typeSelectRef.current.value = discussionMessageDateFilter.type;
-            inputRef.current.value = discussionMessageDateFilter.input;
             datepickerRef.current.value = discussionMessageDateFilter.datepicker;
         }
 
@@ -65,7 +49,7 @@ function DiscussionMessageDateFilter() {
             <Col md={4}>
               <Form.Label className="form-control settings-label-text">Last Message Date</Form.Label>
             </Col>
-            <Col md={2}>
+            <Col md={4}>
               <Form.Control
                 as="select"
                 ref={operatorSelectRef}
@@ -73,36 +57,16 @@ function DiscussionMessageDateFilter() {
                 className="settings-input"
               >
                 <option value=""></option>
-                <option value="before">Before</option>
-                <option value="after">After</option>
-                <option value="on">On</option>
+                <option value="today">Today</option>
+                <option value="last7">Last 7 Days</option>
+                <option value="last30">Last 30 Days</option>
+                <option value="last90">Last 90 Days</option>
+                <option value="custom">Custom Range</option>
               </Form.Control>
             </Col>
-            <Col md={3}>
-              <Form.Control
-                as="select"
-                ref={typeSelectRef}
-                onChange={handleChange}
-                className="settings-input"
-              >
-                <option value=""></option>
-                <option value="static">Static</option>
-                <option value="today+">Today +</option>
-                <option value="today-">Today -</option>
-              </Form.Control>
-            </Col>
-            <Col md={3}>
+            <Col md={4}>
               <div style={datepickerStyle}>
                 <DatePicker ref={datepickerRef} handleChange={handleChange} />
-              </div>
-              <div style={inputStyle}>
-                <Form.Control
-                  type="number"
-                  ref={inputRef}
-                  onChange={handleChange}
-                  className="settings-input"
-                  placeholder="1"
-                />
               </div>
             </Col>
           </Row>

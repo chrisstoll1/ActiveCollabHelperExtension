@@ -132,3 +132,12 @@ span.flatpickr-weekday {
 .form-check-inline {
     margin-right: 0px;
 }
+
+.flatpickr-day.inRange, .flatpickr-day.prevMonthDay.inRange, .flatpickr-day.nextMonthDay.inRange, .flatpickr-day.today.inRange, .flatpickr-day.prevMonthDay.today.inRange, .flatpickr-day.nextMonthDay.today.inRange, .flatpickr-day:hover, .flatpickr-day.prevMonthDay:hover, .flatpickr-day.nextMonthDay:hover, .flatpickr-day:focus, .flatpickr-day.prevMonthDay:focus, .flatpickr-day.nextMonthDay:focus {
+    background: #785cac; 
+    border-color: #785cac;
+}
+
+.flatpickr-day.inRange {
+    box-shadow: -5px 0 0 #785cac,5px 0 0 #785cac;
+}
