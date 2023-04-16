@@ -14,7 +14,7 @@ option {
 .mt-4 {
     margin-bottom: 15px;
     margin-top: 0px !important;
-    border-top: 1px solid var(--purple);
+    border-top: 1px solid var(--light);
 }
 
 .card .card {
@@ -127,4 +127,29 @@ span.flatpickr-weekday {
 .flatpickr-current-month {
     font-size: 100%;
     padding: 0 0 0 0;
+}
+
+.form-check-inline {
+    margin-right: 0px;
+}
+
+.flatpickr-day.inRange, .flatpickr-day.prevMonthDay.inRange, .flatpickr-day.nextMonthDay.inRange, .flatpickr-day.today.inRange, .flatpickr-day.prevMonthDay.today.inRange, .flatpickr-day.nextMonthDay.today.inRange, .flatpickr-day:hover, .flatpickr-day.prevMonthDay:hover, .flatpickr-day.nextMonthDay:hover, .flatpickr-day:focus, .flatpickr-day.prevMonthDay:focus, .flatpickr-day.nextMonthDay:focus {
+    background: #312841; 
+    border-color: #312841;
+}
+
+.flatpickr-day.inRange {
+    box-shadow: -5px 0 0 #312841,5px 0 0 #312841;
+}
+
+.flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)), .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)), .flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
+    box-shadow: -10px 0 0 #312841;
+}
+
+.flatpickr-day.selected.startRange, .flatpickr-day.startRange.startRange, .flatpickr-day.endRange.startRange {
+    border-radius: 50px 0 0 50px;
+}
+
+.flatpickr-day.selected.endRange, .flatpickr-day.startRange.endRange, .flatpickr-day.endRange.endRange {
+    border-radius: 0 50px 50px 0;
 }

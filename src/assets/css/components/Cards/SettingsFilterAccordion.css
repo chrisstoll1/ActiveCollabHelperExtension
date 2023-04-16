@@ -1,0 +1,44 @@
+.accordion-header {
+    padding-top: 15px;
+    padding-bottom: 5px;
+}
+
+.accordion-body {
+    padding-top: 0px;
+}
+
+.type-ahead-select {
+    z-index: 9999;
+}
+
+.type-ahead-select svg {
+    position: inherit;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: none;
+}
+
+.filters-card {
+    overflow: visible !important;
+}
+
+.label-filter-custom-option-badge-icon {
+    font-size: 18px !important;
+	padding: 0px !important;
+}
+
+.label-filter-custom-option-badge-text {
+    position: relative;
+    top: 1.5px;
+    padding: 0px !important;
+}
+
+.task-label-filter-card {
+    height: 72px;
+}
+
+.task-label-filter-row-wrapper {
+    height: 100%;
+}

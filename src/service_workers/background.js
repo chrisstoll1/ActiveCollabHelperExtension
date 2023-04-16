@@ -24,12 +24,25 @@ chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
       await removeLocalStorageObject("ExtState");
       await removeLocalStorageObject("LastRefreshTime");
       await removeLocalStorageObject("ACLeaders");
+      await removeLocalStorageObject("SortCache");
       refreshActiveCollabData();
     }
     if (request.event === "reset_settings"){
       await resetSyncedSettings();
       chrome.runtime.sendMessage({event: "settings_reset"});
     }
+    if (request.event === "auto_refresh_settings_updated"){
+      let period = request.autoRefreshOptions.input;
+      let type = request.autoRefreshOptions.select;
+      let enabled = request.autoRefreshOptions.isOn;
+      await configureAutoRefreshAlarm(period, type, enabled);
+    }
+});
+
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === 'auto-refresh-alarm') {
+    refreshActiveCollabData();
+  }
 });
 
 async function refreshActiveCollabData() {
@@ -235,22 +248,45 @@ async function resetSyncedSettings(){
   await chrome.storage.sync.set({"user_settings": {
     "discussionMessageDateFilter": {
         "operator": "",
-        "type": "",
-        "input": "",
         "datepicker": ""
       },
     "discussionMessageSenderFilter": {
         "input": "",
         "select": ""
       },
+    "projectLabelsFilter": [],
+    "autoRefreshOptions": {
+        "input": "5",
+        "select": "minutes"
+      },
     "settingsToggles": {
-        "hide-unflagged-discussions": false,
-        "hide-open-tasks": false,
-        "hide-completed-tasks": false,
-        "hide-overdue-tasks": false,
-        "hide-empty-projects": false,
-        "show-badge-count": true
+        "filter": false,
+        "show-open-tasks": true,
+        "show-completed-tasks": true,
+        "show-overdue-tasks": true,
+        "show-badge-count": true,
+        "debug": false,
+        "auto-refresh": false
       }
     }
   });
 }
+
+async function configureAutoRefreshAlarm(period, type, enabled) {
+  let alarmName = `auto-refresh-alarm`;
+  let alarmInfo;
+  if (type === 'minutes') {
+    alarmInfo = {
+      periodInMinutes: parseInt(period)
+    };
+  } else if (type === 'hours') {
+    alarmInfo = {
+      periodInMinutes: parseInt(period) * 60
+    };
+  }
+
+  await chrome.alarms.clear('auto-refresh-alarm');
+  if (enabled) {
+    await chrome.alarms.create(alarmName, alarmInfo);
+  }
+} 
