@@ -39,9 +39,9 @@ chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
     }
 });
 
-chrome.alarms.onAlarm.addListener((alarm) => {
+chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === 'auto-refresh-alarm') {
-    refreshActiveCollabData();
+    await refreshActiveCollabData();
   }
 });
 
@@ -76,7 +76,11 @@ async function refreshActiveCollabData() {
     var date = new Date();
     var refreshTime = date.toLocaleString();
     await chrome.storage.local.set({"LastRefreshTime": refreshTime});
-    await chrome.runtime.sendMessage({event: "refresh-date-updated"});
+    try {
+      await chrome.runtime.sendMessage({event: "refresh-date-updated"});
+    } catch (error) {
+      console.log(error);
+    }
 
     //Set Local Storage to new data
     await chrome.storage.local.set({"ACProjects": JSON.stringify(activeCollabData)});
@@ -111,10 +115,18 @@ async function refreshActiveCollabData() {
       }
     });
 
-    await chrome.runtime.sendMessage({event: "updated"});
+    try {
+      await chrome.runtime.sendMessage({event: "updated"});
+    } catch (error) {
+      console.log(error);
+    }
   }else{
     console.log("INVALID TOKEN");
-    await chrome.runtime.sendMessage({event: "invalid_token"});
+    try {
+      await chrome.runtime.sendMessage({event: "invalid_token"});
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 
