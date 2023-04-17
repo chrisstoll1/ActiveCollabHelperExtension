@@ -1,0 +1,39 @@
+name: Build Chrome Extension and Create Release
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+
+      - name: Install dependencies and build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Create extension zip
+        run: |
+          mkdir -p build
+          cd dist
+          zip -r ../build/extension.zip .
+
+      - name: Create and publish release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            build/extension.zip
