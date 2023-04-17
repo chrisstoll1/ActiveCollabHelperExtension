@@ -1,26 +1,27 @@
 import { useContext } from "react";
-import { ExtState, OverviewFilter, SetOverviewFilter, ProjectFilter, SetProjectFilter, TaskListFilter, SetTaskListFilter } from '../../context/ExtStateContext';
+import { OverviewFilter, SetOverviewFilter, ProjectFilter, SetProjectFilter, TaskListFilter, SetTaskListFilter } from '../../context/ExtStateContext';
 import '../../assets/css/components/Navbar/Filter.css';
+import { useLocation } from "react-router-dom";
 
 function Filter() {
-    const extState = useContext(ExtState);
     const overviewFilter = useContext(OverviewFilter);
     const setOverviewFilter = useContext(SetOverviewFilter);
     const projectFilter = useContext(ProjectFilter);
     const setProjectFilter = useContext(SetProjectFilter);
     const taskListFilter = useContext(TaskListFilter);
     const setTaskListFilter = useContext(SetTaskListFilter);
+    const location = useLocation();
 
-    const filterValue = extState === "Overview" ? overviewFilter : extState === "Project" ? projectFilter : taskListFilter;
+    const filterValue = location.pathname === "/" ? overviewFilter : location.pathname === "/project" ? projectFilter : taskListFilter;
 
     function handleFilterChange(value) {
-        if (extState === "Overview"){
+        if (location.pathname === "/"){
             setOverviewFilter(value);
         }
-        if (extState === "Project"){
+        if (location.pathname === "/project"){
             setProjectFilter(value);
         }
-        if (extState === "TaskList"){
+        if (location.pathname === "/taskList"){
             setTaskListFilter(value);
         }
     }

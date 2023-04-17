@@ -1,18 +1,28 @@
 /*global chrome*/
-import { useContext } from "react";
-import { ExtState, SetExtState } from '../../context/ExtStateContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../../assets/css/components/Navbar/SettingsButton.css';
 
 function SettingsButton() {
-    const setExtState = useContext(SetExtState);
-    const extState = useContext(ExtState);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     function settingsClicked() {
-        setExtState("Settings");
+        navigate('/settings');
     }
 
+    const isSettingsPage = location.pathname === "/settings";
+
     return (
-        <i className={(extState === 'Settings' ? "material-icons extension-control-icons settings-disabled" : "material-icons extension-control-icons")} onClick={settingsClicked}>settings</i>
+        <i
+            className={
+                isSettingsPage
+                    ? 'material-icons extension-control-icons settings-disabled'
+                    : 'material-icons extension-control-icons'
+            }
+            onClick={settingsClicked}
+        >
+            settings
+        </i>
     );
 }
 

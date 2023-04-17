@@ -21,7 +21,6 @@ chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
       await removeLocalStorageObject("ACProjects");
       await removeLocalStorageObject("WorkingProject");
       await removeLocalStorageObject("WorkingTaskList");
-      await removeLocalStorageObject("ExtState");
       await removeLocalStorageObject("LastRefreshTime");
       await removeLocalStorageObject("ACLeaders");
       await removeLocalStorageObject("SortCache");

@@ -1,18 +1,17 @@
 /* global chrome */
-import { useContext } from 'react';
-import { SetExtState } from '../../context/ExtStateContext'
+import { useNavigate } from 'react-router-dom';
 import { formatUnixTimestamp } from '../../utils/formatUnixTimestamp'
 import '../../assets/css/components/Cards/OverviewProject.css'
 import OverviewTaskBadge from '../Badge/OverviewTaskBadge';
 import OverviewDiscussionBadge from '../Badge/OverviewDiscussionBadge';
 
 function OverviewProject(props) {
-    const setExtState = useContext(SetExtState);
+    const navigate = useNavigate();
 
     function handleClick() {
         console.log(props.project);
         chrome.storage.local.set({"WorkingProject": JSON.stringify(props.project)});
-        setExtState("Project");
+        navigate('/project');
     }
 
     return (

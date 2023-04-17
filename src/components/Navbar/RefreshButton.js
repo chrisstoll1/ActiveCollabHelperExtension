@@ -1,19 +1,20 @@
 /*global chrome*/
 import { useContext } from "react";
 import '../../assets/css/components/Navbar/RefreshButton.css';
-import { IsRefreshing, SetRefreshing, ExtState } from '../../context/ExtStateContext';
+import { IsRefreshing, SetRefreshing } from '../../context/ExtStateContext';
+import { useLocation } from "react-router-dom";
 
 function RefreshButton() {
     const isRefreshing = useContext(IsRefreshing);
     const setRefreshing = useContext(SetRefreshing);
-    const extState = useContext(ExtState);
+    const location = useLocation();
 
     function onClick() {
-        if (!isRefreshing && !(extState === "Login" || extState === "Settings")) { 
+        if (!isRefreshing && !(location.pathname === "/login" || location.pathname === "/settings")) { 
             setRefreshing(true);
             chrome.runtime.sendMessage({event: "refresh"});
         }
-    }
+    }    
 
     chrome.runtime.onMessage.addListener((request, sender, reply) => {
         if (request.event === "updated"){
@@ -23,13 +24,13 @@ function RefreshButton() {
 
     return (
         <i id="refresh-button" className={
-            (extState === "Login" || extState === "Settings") ? 
+            (location.pathname === "/login" || location.pathname === "/settings") ? 
                 "material-icons extension-control-icons refresh-disabled" : 
                 isRefreshing ? 
                     "material-icons extension-control-icons refresh-start" : 
                     "material-icons extension-control-icons"
         } onClick={onClick}>sync</i>
-    );
+    );    
 }
 
 export default RefreshButton

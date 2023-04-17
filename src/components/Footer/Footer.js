@@ -1,22 +1,23 @@
 import { useContext, useEffect, useState } from "react";
-import { ExtState, IsRefreshing } from "../../context/ExtStateContext"
+import { IsRefreshing } from "../../context/ExtStateContext"
 import '../../assets/css/components/Footer/Footer.css'
 import { formatDateStringToTimeAgo } from "../../utils/formatDateStringToTimeAgo";
+import { useLocation } from "react-router-dom";
 
 function Footer() {
-    const extState = useContext(ExtState);
     const isRefreshing = useContext(IsRefreshing);
     const [lastRefreshTime, setLastRefreshTime] = useState("");
     const [currentTime, setCurrentTime] = useState(new Date());
+    const location = useLocation();
 
     function redirect() {
         chrome.tabs.create({url: "https://github.com/chrisstoll1/ActiveCollabHelperExtension"});
     }
 
     function footerClass() {
-        if (extState === "Settings") {
+        if (location.pathname === "/settings") {
             return ("footer-wrapper d-flex justify-content-end");
-        }else if (extState === "Login") {
+        }else if (location.pathname === "/login") {
             return ("footer-disabled");
         }else{
             return ("footer-wrapper d-flex justify-content-center");
@@ -24,7 +25,7 @@ function Footer() {
     }
 
     function footerText() {
-        if (extState === "Settings") {
+        if (location.pathname === "/settings") {
             return (
                 <span onClick={redirect} className="footer-link">ActiveCollab Helper Extension v0.0.3</span>
             );
