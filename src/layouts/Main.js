@@ -23,8 +23,8 @@ function Main() {
 
         // Update Chrome Badge using setChromeBadge
         chrome.storage.local.get(["ACProjects"]).then(async (result) => {
-            const projects = JSON.parse(result.ACProjects);
-            if (Object.keys(projects).length !== 0){
+            if (Object.keys(result).length !== 0){
+                const projects = JSON.parse(result.ACProjects);
                 await setChromeBadge(projects);
             }
         });
