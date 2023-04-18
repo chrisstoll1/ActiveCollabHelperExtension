@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import AppRoutes from './AppRoutes';
-import { HashRouter as Router } from 'react-router-dom';
+import { MemoryRouter as Router, useNavigate } from 'react-router-dom';
 import { setChromeBadge } from '../utils/setChromeBadge';
 import { IsRefreshing, SetRefreshing, OverviewFilter, SetOverviewFilter, ProjectFilter, SetProjectFilter, TaskListFilter, SetTaskListFilter } from '../context/ExtStateContext';
 
@@ -20,7 +20,7 @@ function Main() {
                 const projects = JSON.parse(result.ACProjects);
                 await setChromeBadge(projects);
             }
-        });
+        });   
     }, []);
 
     return (
