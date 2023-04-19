@@ -5,12 +5,20 @@ import '../../assets/css/components/Navbar/SettingsButton.css';
 function SettingsButton() {
     const navigate = useNavigate();
     const location = useLocation();
+    const isSettingsPage = location.pathname === "/settings" || location.pathname === "/project/settings" || location.pathname === "/taskList/settings";
 
     function settingsClicked() {
-        navigate('/settings');
+        if (!isSettingsPage) {
+            if (location.pathname === "/project") {
+                navigate('/project/settings');
+            }
+            else if (location.pathname === "/taskList") {
+                navigate('/taskList/settings');
+            }else{
+                navigate('/settings');
+            }
+        }
     }
-
-    const isSettingsPage = location.pathname === "/settings";
 
     return (
         <i

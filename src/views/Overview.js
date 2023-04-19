@@ -66,7 +66,6 @@ function Overview() {
         chrome.storage.local.get(["SortCache"]).then((result) => {
             if (Object.keys(result).length !== 0){
                 const sortCache = JSON.parse(result.SortCache);
-                console.log(sortCache);
                 setSortDirection(sortCache.Direction);
                 setSortOption(sortCache.Option);
             }

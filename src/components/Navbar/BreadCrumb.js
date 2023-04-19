@@ -8,7 +8,9 @@ function BreadCrumb(){
         "/settings": ["Overview", "Settings"],
         "/login": ["Overview", "Login"],
         "/project": ["Overview", "Project"],
+        "/project/settings": ["Overview", "Project", "Settings"],
         "/taskList": ["Overview", "Project", "TaskList"],
+        "/taskList/settings": ["Overview", "Project", "TaskList", "Settings"]
     };    
     const pathMap = {
         "Overview": "/",
@@ -20,8 +22,18 @@ function BreadCrumb(){
 
     function BreadcrumbClick(path) {
         console.log(path);
-        console.log(pathMap[path]);
-        navigate(pathMap[path]);
+        let page = pathMap[path];
+        
+        if (path === "Settings"){
+            if (location.pathname === "/project/settings") {
+                page = "/project/settings";
+            }
+            if (location.pathname === "/taskList/settings") {
+                page = "/taskList/settings";
+            }
+        }
+
+        navigate(page);
     }    
 
     return (
