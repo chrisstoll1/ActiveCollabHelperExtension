@@ -7,3 +7,7 @@
     left: -5px;
     font-size: 20px !important;
 }
+
+.navbar-filter {
+    min-height: 33.25px;
+}

@@ -21,7 +21,6 @@ function BreadCrumb(){
     };
 
     function BreadcrumbClick(path) {
-        console.log(path);
         let page = pathMap[path];
         
         if (path === "Settings"){

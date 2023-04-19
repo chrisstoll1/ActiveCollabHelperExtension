@@ -16,7 +16,7 @@ function getCookie(cname) {
 
 console.log("activecollab.js loaded from ActiveCollab Helper Extension");
 var PHPSESSID = getCookie("PHPSESSID");
-console.log("PHPSESSID: " + PHPSESSID);
+// console.log("PHPSESSID: " + PHPSESSID);
 var activecollab_user_instances = getCookie("activecollab_user_instances");
 console.log("activecollab_user_instances: " + activecollab_user_instances);
 

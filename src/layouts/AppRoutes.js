@@ -6,25 +6,26 @@ import Project from '../views/Project';
 import Login from '../views/Login';
 import TaskList from '../views/TaskList';
 import { useEffect } from 'react';
+import { useEffectOnlyOnUpdate } from '../hooks/UseEffectOnlyOnUpdate';
 
 function AppRoutes() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    useEffect(() => {
+    // Save the last visited page to local storage on location change
+    useEffectOnlyOnUpdate(() => {
         chrome.storage.local.set({LastVisitedPage: location.pathname});
-        console.log(location.pathname);
     }, [location]);
 
     useEffect(() => {
-        // TODO: Get this working
+        // Navigate to the last visited page on popup open
         chrome.storage.local.get(['LastVisitedPage'], function(result) {
-            console.log(result)
             if (result.LastVisitedPage) {
                 navigate(result.LastVisitedPage);
             }
         });
 
+        // Navigate back and forth with mouse buttons 4 and 5
         const handleMouse = (ev) => {
             if (ev.buttons & 8) {
                 // Mouse 4 (Back)
@@ -34,7 +35,6 @@ function AppRoutes() {
                 navigate(1);
             }
         };
-    
         window.addEventListener("mousedown", handleMouse);
 
         return () => {

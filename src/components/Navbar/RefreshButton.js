@@ -8,9 +8,10 @@ function RefreshButton() {
     const isRefreshing = useContext(IsRefreshing);
     const setRefreshing = useContext(SetRefreshing);
     const location = useLocation();
+    const isSettingsPage = location.pathname === "/settings" || location.pathname === "/project/settings" || location.pathname === "/taskList/settings";
 
     function onClick() {
-        if (!isRefreshing && !(location.pathname === "/login" || location.pathname === "/settings")) { 
+        if (!isRefreshing && !(location.pathname === "/login" || isSettingsPage)) { 
             setRefreshing(true);
             chrome.runtime.sendMessage({event: "refresh"});
         }
@@ -24,7 +25,7 @@ function RefreshButton() {
 
     return (
         <i id="refresh-button" className={
-            (location.pathname === "/login" || location.pathname === "/settings") ? 
+            (location.pathname === "/login" || isSettingsPage) ? 
                 "material-icons extension-control-icons refresh-disabled" : 
                 isRefreshing ? 
                     "material-icons extension-control-icons refresh-start" : 

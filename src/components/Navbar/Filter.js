@@ -11,7 +11,7 @@ function Filter() {
     const taskListFilter = useContext(TaskListFilter);
     const setTaskListFilter = useContext(SetTaskListFilter);
     const location = useLocation();
-
+    const isSettingsPage = location.pathname === "/settings" || location.pathname === "/project/settings" || location.pathname === "/taskList/settings";
     const filterValue = location.pathname === "/" ? overviewFilter : location.pathname === "/project" ? projectFilter : taskListFilter;
 
     function handleFilterChange(value) {
@@ -28,17 +28,18 @@ function Filter() {
 
     return (
         <div className="navbar-filter">
-            <div className="input-group input-group-round">
-            <div className="input-group-prepend filter-input">
-                <span className="input-group-text">
-                    <i className="material-icons filter-icon">search</i>
-                </span>
-            </div>
-            <input value={filterValue} onChange={event => handleFilterChange(event.target.value)} type="search" className="form-control filter-list-input filter-input" placeholder="Search" aria-label="Filter"/>
-            </div>
+            {isSettingsPage ? null :
+                <div className="input-group input-group-round">
+                <div className="input-group-prepend filter-input">
+                    <span className="input-group-text">
+                        <i className="material-icons filter-icon">search</i>
+                    </span>
+                </div>
+                <input value={filterValue} onChange={event => handleFilterChange(event.target.value)} type="search" className="form-control filter-list-input filter-input" placeholder="Search" aria-label="Filter"/>
+                </div>
+            }
         </div>
     );
 }
 
 export default Filter;
-
