@@ -27,7 +27,7 @@ function Footer() {
     function footerText() {
         if (location.pathname === "/settings") {
             return (
-                <span onClick={redirect} className="footer-link">ActiveCollab Helper Extension v0.0.3</span>
+                <span onClick={redirect} className="footer-link">ActiveCollab Helper Extension v0.0.4</span>
             );
         }else{
             if (lastRefreshTime !== ""){

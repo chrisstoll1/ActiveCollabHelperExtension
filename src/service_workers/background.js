@@ -71,62 +71,64 @@ async function refreshActiveCollabData() {
     // Get new data
     const [activeCollabData, projectLeaderData] = await buildActiveCollabDataObject(oldActiveCollabData, oldLeaderData);
 
-    //Set refresh time
-    var date = new Date();
-    var refreshTime = date.toLocaleString();
-    await chrome.storage.local.set({"LastRefreshTime": refreshTime});
-    try {
-      await chrome.runtime.sendMessage({event: "refresh-date-updated"});
-    } catch (error) {
-      console.log(error);
-    }
+    // Set refresh time
+    const date = new Date();
+    const refreshTime = date.toLocaleString();
+    await chrome.storage.local.set({ LastRefreshTime: refreshTime });
+    sendMessage("refresh-date-updated");
 
-    //Set Local Storage to new data
-    await chrome.storage.local.set({"ACProjects": JSON.stringify(activeCollabData)});
-    await chrome.storage.local.set({"ACLeaders": JSON.stringify(projectLeaderData)});
+    // Set Local Storage to new data
+    await chrome.storage.local.set({ ACProjects: JSON.stringify(activeCollabData) });
+    await chrome.storage.local.set({ ACLeaders: JSON.stringify(projectLeaderData) });
 
-    //Set Chrome Badge to number of projects
+    // Set Chrome Badge to number of projects
     await setChromeBadge(activeCollabData);
 
-    //Refresh working project if it exists
-    await chrome.storage.local.get(["WorkingProject"], async function(result) {
-      if (Object.keys(result).length === 0){
-          //Do nothing
-      }else{ 
-          var workingProject = JSON.parse(result.WorkingProject);
-          var newWorkingProject = activeCollabData.filter((project) => {
-              return project.id === workingProject.id;
-          });
-          await chrome.storage.local.set({"WorkingProject": JSON.stringify(newWorkingProject[0])});
+    // Refresh working project and tasklist if they exist
+    await refreshWorkingProject(activeCollabData);
 
-          //Refresh working tasklist if it exists
-          await chrome.storage.local.get(["WorkingTaskList"], async function(result) {
-              if (Object.keys(result).length === 0){
-                  //Do nothing
-              }else{
-                  var workingTaskList = JSON.parse(result.WorkingTaskList);
-                  var newWorkingTaskList = newWorkingProject[0].task_lists.filter((taskList) => {
-                      return taskList.id === workingTaskList.id;
-                  });
-                  await chrome.storage.local.set({"WorkingTaskList": JSON.stringify(newWorkingTaskList[0])});
-              }
-          });
-      }
-    });
-
-    try {
-      await chrome.runtime.sendMessage({event: "updated"});
-    } catch (error) {
-      console.log(error);
-    }
-  }else{
+    sendMessage("updated");
+  } else {
     console.log("INVALID TOKEN");
-    try {
-      await chrome.runtime.sendMessage({event: "invalid_token"});
-    } catch (error) {
-      console.log(error);
-    }
+    sendMessage("invalid_token");
   }
+}
+
+async function refreshWorkingProject(activeCollabData) {
+  return new Promise(async (resolve) => {
+    chrome.storage.local.get(["WorkingProject"], async function (result) {
+      if (Object.keys(result).length === 0) {
+        resolve();
+        return;
+      }
+
+      const workingProject = JSON.parse(result.WorkingProject);
+      const newWorkingProject = activeCollabData.find(project => project.id === workingProject.id);
+      await chrome.storage.local.set({ WorkingProject: JSON.stringify(newWorkingProject) });
+
+      // Refresh working tasklist if it exists
+      await refreshWorkingTaskList(newWorkingProject);
+
+      resolve();
+    });
+  });
+}
+
+async function refreshWorkingTaskList(newWorkingProject) {
+  return new Promise(async (resolve) => {
+    chrome.storage.local.get(["WorkingTaskList"], async function (result) {
+      if (Object.keys(result).length === 0) {
+        resolve();
+        return;
+      }
+
+      const workingTaskList = JSON.parse(result.WorkingTaskList);
+      const newWorkingTaskList = newWorkingProject.task_lists.find(taskList => taskList.id === workingTaskList.id);
+      await chrome.storage.local.set({ WorkingTaskList: JSON.stringify(newWorkingTaskList) });
+
+      resolve();
+    });
+  });
 }
 
 async function buildActiveCollabDataObject(oldActiveCollabData, oldLeaderData) {
@@ -301,3 +303,7 @@ async function configureAutoRefreshAlarm(period, type, enabled) {
     await chrome.alarms.create(alarmName, alarmInfo);
   }
 } 
+
+function sendMessage(event) {
+  chrome.runtime.sendMessage({ event: event }).catch(error => console.log(error));
+}  
