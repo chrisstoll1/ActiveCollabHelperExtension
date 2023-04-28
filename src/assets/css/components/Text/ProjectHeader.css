@@ -73,11 +73,6 @@
     margin-left: 5px;
 }
 
-.mute-project-icon {
-    color: var(--light);
-    font-size: 24px !important;
-}
-
 .project-header-right {
     display: flex;
     flex-direction: column;
