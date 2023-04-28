@@ -1,14 +1,15 @@
 /* global chrome */
 import { useContext, useEffect, useState } from 'react';
-import { IsRefreshing, SetExtState, TaskListFilter } from '../context/ExtStateContext'
+import { IsRefreshing, TaskListFilter } from '../context/ExtStateContext'
 import Loading from '../components/Background/Loading';
 import Task from '../components/Cards/Task';
 import { filterWorkingTaskList } from '../utils/filterWorkingTaskList';
 import '../assets/css/views/TaskList.css';
 import TaskListHeader from '../components/Text/TaskListHeader';
+import { useNavigate } from 'react-router-dom';
 
 function Tasklist(props) {
-    const setExtState = useContext(SetExtState);
+    const navigate = useNavigate();
     const [taskList, setTaskList] = useState({tasks: [], badges: [], completed_tasks: 0, overdue_tasks: 0, open_tasks: 0}); //TODO: initialize with prop
     const [projectId, setProjectId] = useState(0);
     const [projectName, setProjectName] = useState("");
@@ -35,11 +36,11 @@ function Tasklist(props) {
         if (request.event === "updated"){
             chrome.storage.local.get(["WorkingTaskList"]).then((result) => {
                 if (Object.keys(result).length === 0){
-                    setExtState("Project");
+                    navigate("/project");
                 }else{
                     filterWorkingTaskList(JSON.parse(result.WorkingTaskList)).then((filteredWorkingTaskList) => {
                         if (filteredWorkingTaskList === null){
-                            setExtState("Project");
+                            navigate("/project");
                         }else{
                             setTaskList(filteredWorkingTaskList);
                         }
@@ -55,11 +56,11 @@ function Tasklist(props) {
 
             const workingTaskListResult = await chrome.storage.local.get(["WorkingTaskList"]);
             if (Object.keys(workingTaskListResult).length === 0){
-                setExtState("Project");
+                navigate("/project");
             }else{
                 const filteredWorkingTaskList = await filterWorkingTaskList(JSON.parse(workingTaskListResult.WorkingTaskList));
                 if (filteredWorkingTaskList === null){
-                    setExtState("Project");
+                    navigate("/project");
                 }else{
                     setTaskList(filteredWorkingTaskList);
                 }
@@ -67,7 +68,7 @@ function Tasklist(props) {
     
             const workingProjectResult = await chrome.storage.local.get(["WorkingProject"]);
             if (Object.keys(workingProjectResult).length === 0){
-                setExtState("Project");
+                navigate("/project");
             }else{
                 setProjectId(JSON.parse(workingProjectResult.WorkingProject).id);
                 setProjectName(JSON.parse(workingProjectResult.WorkingProject).name);
@@ -75,7 +76,7 @@ function Tasklist(props) {
 
             const accountNumberResult = await chrome.storage.sync.get(["activecollab_user_instances"]);
             if (Object.keys(accountNumberResult).length === 0){
-                setExtState("Login");
+                navigate("/login");
             }else{
                 setAccountNumber(accountNumberResult.activecollab_user_instances);
             }

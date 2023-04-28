@@ -1,6 +1,7 @@
 /* global chrome */
 import { useEffect, useState, useContext, useCallback } from "react"
-import { SetExtState, IsRefreshing, ProjectFilter } from "../context/ExtStateContext"
+import { useNavigate } from "react-router-dom"
+import { IsRefreshing, ProjectFilter } from "../context/ExtStateContext"
 import Loading from "../components/Background/Loading";
 import Discussion from "../components/Cards/Discussion";
 import ProjectTaskList from "../components/Cards/ProjectTaskList";
@@ -20,8 +21,8 @@ function Project(){
     const [loadingStorage, setLoadingStorage] = useState(false);
     
     //Context
-    const setExtState = useContext(SetExtState);
     const isRefreshing = useContext(IsRefreshing);
+    const navigate = useNavigate();
 
     //Redirect to project page
     const [accountNumber, setAccountNumber] = useState(0);
@@ -36,7 +37,7 @@ function Project(){
         if (request.event === "updated"){
             chrome.storage.local.get(["WorkingProject"]).then((result) => {
                 if (Object.keys(result).length === 0){
-                    setExtState("Overview");
+                    navigate("/");
                 }else{
                     filterWorkingProject(JSON.parse(result.WorkingProject)).then((filteredWorkingProject) => {;
                         setProject(filteredWorkingProject);
@@ -52,7 +53,7 @@ function Project(){
 
             const workingProjectResult = await chrome.storage.local.get(["WorkingProject"]);
             if (Object.keys(workingProjectResult).length === 0){
-                setExtState("Overview");
+                navigate("/");
             }else{
                 const filteredWorkingProject = await filterWorkingProject(JSON.parse(workingProjectResult.WorkingProject));
                 setProject(filteredWorkingProject);
@@ -60,7 +61,7 @@ function Project(){
 
             const accountNumberResult = await chrome.storage.sync.get(["activecollab_user_instances"]);
             if (Object.keys(accountNumberResult).length === 0){
-                setExtState("Login");
+                navigate("/login");
             }else{
                 setAccountNumber(accountNumberResult.activecollab_user_instances);
             }

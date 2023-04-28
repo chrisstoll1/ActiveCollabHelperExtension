@@ -1,13 +1,14 @@
 /*global chrome*/
 import { useState, useContext, useEffect } from 'react';
 import FilteredProjects from '../components/Cards/FilteredProjects';
-import { IsRefreshing, SetRefreshing, SetExtState, OverviewFilter } from '../context/ExtStateContext'
+import { IsRefreshing, SetRefreshing, OverviewFilter } from '../context/ExtStateContext'
 import { filterProjectData } from '../utils/filterProjectData';
 import Loading from '../components/Background/Loading';
 import OverviewHeader from '../components/Text/OverviewHeader';
 import OverviewSortBy from '../components/Inputs/OverviewSortBy';
 import { emptyProjectResponses } from '../data/emptyProjectResponses'
 import { SortDirection, SetSortDirection, SortOption, SetSortOption } from '../context/OverviewContext'
+import { useNavigate } from 'react-router-dom';
 
 function Overview() {
     //Projects
@@ -27,7 +28,7 @@ function Overview() {
     //Context
     const isRefreshing = useContext(IsRefreshing);
     const setRefreshing = useContext(SetRefreshing);
-    const setExtState = useContext(SetExtState);
+    const navigate = useNavigate();
 
     //Message Listener for Chrome related events
     chrome.runtime.onMessage.addListener((request, sender, reply) => {
@@ -40,7 +41,7 @@ function Overview() {
             });
         }
         if (request.event === "invalid_token"){
-            setExtState("Login");
+            navigate("/login");
             setRefreshing(false);
         }
     });
@@ -65,7 +66,6 @@ function Overview() {
         chrome.storage.local.get(["SortCache"]).then((result) => {
             if (Object.keys(result).length !== 0){
                 const sortCache = JSON.parse(result.SortCache);
-                console.log(sortCache);
                 setSortDirection(sortCache.Direction);
                 setSortOption(sortCache.Option);
             }

@@ -1,15 +1,14 @@
 /* global chrome */
-import { useContext } from 'react';
-import { SetExtState } from '../../context/ExtStateContext'
+import { useNavigate } from 'react-router-dom';
 import ProjectTaskListBadge from '../Badge/ProjectTaskListBadge';
 
 function ProjectTaskList(props) {
-    const setExtState = useContext(SetExtState);
+    const navigate = useNavigate();
     
     async function handleClick() {
         await chrome.storage.local.set({"WorkingTaskList": JSON.stringify(props.task_list)});
         console.log(props.task_list);
-        setExtState("TaskList");
+        navigate('/taskList');
     }
 
     return (
