@@ -7,6 +7,11 @@ export async function filterProjectData(Projects, SortOption, SortDirection) {
     let Settings = await chrome.storage.sync.get(["user_settings"]);
     Settings = Settings.user_settings;
     let projectLabelsFilter = Settings.projectLabelsFilter;
+
+    // Grab Mute States from Sync Storage
+    let MuteStates = await chrome.storage.sync.get(["MuteStates"]);
+    MuteStates = MuteStates.MuteStates;
+
     // Filter Projects
     const FilteredProjects = Projects.map((project) => {
         if (Settings.settingsToggles['filter']){
@@ -15,6 +20,15 @@ export async function filterProjectData(Projects, SortOption, SortDirection) {
         return project;
     }).filter((project) => {
         if (Settings.settingsToggles['filter']){
+            if (MuteStates !== undefined){
+                if (MuteStates[project.id]) {
+                    // Check if project is muted
+                    if (MuteStates[project.id].state > 0) {
+                        return false;
+                    }
+                }
+            }
+            // Check if project data is valid (has discussions and task lists) and label filter is met
             if (project.discussions.length > 0 && project.task_lists.length > 0) {
                 if (projectLabelsFilter.length > 0) { //if label filter is not empty
                     const projectLeader = project.leader;

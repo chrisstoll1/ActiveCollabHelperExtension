@@ -36,6 +36,10 @@ chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
       let enabled = request.autoRefreshOptions.isOn;
       await configureAutoRefreshAlarm(period, type, enabled);
     }
+    if (request.event === "reset_muted_projects"){
+      await removeSyncStorageObject("MuteStates");
+      refreshActiveCollabData();
+    }
 });
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
@@ -105,6 +109,8 @@ async function refreshWorkingProject(activeCollabData) {
       const workingProject = JSON.parse(result.WorkingProject);
       const newWorkingProject = activeCollabData.find(project => project.id === workingProject.id);
       await chrome.storage.local.set({ WorkingProject: JSON.stringify(newWorkingProject) });
+
+      await recalculateProjectMuteState(newWorkingProject);
 
       // Refresh working tasklist if it exists
       await refreshWorkingTaskList(newWorkingProject);
@@ -307,3 +313,25 @@ async function configureAutoRefreshAlarm(period, type, enabled) {
 function sendMessage(event) {
   chrome.runtime.sendMessage({ event: event }).catch(error => console.log(error));
 }  
+
+async function recalculateProjectMuteState(project) {
+  // Get project MuteStates from chrome storage
+  const muteStates = await new Promise((resolve, reject) => {
+    chrome.storage.sync.get(['MuteStates'], function(result) {
+      resolve(result.MuteStates);
+    });
+  });
+
+  // if mutedStates is empty, create it
+  if (muteStates === undefined) {
+    await chrome.storage.sync.set({MuteStates: {}});
+    return;
+  }
+  if (muteStates[project.id]) {
+    if (project.last_active > muteStates[project.id].last_updated && muteStates[project.id].state === 1) {
+      muteStates[project.id].state = 0;
+      muteStates[project.id].last_updated = project.last_active;
+      chrome.storage.sync.set({MuteStates: muteStates});
+    }
+  }
+}

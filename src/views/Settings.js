@@ -9,6 +9,7 @@ import { DiscussionMessageSenderFilterContext, SetDiscussionMessageSenderFilterC
 import { setChromeBadge } from '../utils/setChromeBadge';
 import SettingsFilterAccordion from '../components/Cards/SettingsFilterAccordion';
 import SettingsAutoRefreshAccordion from '../components/Cards/SettingsAutoRefreshAccordion';
+import ResetMutedProjects from '../components/Inputs/ResetMutedProjects';
 
 function Settings() {
     const [discussionMessageSenderFilter, setDiscussionMessageSenderFilter] = useState({});
@@ -142,6 +143,19 @@ function Settings() {
                                                                                 </div>
                                                                                 <div className="col-8">
                                                                                     <ResetSettingsButton/>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div className="card">
+                                                                        <div className="card-body">
+                                                                            <div className="row">
+                                                                                <div className="col-4">
+                                                                                    <label className="form-control settings-label-text">Reset All Settings</label>
+                                                                                </div>
+                                                                                <div className="col-8">
+                                                                                    <ResetMutedProjects/>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
