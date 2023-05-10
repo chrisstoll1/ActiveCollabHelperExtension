@@ -4,17 +4,23 @@ import '../../assets/css/components/Inputs/MuteProjectButton.css'
 import { setChromeBadge } from "../../utils/setChromeBadge";
 
 function MuteProjectButton(props) {
-    //state with 3 possible values: 0, 1, 2
     //0: not muted
     //1: snoozed
     //2: muted
     const [muteState, setMuteState] = useState(0);
 
+    function getProjectsAndRefreshChromeBadge() {
+        chrome.storage.local.get(["ACProjects"]).then((result) => {
+            let projects = JSON.parse(result.ACProjects);
+            setChromeBadge(projects);
+        });
+    }
+
     //get mute state from chrome storage on load, if it doesn't exist, set it to 0
     useEffect(() => {
         chrome.storage.sync.get(['MuteStates'], function(result) {
             if (result.MuteStates) {
-                if (result.MuteStates[props.project.id]) {
+                if (props.project.id && result.MuteStates[props.project.id]) {
                     setMuteState(result.MuteStates[props.project.id].state);
                 } else {
                     setMuteState(0);
@@ -27,19 +33,30 @@ function MuteProjectButton(props) {
     useEffect(() => {
         chrome.storage.sync.get(['MuteStates'], function(result) {
             if (result.MuteStates) {
-                result.MuteStates[props.project.id] = {
-                    state: muteState,
-                    last_updated: props.project.last_active
-                };
-                chrome.storage.sync.set(result);
-            } else {
-                chrome.storage.sync.set({MuteStates: {
-                    [props.project.id]: {
+                // remove the project from the mute states if it's unmuted
+                if (muteState === 0 && result.MuteStates[props.project.id]) {
+                    delete result.MuteStates[props.project.id];
+                    chrome.storage.sync.set(result);
+                }else{
+                    result.MuteStates[props.project.id] = {
                         state: muteState,
                         last_updated: props.project.last_active
-                    }
-                }});
+                    };
+                    chrome.storage.sync.set(result);
+                }
+            } else {
+                if (props.project.id !== undefined){
+                    let MuteStates = {};
+                    MuteStates[props.project.id] = {
+                        state: muteState,
+                        last_updated: props.project.last_active
+                    };
+
+                    chrome.storage.sync.set({MuteStates: MuteStates});
+                }
             }
+
+            getProjectsAndRefreshChromeBadge();
         });
     }, [muteState, props.project]);
 

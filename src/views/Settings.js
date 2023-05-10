@@ -66,7 +66,6 @@ function Settings() {
         }
     });
 
-
     return (
         <div className="main-body flex-grow-1">
             <DiscussionMessageSenderFilterContext.Provider value={discussionMessageSenderFilter}>
@@ -121,6 +120,19 @@ function Settings() {
                                                                             </div>
                                                                         </div>  
                                                                     </div>
+
+                                                                    <div className="card">
+                                                                        <div className="card-body">
+                                                                            <div className="row">
+                                                                                <div className="col-4">
+                                                                                    <label className="form-control settings-label-text">Manage Muted Projects</label>
+                                                                                </div>
+                                                                                <div className="col-8">
+                                                                                    <ResetMutedProjects/>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                             
                                                                     <div className="card">
                                                                         <div className="card-body">
@@ -143,19 +155,6 @@ function Settings() {
                                                                                 </div>
                                                                                 <div className="col-8">
                                                                                     <ResetSettingsButton/>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div className="card">
-                                                                        <div className="card-body">
-                                                                            <div className="row">
-                                                                                <div className="col-4">
-                                                                                    <label className="form-control settings-label-text">Reset All Settings</label>
-                                                                                </div>
-                                                                                <div className="col-8">
-                                                                                    <ResetMutedProjects/>
                                                                                 </div>
                                                                             </div>
                                                                         </div>

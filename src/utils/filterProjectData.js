@@ -21,7 +21,7 @@ export async function filterProjectData(Projects, SortOption, SortDirection) {
     }).filter((project) => {
         if (Settings.settingsToggles['filter']){
             if (MuteStates !== undefined){
-                if (MuteStates[project.id]) {
+                if (project && project.id && MuteStates[project.id]) {
                     // Check if project is muted
                     if (MuteStates[project.id].state > 0) {
                         return false;

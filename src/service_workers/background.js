@@ -24,10 +24,13 @@ chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
       await removeLocalStorageObject("LastRefreshTime");
       await removeLocalStorageObject("ACLeaders");
       await removeLocalStorageObject("SortCache");
+      await removeSyncStorageObject("MuteStates");
       refreshActiveCollabData();
     }
     if (request.event === "reset_settings"){
       await resetSyncedSettings();
+      await removeSyncStorageObject("MuteStates");
+      await removeLocalStorageObject("SortCache");
       chrome.runtime.sendMessage({event: "settings_reset"});
     }
     if (request.event === "auto_refresh_settings_updated"){
@@ -35,10 +38,6 @@ chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
       let type = request.autoRefreshOptions.select;
       let enabled = request.autoRefreshOptions.isOn;
       await configureAutoRefreshAlarm(period, type, enabled);
-    }
-    if (request.event === "reset_muted_projects"){
-      await removeSyncStorageObject("MuteStates");
-      refreshActiveCollabData();
     }
 });
 
@@ -85,6 +84,9 @@ async function refreshActiveCollabData() {
     await chrome.storage.local.set({ ACProjects: JSON.stringify(activeCollabData) });
     await chrome.storage.local.set({ ACLeaders: JSON.stringify(projectLeaderData) });
 
+    // Recalculate Project Mute States
+    await recalculateMuteStates(activeCollabData);
+
     // Set Chrome Badge to number of projects
     await setChromeBadge(activeCollabData);
 
@@ -109,8 +111,6 @@ async function refreshWorkingProject(activeCollabData) {
       const workingProject = JSON.parse(result.WorkingProject);
       const newWorkingProject = activeCollabData.find(project => project.id === workingProject.id);
       await chrome.storage.local.set({ WorkingProject: JSON.stringify(newWorkingProject) });
-
-      await recalculateProjectMuteState(newWorkingProject);
 
       // Refresh working tasklist if it exists
       await refreshWorkingTaskList(newWorkingProject);
@@ -314,7 +314,7 @@ function sendMessage(event) {
   chrome.runtime.sendMessage({ event: event }).catch(error => console.log(error));
 }  
 
-async function recalculateProjectMuteState(project) {
+async function recalculateMuteStates(projects) {
   // Get project MuteStates from chrome storage
   const muteStates = await new Promise((resolve, reject) => {
     chrome.storage.sync.get(['MuteStates'], function(result) {
@@ -327,11 +327,13 @@ async function recalculateProjectMuteState(project) {
     await chrome.storage.sync.set({MuteStates: {}});
     return;
   }
-  if (muteStates[project.id]) {
-    if (project.last_active > muteStates[project.id].last_updated && muteStates[project.id].state === 1) {
-      muteStates[project.id].state = 0;
-      muteStates[project.id].last_updated = project.last_active;
-      chrome.storage.sync.set({MuteStates: muteStates});
+
+  for (const project of projects) {
+    if (muteStates[project.id]) {
+      if (project.last_active > muteStates[project.id].last_updated && muteStates[project.id].state === 1) {
+        delete muteStates[project.id];
+        chrome.storage.sync.set({MuteStates: muteStates});
+      }
     }
   }
 }
