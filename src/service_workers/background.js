@@ -24,10 +24,13 @@ chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
       await removeLocalStorageObject("LastRefreshTime");
       await removeLocalStorageObject("ACLeaders");
       await removeLocalStorageObject("SortCache");
+      await removeSyncStorageObject("MuteStates");
       refreshActiveCollabData();
     }
     if (request.event === "reset_settings"){
       await resetSyncedSettings();
+      await removeSyncStorageObject("MuteStates");
+      await removeLocalStorageObject("SortCache");
       chrome.runtime.sendMessage({event: "settings_reset"});
     }
     if (request.event === "auto_refresh_settings_updated"){
@@ -80,6 +83,9 @@ async function refreshActiveCollabData() {
     // Set Local Storage to new data
     await chrome.storage.local.set({ ACProjects: JSON.stringify(activeCollabData) });
     await chrome.storage.local.set({ ACLeaders: JSON.stringify(projectLeaderData) });
+
+    // Recalculate Project Mute States
+    await recalculateMuteStates(activeCollabData);
 
     // Set Chrome Badge to number of projects
     await setChromeBadge(activeCollabData);
@@ -307,3 +313,27 @@ async function configureAutoRefreshAlarm(period, type, enabled) {
 function sendMessage(event) {
   chrome.runtime.sendMessage({ event: event }).catch(error => console.log(error));
 }  
+
+async function recalculateMuteStates(projects) {
+  // Get project MuteStates from chrome storage
+  const muteStates = await new Promise((resolve, reject) => {
+    chrome.storage.sync.get(['MuteStates'], function(result) {
+      resolve(result.MuteStates);
+    });
+  });
+
+  // if mutedStates is empty, create it
+  if (muteStates === undefined) {
+    await chrome.storage.sync.set({MuteStates: {}});
+    return;
+  }
+
+  for (const project of projects) {
+    if (muteStates[project.id]) {
+      if (project.last_active > muteStates[project.id].last_updated && muteStates[project.id].state === 1) {
+        delete muteStates[project.id];
+        chrome.storage.sync.set({MuteStates: muteStates});
+      }
+    }
+  }
+}

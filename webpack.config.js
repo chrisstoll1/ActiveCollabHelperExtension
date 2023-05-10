@@ -2,6 +2,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CleanTerminalPlugin = require('clean-terminal-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -58,6 +59,7 @@ module.exports = {
         patterns: [
             { from: 'public' }
         ]
-    })
+    }),
+    new CleanTerminalPlugin()
   ]
 };

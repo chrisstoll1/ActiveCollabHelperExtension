@@ -9,6 +9,7 @@ import { DiscussionMessageSenderFilterContext, SetDiscussionMessageSenderFilterC
 import { setChromeBadge } from '../utils/setChromeBadge';
 import SettingsFilterAccordion from '../components/Cards/SettingsFilterAccordion';
 import SettingsAutoRefreshAccordion from '../components/Cards/SettingsAutoRefreshAccordion';
+import ResetMutedProjects from '../components/Inputs/ResetMutedProjects';
 
 function Settings() {
     const [discussionMessageSenderFilter, setDiscussionMessageSenderFilter] = useState({});
@@ -65,7 +66,6 @@ function Settings() {
         }
     });
 
-
     return (
         <div className="main-body flex-grow-1">
             <DiscussionMessageSenderFilterContext.Provider value={discussionMessageSenderFilter}>
@@ -119,6 +119,19 @@ function Settings() {
                                                                                 </div>
                                                                             </div>
                                                                         </div>  
+                                                                    </div>
+
+                                                                    <div className="card">
+                                                                        <div className="card-body">
+                                                                            <div className="row">
+                                                                                <div className="col-4">
+                                                                                    <label className="form-control settings-label-text">Manage Muted Projects</label>
+                                                                                </div>
+                                                                                <div className="col-8">
+                                                                                    <ResetMutedProjects/>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                             
                                                                     <div className="card">

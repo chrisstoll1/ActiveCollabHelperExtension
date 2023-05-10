@@ -1,0 +1,29 @@
+.small-col {
+  width: 5%;
+}
+
+.scrollable-table {
+    max-height: 200px;
+    overflow-y: scroll;
+    width: 100%;
+}
+
+.warning-text {
+    padding-top: 5px;
+    color: #6c757d; 
+    font-size: 0.9em; 
+}
+
+.unmute-button:hover {
+    color: #fff;
+    cursor: pointer;
+}
+
+.muted-project {
+    color: #6c757d;
+}
+
+.muted-project:hover {
+    color: #ffffff;
+    cursor: pointer;
+}
