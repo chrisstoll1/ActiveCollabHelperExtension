@@ -10,8 +10,11 @@ function Footer() {
     const [currentTime, setCurrentTime] = useState(new Date());
     const location = useLocation();
 
-    function redirect() {
-        chrome.tabs.create({url: "https://github.com/chrisstoll1/ActiveCollabHelperExtension"});
+    let manifestData = chrome.runtime.getManifest();
+    const currentVersion = `v${manifestData.version}`;
+
+    const redirectToRepository = () => {
+        chrome.tabs.create({url: `https://github.com/chrisstoll1/ActiveCollabHelperExtension/tree/${currentVersion}`});
     }
 
     function footerClass() {
@@ -27,7 +30,7 @@ function Footer() {
     function footerText() {
         if (location.pathname === "/settings") {
             return (
-                <span onClick={redirect} className="footer-link">ActiveCollab Helper Extension v0.0.5</span>
+                <span onClick={redirectToRepository} className="footer-link">ActiveCollab Helper Extension: {currentVersion}</span>
             );
         }else{
             if (lastRefreshTime !== ""){
