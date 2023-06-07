@@ -10,7 +10,10 @@ export async function setChromeBadge(projects) {
         // Set Badge Text
         let BadgeText = "";
         if (Settings.settingsToggles["show-badge-count"]) {
-            BadgeText = filteredProjects.length.toString();
+            let projectCount = filteredProjects.length;
+            if (projectCount > 0) {
+                BadgeText = projectCount.toString();
+            }
         }
 
         // Set Badge
