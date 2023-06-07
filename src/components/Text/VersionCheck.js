@@ -15,6 +15,7 @@ function VersionCheck(){
           .then(response => response.json())
           .then(data => {
             const latestRelease = data.find(release => release.tag_name !== "latest"); //Latest Tag other than "latest" (which is the pre-release)
+            console.log(latestRelease);
             setLatestVersion(latestRelease.tag_name);
             console.log("Latest Version: " + latestRelease.tag_name);
           })
@@ -24,13 +25,15 @@ function VersionCheck(){
     if (latestVersion !== currentVersion){
         return (
             <div className="card version-check-card">
-                <div className="card-body version-check-card-body">
-                    <p className="version-check-description">
-                        A new version of the extension is available: {latestVersion}
-                    </p>
-                    <i className="material-icons version-check-icon" onClick={redirectToRelease}>
-                        launch
-                    </i>
+                <div className="card-body">
+                    <div className="version-check-card-title">
+                        <p className="version-check-description">
+                            A new version of the extension is available: {latestVersion}
+                        </p>
+                        <i className="material-icons version-check-icon" onClick={redirectToRelease}>
+                            launch
+                        </i>
+                    </div>
                 </div>
             </div>
         );
