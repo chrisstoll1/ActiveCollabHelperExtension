@@ -21,9 +21,9 @@ function Tasklist(props) {
 
     //Split tasks into completed and open
     const completedTasks = taskList.tasks.filter(task => task.status.includes('Completed'));
-    const openTasks = taskList.tasks.filter(task => task.status.includes('Open'));
+    const openTasks = taskList.tasks.filter(task => (task.status.includes("Open") || task.status.includes("Overdue")));
     const completedFilteredTasks = filteredTasks.filter(task => task.status.includes('Completed'));
-    const openFilteredTasks = filteredTasks.filter(task => task.status.includes('Open'));
+    const openFilteredTasks = filteredTasks.filter(task => (task.status.includes("Open") || task.status.includes("Overdue")));
 
     const taskListURL = `https://app.activecollab.com/${accountNumber}/projects/${projectId}/task-lists/${taskList.id}`;
 
@@ -112,7 +112,7 @@ function Tasklist(props) {
                                         </div>
                                     :
                                         openFilteredTasks.map((task, index) => {
-                                            if (task.status.includes("Open")){
+                                            if (task.status.includes("Open") || task.status.includes("Overdue")){
                                                 return (
                                                     <Task key={index} task={task} projectId={projectId} accountNumber={accountNumber} />
                                                 )
