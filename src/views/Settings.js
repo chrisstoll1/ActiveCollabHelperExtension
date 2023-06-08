@@ -10,6 +10,7 @@ import { setChromeBadge } from '../utils/setChromeBadge';
 import SettingsFilterAccordion from '../components/Cards/SettingsFilterAccordion';
 import SettingsAutoRefreshAccordion from '../components/Cards/SettingsAutoRefreshAccordion';
 import ResetMutedProjects from '../components/Inputs/ResetMutedProjects';
+import VersionCheck from '../components/Text/VersionCheck';
 
 function Settings() {
     const [discussionMessageSenderFilter, setDiscussionMessageSenderFilter] = useState({});
@@ -78,6 +79,8 @@ function Settings() {
                                         <SetSettingsTogglesContext.Provider value={setSettingsToggles}>
                                             <AutoRefreshOptionsContext.Provider value={autoRefreshOptions}>
                                                 <SetAutoRefreshOptionsContext.Provider value={setAutoRefreshOptions}>
+
+                                                    <VersionCheck/>
 
                                                     <SettingsFilterAccordion/>
 
