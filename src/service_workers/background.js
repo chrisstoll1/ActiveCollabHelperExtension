@@ -23,6 +23,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
     if (request.event === "activecollab_token"){
       chrome.storage.sync.set({"PHPSESSID": request.token});
       chrome.storage.sync.set({"activecollab_user_instances": request.instance});
+      console.log("Active Collab Helper Extension: Token Set!");
     }
     if (request.event === "delete_token"){
       await removeSyncStorageObject("PHPSESSID");
@@ -215,11 +216,13 @@ async function isTokenValid() {
   }else{
     PHPSESSID = PHPSESSID.PHPSESSID.toString();
     accountNumber = accountNumber.activecollab_user_instances.toString();
+    console.log(PHPSESSID);
+    console.log(accountNumber);
     var sessionCookie = `PHPSESSID=${PHPSESSID}`;
 
     var validTokenRequestResponse = await GetInitial(sessionCookie, accountNumber);
     if (!validTokenRequestResponse.ok){
-        return false;
+      return false;
     }
   }
   return true;
