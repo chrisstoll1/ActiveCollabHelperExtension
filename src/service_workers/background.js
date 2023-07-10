@@ -2,9 +2,18 @@ import { setChromeBadge } from "../utils/setChromeBadge";
 import { GetInitial, GetProjectsDATA, GetProjectLabelsDATA, GetProjectCategoriesDATA, GetProjectsChildDATA, GetProjectsLeadersDATA } from './ActiveCollab/ActiveCollabAPI.js';
 import { formatProject } from './ActiveCollab/ActiveCollabDataFormat.js';
 
-chrome.runtime.onInstalled.addListener(async () => {
-    console.log("Installed!");
-    resetSyncedSettings();
+chrome.runtime.onInstalled.addListener(async (details) => {
+    if(details.reason == "install"){
+      console.log("Active Collab Helper Extension: Installed!");
+
+      let userSettings = await getSyncedSettings();
+      console.log(userSettings);
+      if (!userSettings){ // If no settings exist, create them
+        resetSyncedSettings();
+      }
+    }else if(details.reason == "update"){
+      console.log("Active Collab Helper Extension: Updated!");
+    }
 });
 
 chrome.runtime.onMessage.addListener(async (request, sender, reply) => {
@@ -260,6 +269,18 @@ async function removeSyncStorageObject(key) {
   } catch (error) {
     console.error(error);
   }
+}
+
+async function getSyncedSettings() {
+  return new Promise((resolve, reject) => {
+    chrome.storage.sync.get("user_settings", (result) => {
+      if (chrome.runtime.lastError) {
+        reject(chrome.runtime.lastError);
+      } else {
+        resolve(result.user_settings);
+      }
+    });
+  });
 }
 
 async function resetSyncedSettings(){
